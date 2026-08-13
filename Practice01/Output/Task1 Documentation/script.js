@@ -153,26 +153,14 @@ staffForm.addEventListener("submit", function(event) {
 });
 
 
-// Show / Hide Inactive Staff
-
-toggleInactiveBtn.addEventListener("click", function() {
+toggleInactiveBtn.addEventListener("click", function () {
 
     showInactive = !showInactive;
 
-
-    if (showInactive) {
-
-        toggleInactiveBtn.textContent =
-            "Hide Inactive Staff";
-
-    } else {
-
-        
-        toggleInactiveBtn.textContent =
-            "Show Inactive Staff";
-
-    }
-
+    toggleInactiveBtn.classList.toggle(
+        "active",
+        showInactive
+    );
 
     displayStaff();
 
@@ -182,4 +170,9 @@ toggleInactiveBtn.addEventListener("click", function() {
 // Initial Display
 
 displayStaff();
+
+toggleInactiveBtn.classList.toggle(
+    "active",
+    showInactive
+);
 
