@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <h1>It Unit Directory</h1>
+        <!--Staff form-->
+        <form id="staffForm">
+
+            <input type="text" id="nameInput" placeholder="Full Name">
+            <input type="text" id="roleInput" placeholder="Role">
+
+            <button type="submit">
+                add staff
+            </button>
+        </form>
+
+        <div class="toggle-container">
+            <button id="toggleInactiveBtn">
+                Hide Inactive Staff
+
+            </button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody id="staffTableBody"></tbody>
+        </table>
+
+    </div>
+    <script src="script.js"></script>
+    
+</body>
+</html>
