@@ -165,3 +165,26 @@ The following features were tested successfully:
 ## Conclusion
 
 Task 1 was completed using HTML, CSS, and Vanilla JavaScript. The Staff Directory successfully demonstrates basic DOM manipulation, conditional logic, form validation, and show/hide functionality without using external JavaScript frameworks or libraries.
+
+----------------------------------------------------------------------------------------------------------------------
+
+## Recommendation
+
+
+**1. No unique ID per staff member.**
+It's fine today, but it's a fragile habit. You need a stable way to say "remove *this specific* one". Array index or object reference alone gets error-prone once filtering or sorting enters the picture.
+
+```js
+const newStaff = { id: Date.now(), name, role, status: "Active" };
+```
+
+**2. No `<label>` elements on the form inputs — only `placeholder` text.**
+Placeholders vanish once you start typing and aren't a reliable substitute for labels with screen readers. Add:
+
+```html
+<label for="nameInput">Full Name</label>
+<input type="text" id="nameInput" placeholder="Full Name">
+```
+
+**3. Unused `index` parameter.**
+The `index` in `staffList.forEach(function(staff, index) {...})` is never used inside the loop. Drop it.
