@@ -4,32 +4,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>IT Unit Directory</title>
+
     <link rel="stylesheet" href="style.css">
+
     <!-- AngularJS 1.x -->
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <!-- AngularJS Animate -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js"></script>
+
+    <!-- AngularJS Aria -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-aria.min.js"></script>
+
+    <!-- Angular Material CSS -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.5/angular-material.min.css">
+
+    <!-- Angular Material -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.5/angular-material.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body ng-controller="StaffController as vm">
+
     <div class="container">
         <h1>IT Unit Directory</h1>
+
         <!--Staff form-->
         <form ng-submit="vm.addStaff()">
             <label for="nameInput">Full Name</label>
 
-            <input 
-                type="text" 
-                id="nameInput" 
-                placeholder="Full Name" 
-                ng-model="vm.newStaff.name"
-            >
+            <input type="text" id="nameInput" placeholder="Full Name" ng-model="vm.newStaff.name">
             <label for="roleInput">Role</label>
-            <input 
-                type="text" 
-                id="roleInput" 
-                placeholder="Role" 
-                ng-model="vm.newStaff.role"
-            >
+            <input type="text" id="roleInput" placeholder="Role" ng-model="vm.newStaff.role">
 
             <button type="submit">
                 Add Staff
@@ -52,63 +62,99 @@
 
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Full Name</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
+        <div class="export-container">
 
-            <tbody>
-                <tr 
-                    ng-repeat="staff in vm.staffList track by staff.id" 
-                    ng-if="vm.showInactiveOnly === (staff.status === 'Inactive')">
+            <button type="button" ng-click="vm.exportExcel()">
+                Export Excel
+            </button>
 
-                    <td>
-                        {{ staff.name }}
-                    </td>
+            <button type="button" ng-click="vm.exportCSV()">
+                Export CSV
+            </button>
 
-                    <td>
-                        {{ staff.role }}
-                    </td>
+            <button type="button" ng-click="vm.exportPDF()">
+                Export PDF
+            </button>
 
+        </div>
 
-                    <td>
+        <div class="import-container">
 
-                        <!-- Active badge -->
+            <div class="import-label">
+                <strong>Import Staff</strong>
+                <span>Upload an Excel or CSV file</span>
+            </div>
 
-                        <span class="badge active" ng-show="staff.status === 'Active'">
-                            Active
-                        </span>
+            <input type="file" id="staffFile" accept=".xlsx,.xls,.csv"
+                onchange="angular.element(this).scope().vm.importStaff(this.files[0])">
 
-                        <!-- Inactive badge -->
+        </div>
 
-                        <span class="badge inactive" ng-show="staff.status === 'Inactive'">
-                            Inactive
-                        </span>
+        <div class="table-container">
 
-                    </td>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
 
-                    <td>
-                        <button type="button" ng-click="vm.toggleStatus(staff)">
-                            {{ staff.status === 'Active'
-                            ? 'Deactivate'
-                            : 'Activate' }}
-                        </button>
-                    </td>
-                </tr>
+                <tbody>
+                    <tr ng-repeat="staff in vm.staffList track by staff.id"
+                        ng-if="vm.showInactiveOnly === (staff.status === 'Inactive')">
 
-            </tbody>
+                        <td>
+                            {{ staff.name }}
+                        </td>
 
-        </table>
+                        <td>
+                            {{ staff.role }}
+                        </td>
 
-    </div>
+                        <td>
+                            <span class="badge active" ng-show="staff.status === 'Active'">
+                                Active
+                            </span>
 
-    <script src="Model/staff.js"></script>
-    <script src="Controller/controller.js"></script>
+                            <span class="badge inactive" ng-show="staff.status === 'Inactive'">
+                                Inactive
+                            </span>
+                        </td>
+
+                        <td>
+                            <button type="button" ng-click="vm.viewStaff(staff)">
+                                View Details
+                            </button>
+
+                            <button type="button" ng-click="vm.toggleStatus(staff)">
+                                {{ staff.status === 'Active'
+                                ? 'Deactivate'
+                                : 'Activate' }}
+                            </button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    
+
+        <!-- SheetJS - Excel / CSV Export -->
+        <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+        <!-- jsPDF -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+        <!-- jsPDF AutoTable -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+        <script src="Model/staff.js"></script>
+        <script src="Controller/controller.js"></script>
 
 </body>
 

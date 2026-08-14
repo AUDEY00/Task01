@@ -1,0 +1,52 @@
+<md-dialog aria-label="Staff Details">
+
+    <md-dialog-content class="staff-details-dialog">
+
+        <h2>{{ staff.name }}</h2>
+
+        <div class="staff-detail">
+            <strong>Staff ID:</strong>
+            <span>{{ staff.id }}</span>
+        </div>
+
+        <div class="staff-detail">
+            <strong>Full Name:</strong>
+            <span>{{ staff.name }}</span>
+        </div>
+
+        <div class="staff-detail">
+            <strong>Role:</strong>
+            <span>{{ staff.role }}</span>
+        </div>
+
+        <div class="staff-detail">
+            <strong>Status:</strong>
+
+            <span
+                class="badge active"
+                ng-if="staff.status === 'Active'">
+                Active
+            </span>
+
+            <span
+                class="badge inactive"
+                ng-if="staff.status === 'Inactive'">
+                Inactive
+            </span>
+        </div>
+
+    </md-dialog-content>
+
+    <md-dialog-actions layout="row">
+
+        <span flex></span>
+
+        <md-button
+            class="md-primary"
+            ng-click="closeDialog()">
+            Close
+        </md-button>
+
+    </md-dialog-actions>
+
+</md-dialog>
