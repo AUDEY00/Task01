@@ -1,12 +1,31 @@
+// Create the AngularJS application module.
+// "app" is the name of the AngularJS module.
+// "ngMaterial" is a dependency used for Angular Material components.
 var app = angular.module("app", ["ngMaterial"]);
 
+// Create the StaffController.
+// $scope is used to communicate with the AngularJS view.
+// $mdToast is used to display small notification messages.
+// $mdDialog is used to display dialog/modal windows.
 app.controller("StaffController", function ($scope, $mdToast, $mdDialog) {
 
+    // "vm" stands for ViewModel.
+    // "this" represents the StaffController instance.
+    // Using vm allows the HTML to access controller data through vm.
     var vm = this;
+
+    // Generate a unique ID for a staff member.
+    // Date.now() provides the current timestamp.
+    // Math.random() adds an additional random number
+    // to reduce the possibility of duplicate IDs.
 
     function generateStaffId() {
         return Date.now() + Math.floor(Math.random() * 100000);
     }
+
+    // Display a small notification message using Angular Material Toast.
+    // The message appears at the bottom-right of the screen.
+    // The notification automatically disappears after 2 seconds.
     function showToast(message) {
         $mdToast.show(
             $mdToast.simple()
@@ -16,20 +35,45 @@ app.controller("StaffController", function ($scope, $mdToast, $mdDialog) {
         );
     }
 
-    vm.staffList = staffData;
+    // Clear the current staff list before loading the latest data.
+    var vm = this;
 
+    // Load staff data from the model
+    vm.staffList = angular.copy(staffData);
+
+    // Controls whether only inactive staff are shown
     vm.showInactiveOnly = false;
 
+    // New staff form
     vm.newStaff = {
         name: "",
         role: ""
     };
 
+
+    // Controls whether the application should show only inactive staff.
+    // false means the normal view is displayed initially.
+    vm.showInactiveOnly = false;
+
+    // Object used to store the values entered in the Add Staff form.
+    vm.newStaff = {
+        name: "",
+        role: ""
+    };
+
+    // Function used to add a new staff member.
     vm.addStaff = function () {
 
+        // Get the entered name and remove unnecessary spaces
+        // from the beginning and end of the value.
         var name = vm.newStaff.name.trim();
+
+        // Get the entered role and remove unnecessary spaces.
         var role = vm.newStaff.role.trim();
 
+        // Validate the form.
+        // If either the name or role is empty,
+        // stop the function and show an error message.
         if (name === "" || role === "") {
 
             Swal.fire({
@@ -41,6 +85,8 @@ app.controller("StaffController", function ($scope, $mdToast, $mdDialog) {
             return;
         }
 
+        // Create a new staff object.
+        // Newly added staff members are automatically set to Active.
         var newStaff = {
             id: generateStaffId(),
             name: name,
@@ -58,10 +104,13 @@ app.controller("StaffController", function ($scope, $mdToast, $mdDialog) {
         showToast(name + " added successfully.");
     };
 
+    // Function used to switch between showing
+    // all staff and showing only inactive staff.
     vm.toggleInactive = function () {
         vm.showInactiveOnly = !vm.showInactiveOnly;
     };
 
+    // Function used to change a staff member's status.
     vm.toggleStatus = function (staff) {
 
         if (staff.status === "Active") {
@@ -74,6 +123,7 @@ app.controller("StaffController", function ($scope, $mdToast, $mdDialog) {
 
     };
 
+    // Function used to display the selected staff member's details.
     vm.viewStaff = function (staff) {
 
         $mdDialog.show({
@@ -91,8 +141,12 @@ app.controller("StaffController", function ($scope, $mdToast, $mdDialog) {
         });
 
     };
+
+    // Function used to export the staff list to an Excel file.
     vm.exportExcel = function () {
 
+        // Convert every staff object into an export-friendly object.
+        // The property names become the Excel column headers.
         var exportData = vm.staffList.map(function (staff) {
 
             return {
@@ -104,10 +158,14 @@ app.controller("StaffController", function ($scope, $mdToast, $mdDialog) {
 
         });
 
+        // Convert the JavaScript array into an Excel worksheet.
         var worksheet = XLSX.utils.json_to_sheet(exportData);
 
+        // Create a new Excel workbook.
         var workbook = XLSX.utils.book_new();
 
+        // Add the worksheet to the workbook.
+        // "Staff Directory" is the name of the worksheet.
         XLSX.utils.book_append_sheet(
             workbook,
             worksheet,
@@ -122,8 +180,11 @@ app.controller("StaffController", function ($scope, $mdToast, $mdDialog) {
         showToast("Staff directory exported to Excel.");
     };
 
+    // Function used to export the staff list as a CSV file.
     vm.exportCSV = function () {
 
+        // Convert the staff list into objects containing
+        // only the fields that should appear in the CSV file.
         var exportData = vm.staffList.map(function (staff) {
 
             return {
@@ -146,6 +207,9 @@ app.controller("StaffController", function ($scope, $mdToast, $mdDialog) {
             }
         );
 
+        // Create a temporary HTML link.
+        // The link will be used to trigger the file download.
+
         var link = document.createElement("a");
 
         link.href = URL.createObjectURL(blob);
@@ -158,6 +222,7 @@ app.controller("StaffController", function ($scope, $mdToast, $mdDialog) {
         showToast("Staff directory exported to CSV.");
     };
 
+    // Function used to export the staff list as a PDF file.
     vm.exportPDF = function () {
 
         var jsPDF = window.jspdf.jsPDF;
@@ -170,6 +235,8 @@ app.controller("StaffController", function ($scope, $mdToast, $mdDialog) {
             15
         );
 
+        // Convert each staff object into an array.
+        // Each array represents one row in the PDF table.
         var tableData = vm.staffList.map(function (staff) {
 
             return [
@@ -203,6 +270,7 @@ app.controller("StaffController", function ($scope, $mdToast, $mdDialog) {
         showToast("Staff directory exported to PDF.");
     };
 
+    // Function used when a user imports a file containing staff records.
     vm.importStaff = function (file) {
 
         if (!file) {
@@ -247,8 +315,13 @@ app.controller("StaffController", function ($scope, $mdToast, $mdDialog) {
                     importedCount++;
                 });
 
+                // Tell AngularJS to update the view asynchronously.
+                // This is useful because FileReader works outside
+                // of AngularJS's normal event handling.
                 $scope.$applyAsync();
 
+                // If no valid records were imported,
+                // display a warning message.
                 if (importedCount === 0) {
 
                     Swal.fire({

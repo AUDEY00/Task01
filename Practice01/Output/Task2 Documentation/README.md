@@ -2,36 +2,34 @@
 
 ## Overview
 
-This task refactors the Staff Directory from Task 1, which was built using Vanilla JavaScript, into an AngularJS 1.x application using the MVC pattern.
+This task refactors the Staff Directory from Task 1, which was built using Vanilla JavaScript, into an **AngularJS 1.x application** using a basic **Model-View-Controller (MVC)** structure.
 
-The application uses AngularJS Controller-As syntax, AngularJS directives, two-way data binding, and a separated Model, View, and Controller structure.
+The application uses Controller-As syntax, AngularJS directives, two-way data binding, and separated staff data and controller logic.
 
 ---
 
 ## Objective
 
-The goal of this task is to:
+The main objectives of this task are to:
 
-- Refactor the Staff Directory into AngularJS.
-- Define an AngularJS module and controller.
-- Use Controller-As syntax.
-- Separate staff data from controller logic.
-- Use AngularJS directives for dynamic rendering.
-- Use two-way data binding for the staff form.
-- Display staff members using `ng-repeat`.
-- Show only inactive staff when the visibility toggle is enabled.
-- Allow staff status to be changed.
-- Use unique Epoch-based IDs for staff members.
-- Organize the project using MVC folders.
+* Refactor the Staff Directory into AngularJS.
+* Use Controller-As syntax.
+* Separate staff data from controller logic.
+* Use AngularJS directives for dynamic rendering.
+* Use two-way data binding for the staff form.
+* Implement Active/Inactive staff filtering.
+* Allow staff status to be changed.
+* Generate unique Epoch-based staff IDs.
+* Organize the project using Model, View, and Controller folders.
 
 ---
 
 ## Technologies Used
 
-- HTML5
-- CSS3
-- JavaScript
-- AngularJS 1.8.2
+* HTML5
+* CSS3
+* JavaScript
+* AngularJS 1.8.2
 
 ---
 
@@ -43,12 +41,12 @@ Task2/
 ├── Main_2.html
 ├── style.css
 │
-├── model/
+├── Model/
 │   └── staff.js
 │
-├── view/
+├── View/
 │
-├── controller/
+├── Controller/
 │   └── controller.js
 │
 └── README.md
@@ -56,29 +54,25 @@ Task2/
 
 ### File Description
 
-| File/Folder | Description |
-|---|---|
-| `Main_2.html` | Main Staff Directory interface and AngularJS View. |
-| `style.css` | Styling and visual design of the application. |
-| `model/` | Contains model/data-related files. |
-| `model/staff.js` | Contains the temporary staff data. |
-| `view/` | Contains additional pages or modal-related files when needed. |
-| `controller/` | Contains controller scripts. |
-| `controller/controller.js` | Contains the AngularJS module, controller, and application logic. |
-| `README.md` | Documentation for Task 2. |
+| File/Folder                | Description                                                       |
+| -------------------------- | ----------------------------------------------------------------- |
+| `Main_2.html`              | Main Staff Directory interface and AngularJS View.                |
+| `style.css`                | Application styling and visual design.                            |
+| `Model/staff.js`           | Contains the temporary staff data.                                |
+| `View/`                    | Contains additional view or dialog files.                         |
+| `Controller/controller.js` | Contains the AngularJS module, controller, and application logic. |
+| `README.md`                | Task 2 documentation.                                             |
 
 ---
 
 ## MVC Structure
 
-The application follows a basic Model-View-Controller structure.
-
 ### Model
 
-The Model contains the temporary staff data.
+The Model contains the temporary staff data used by the application.
 
 ```text
-model/staff.js
+Model/staff.js
 ```
 
 Example:
@@ -102,62 +96,52 @@ var staffData = [
         name: "Pedro Reyes",
         role: "IT Support",
         status: "Inactive"
-    },
-    {
-        id: 1755144300004,
-        name: "Ana Garcia",
-        role: "Network Administrator",
-        status: "Inactive"
     }
 ];
 ```
 
-There is currently no database, so `staff.js` is being used as the temporary data source.
-
----
+The data is currently stored locally because database integration is part of Task 3.
 
 ### View
 
-The View is represented by:
+The View is contained in:
 
 ```text
 Main_2.html
 ```
 
-The HTML contains the Staff Directory interface and AngularJS directives.
+AngularJS directives are used to connect the HTML interface with the Controller.
 
-Examples of AngularJS directives used in the View include:
+The main directives used are:
 
 ```text
 ng-repeat
 ng-model
-ng-show
 ng-if
+ng-show
 ng-click
 ng-submit
 ```
-
----
 
 ### Controller
 
 The Controller is located at:
 
 ```text
-controller/controller.js
+Controller/controller.js
 ```
 
-The Controller contains the AngularJS application logic, including:
+It manages the application logic, including:
 
-- Adding staff
-- Form validation
-- Toggling Active/Inactive staff visibility
-- Changing staff status
-- Managing the staff list
+* Adding staff members
+* Form validation
+* Staff visibility filtering
+* Changing staff status
+* Displaying staff details
 
 ---
 
-## AngularJS App and Controller Setup
+## AngularJS Setup
 
 The AngularJS module is defined using:
 
@@ -165,7 +149,7 @@ The AngularJS module is defined using:
 var app = angular.module("app", []);
 ```
 
-The main controller is defined as:
+The Staff Controller uses Controller-As syntax:
 
 ```javascript
 app.controller("StaffController", function () {
@@ -175,308 +159,68 @@ app.controller("StaffController", function () {
 });
 ```
 
-The HTML uses Controller-As syntax:
+The View connects to the Controller using:
 
 ```html
 <body ng-controller="StaffController as vm">
 ```
 
-The `vm` variable is used to access controller properties and functions.
+The `vm` variable is used to access Controller properties and functions from the HTML.
 
 ---
 
-## Staff List
+## Main AngularJS Features
 
-The staff data is stored separately in the Model and assigned to the Controller.
+### Staff List
 
-```javascript
-vm.staffList = staffData;
-```
-
-This keeps the temporary data separate from the controller logic.
-
----
-
-## Unique Staff ID
-
-Each staff member has a unique ID using the Epoch timestamp format.
-
-Example:
+The temporary staff data from the Model is assigned to the Controller:
 
 ```javascript
-{
-    id: 1755144300001,
-    name: "Juan Dela Cruz",
-    role: "IT Administrator",
-    status: "Active"
-}
+vm.staffList = angular.copy(staffData);
 ```
 
-When a new staff member is added, an Epoch-based ID is generated using:
+This allows AngularJS to manage the staff list displayed in the View.
 
-```javascript
-id: Date.now()
-```
+### Two-Way Data Binding
 
-Example:
-
-```javascript
-vm.staffList.push({
-    id: Date.now(),
-    name: name,
-    role: role,
-    status: "Active"
-});
-```
-
-The ID is used internally to uniquely identify each staff member.
-
-It does not need to be displayed in the Staff Directory table.
-
-AngularJS can use the ID with `track by`:
+`ng-model` connects the form inputs to the Controller:
 
 ```html
-<tr ng-repeat="staff in vm.staffList track by staff.id">
-```
-
-This allows AngularJS to uniquely track each staff member.
-
----
-
-## AngularJS Directives Used
-
-### `ng-repeat`
-
-`ng-repeat` dynamically creates a table row for every staff member.
-
-```html
-<tr ng-repeat="staff in vm.staffList track by staff.id">
-```
-
-This replaces manually creating table rows with JavaScript.
-
----
-
-### `ng-model`
-
-`ng-model` provides two-way data binding between the form inputs and the Controller.
-
-```html
-<label for="nameInput">Full Name</label>
-
 <input
     type="text"
-    id="nameInput"
-    placeholder="Enter full name"
     ng-model="vm.newStaff.name"
 >
 ```
 
 ```html
-<label for="roleInput">Role</label>
-
 <input
     type="text"
-    id="roleInput"
-    placeholder="Enter role"
     ng-model="vm.newStaff.role"
 >
 ```
 
-The values entered by the user are stored in:
+The entered values are available through:
 
 ```javascript
 vm.newStaff.name
 vm.newStaff.role
 ```
 
----
+### Dynamic Rendering
 
-### `ng-if`
-
-`ng-if` is used to control whether Active or Inactive staff are displayed.
+`ng-repeat` generates the staff table rows:
 
 ```html
-ng-if="vm.showInactiveOnly === (staff.status === 'Inactive')"
+<tr ng-repeat="staff in vm.staffList track by staff.id">
 ```
 
-When the toggle is OFF:
+`ng-show` is used for the Active and Inactive status badges.
 
-```text
-Active staff are displayed.
-```
+`ng-if` controls which staff members are displayed when the visibility toggle is used.
 
-When the toggle is ON:
+### Staff Status
 
-```text
-Inactive staff are displayed.
-```
-
-This implements the visibility toggle requirement.
-
----
-
-### `ng-show`
-
-`ng-show` is used to display the correct status badge.
-
-For Active:
-
-```html
-<span
-    class="badge active"
-    ng-show="staff.status === 'Active'"
->
-    Active
-</span>
-```
-
-For Inactive:
-
-```html
-<span
-    class="badge inactive"
-    ng-show="staff.status === 'Inactive'"
->
-    Inactive
-</span>
-```
-
----
-
-### `ng-click`
-
-`ng-click` triggers Controller functions when buttons are clicked.
-
-For the visibility toggle:
-
-```html
-<button
-    type="button"
-    ng-click="vm.toggleInactive()"
->
-```
-
-For changing staff status:
-
-```html
-<button
-    type="button"
-    ng-click="vm.toggleStatus(staff)"
->
-```
-
----
-
-### `ng-submit`
-
-`ng-submit` handles the Add Staff form submission.
-
-```html
-<form ng-submit="vm.addStaff()">
-```
-
-This calls the Controller's `addStaff()` function.
-
----
-
-## Form Labels
-
-Labels are included for the form inputs instead of relying only on placeholder text.
-
-Example:
-
-```html
-<label for="nameInput">Full Name</label>
-
-<input
-    type="text"
-    id="nameInput"
-    placeholder="Enter full name"
-    ng-model="vm.newStaff.name"
->
-```
-
-And:
-
-```html
-<label for="roleInput">Role</label>
-
-<input
-    type="text"
-    id="roleInput"
-    placeholder="Enter role"
-    ng-model="vm.newStaff.role"
->
-```
-
-This makes the form clearer and more accessible.
-
----
-
-## Core Functions
-
-### `vm.addStaff()`
-
-The `addStaff()` function validates the form inputs and adds a new staff member.
-
-```javascript
-vm.addStaff = function () {
-
-    var name = vm.newStaff.name.trim();
-    var role = vm.newStaff.role.trim();
-
-    if (name === "" || role === "") {
-        alert("Please enter both the Full Name and Role.");
-        return;
-    }
-
-    vm.staffList.push({
-        id: Date.now(),
-        name: name,
-        role: role,
-        status: "Active"
-    });
-
-    vm.newStaff.name = "";
-    vm.newStaff.role = "";
-};
-```
-
-New staff members are automatically assigned:
-
-```text
-Status: Active
-```
-
-and receive a unique Epoch-based ID.
-
----
-
-### `vm.toggleInactive()`
-
-This function controls whether Active or Inactive staff are displayed.
-
-```javascript
-vm.toggleInactive = function () {
-    vm.showInactiveOnly = !vm.showInactiveOnly;
-};
-```
-
-The value changes between:
-
-```text
-false → Show Active Staff
-true  → Show Inactive Staff
-```
-
-When the toggle is ON, only inactive staff members are displayed.
-
----
-
-### `vm.toggleStatus(staff)`
-
-This function changes an individual staff member's status.
+The `toggleStatus()` function switches a staff member between Active and Inactive:
 
 ```javascript
 vm.toggleStatus = function (staff) {
@@ -490,120 +234,79 @@ vm.toggleStatus = function (staff) {
 };
 ```
 
-The status changes between:
+### Staff Visibility Toggle
 
-```text
-Active → Inactive
-Inactive → Active
-```
-
----
-
-## Conditional Logic
-
-Conditional logic is used to determine the staff member's status.
+The visibility toggle changes the displayed staff category:
 
 ```javascript
-if (staff.status === "Active") {
-    staff.status = "Inactive";
-} else {
-    staff.status = "Active";
-}
+vm.toggleInactive = function () {
+    vm.showInactiveOnly = !vm.showInactiveOnly;
+};
 ```
 
-AngularJS expressions are also used to control visibility.
+When the toggle is OFF, Active staff are displayed.
 
-Example:
+When the toggle is ON, Inactive staff are displayed.
+
+### Staff ID
+
+New staff members receive a unique Epoch-based ID:
+
+```javascript
+id: Date.now()
+```
+
+The ID is also used by AngularJS to track individual records:
 
 ```html
-ng-show="staff.status === 'Active'"
-```
-
-and:
-
-```html
-ng-show="staff.status === 'Inactive'"
-```
-
-The staff visibility toggle uses:
-
-```html
-ng-if="vm.showInactiveOnly === (staff.status === 'Inactive')"
-```
-
-This means:
-
-```text
-Toggle OFF → Active staff are displayed.
-Toggle ON  → Inactive staff are displayed.
+ng-repeat="staff in vm.staffList track by staff.id"
 ```
 
 ---
 
 ## Features
 
-The Staff Directory provides the following features:
+The Task 2 Staff Directory includes:
 
-- Displays IT staff members.
-- Displays Full Name, Role, Status, and Actions.
-- Displays Active and Inactive status badges.
-- Allows users to add new staff members.
-- Validates required form fields.
-- Generates unique Epoch-based staff IDs.
-- Uses `track by staff.id`.
-- Shows Active staff by default.
-- Shows only Inactive staff when the toggle is enabled.
-- Allows individual staff members to be switched between Active and Inactive.
-- Uses AngularJS two-way data binding.
-- Uses AngularJS directives instead of manual DOM manipulation.
-- Uses a basic MVC folder structure.
-- Uses labels for form inputs.
+* AngularJS Controller-As syntax
+* MVC folder organization
+* Staff data stored separately in the Model
+* Add Staff form
+* Form validation
+* Two-way data binding
+* Active/Inactive status badges
+* Active/Inactive visibility toggle
+* Staff status switching
+* Staff details dialog
+* Unique Epoch-based staff IDs
+* Dynamic table rendering using AngularJS directives
 
 ---
 
 ## Task 2 Requirements Checklist
 
-- [x] Define an AngularJS module.
-- [x] Define a `StaffController`.
-- [x] Use Controller-As syntax.
-- [x] Store staff data separately in the Model.
-- [x] Use `ng-repeat` to render staff dynamically.
-- [x] Use `ng-model` for the add-staff form.
-- [x] Use two-way data binding.
-- [x] Use `ng-show` for status badges.
-- [x] Use `ng-if` for staff visibility.
-- [x] Use `ng-click` for action buttons.
-- [x] Use `ng-submit` for form submission.
-- [x] Implement Active/Inactive status handling.
-- [x] Implement the Active/Inactive visibility toggle.
-- [x] Show only Inactive staff when the toggle is enabled.
-- [x] Add unique Epoch-based staff IDs.
-- [x] Use `track by staff.id`.
-- [x] Add labels to form inputs.
-- [x] Organize the project using Model, View, and Controller folders.
+* [x] Create AngularJS module.
+* [x] Create `StaffController`.
+* [x] Use Controller-As syntax.
+* [x] Separate staff data into the Model.
+* [x] Use `ng-repeat` for staff records.
+* [x] Use `ng-model` for form inputs.
+* [x] Use two-way data binding.
+* [x] Use `ng-show` and `ng-if`.
+* [x] Use `ng-click` for actions.
+* [x] Use `ng-submit` for the staff form.
+* [x] Implement Active/Inactive status handling.
+* [x] Implement Active/Inactive staff filtering.
+* [x] Generate Epoch-based staff IDs.
+* [x] Organize the project using MVC folders.
 
 ---
 
-## Task 1 vs Task 2
+## Task 1 to Task 2
 
-### Task 1
+Task 1 used **Vanilla JavaScript and direct DOM manipulation**.
 
-Task 1 used Vanilla JavaScript and direct DOM manipulation.
-
-Examples:
-
-```javascript
-document.getElementById()
-document.createElement()
-appendChild()
-addEventListener()
-```
-
-### Task 2
-
-Task 2 was refactored to use AngularJS.
-
-Examples:
+Task 2 refactors the application to **AngularJS**, allowing the framework to handle data binding and dynamic rendering through directives such as:
 
 ```text
 ng-repeat
@@ -614,14 +317,14 @@ ng-click
 ng-submit
 ```
 
-AngularJS now handles the connection between application data and the HTML View instead of manually creating and modifying DOM elements.
+The application is now structured using a basic MVC organization, preparing it for database integration in Task 3.
 
 ---
 
 ## Current Limitation
 
-The application currently uses `model/staff.js` as a temporary data source.
+The staff data is still stored locally in `Model/staff.js`.
 
-There is no persistent database yet.
+There is no persistent database in Task 2.
 
-Firebase integration and CRUD operations will be implemented in Task 3.
+**Firebase/Firestore integration and CRUD operations are implemented in Task 3.**
