@@ -1,0 +1,97 @@
+<md-dialog aria-label="Edit Staff Details">
+
+    <md-dialog-content class="staff-details-dialog">
+
+        <h2>Edit Staff Details</h2>
+
+        <!-- Staff ID -->
+
+        <div class="staff-detail">
+
+            <strong>Staff ID:</strong>
+
+            <span>
+                {{ staff.id }}
+            </span>
+
+        </div>
+
+
+        <!-- Full Name -->
+
+        <div class="staff-detail">
+
+            <strong>Full Name:</strong>
+
+            <input
+                type="text"
+                ng-model="staff.name"
+                placeholder="Full Name">
+
+        </div>
+
+
+        <!-- Role -->
+
+        <div class="staff-detail">
+
+            <strong>Role:</strong>
+
+            <input
+                type="text"
+                ng-model="staff.role"
+                placeholder="Role">
+
+        </div>
+
+
+        <!-- Status -->
+
+        <div class="staff-detail">
+
+            <strong>Status:</strong>
+
+            <span
+                class="badge active"
+                ng-if="staff.status === 'Active'">
+                Active
+            </span>
+
+            <span
+                class="badge inactive"
+                ng-if="staff.status === 'Inactive'">
+                Inactive
+            </span>
+
+        </div>
+
+    </md-dialog-content>
+
+
+    <md-dialog-actions layout="row">
+
+        <span flex></span>
+
+        <!-- Save -->
+
+        <md-button
+            class="md-primary"
+            ng-click="saveChanges()">
+
+            Save Changes
+
+        </md-button>
+
+
+        <!-- Cancel -->
+
+        <md-button
+            ng-click="closeDialog()">
+
+            Cancel
+
+        </md-button>
+
+    </md-dialog-actions>
+
+</md-dialog>
