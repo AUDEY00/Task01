@@ -30,7 +30,7 @@ app.controller("MapController", function ($scope, $mdDialog) {
     // -----------------------------------
 
     mapboxgl.accessToken =
-        "pk.eyJ1Ijoiam9uZzY5ODkiLCJhIjoiY2p5NjBkdnA5MDNneDNmcGt0eHVva2ZvZyJ9.jZwx_NUnKowJ4faIafJTew";
+        "pk.YOUR_TOKEN_HERE";
 
     // -----------------------------------
     // Initialize Map
