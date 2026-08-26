@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>IT Unit Directory</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- AngularJS 1.x -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <!-- AngularJS Animate -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js"></script>
+
+    <!-- AngularJS Aria -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-aria.min.js"></script>
+
+    <!-- Angular Material CSS -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.5/angular-material.min.css">
+
+    <!-- Angular Material -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.5/angular-material.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body ng-controller="StaffController as vm">
+
+    <div class="container">
+        <div class="directory-header">
+
+            <div>
+                <h1>IT Unit Directory</h1>
+
+                <span class="logged-in-user" ng-if="vm.currentUser">
+                    Logged in as: {{ vm.currentUser.email }}
+                </span>
+            </div>
+
+            <button type="button" class="logout-button" ng-click="vm.logout()">
+                Logout
+            </button>
+
+        </div>
+
+        <!-- Staff form -->
+        <form ng-submit="vm.addStaff()" class="staff-form">
+
+            <div class="form-group">
+                <label for="nameInput">Full Name</label>
+
+                <input type="text" id="nameInput" placeholder="Full Name" ng-model="vm.newStaff.name">
+            </div>
+
+
+            <div class="form-group">
+                <label for="roleInput">Role</label>
+
+                <input type="text" id="roleInput" placeholder="Role" ng-model="vm.newStaff.role">
+            </div>
+
+
+            <div class="form-group profile-input-group">
+                <label for="profileImage">Profile Picture</label>
+
+                <input type="file" id="profileImage" accept="image/*"
+                    onchange="angular.element(this).scope().vm.selectProfileImage(this.files[0])">
+            </div>
+
+
+            <button type="submit" class="add-staff-button">
+                Add Staff
+            </button>
+
+        </form>
+
+        <div class="toggle-container">
+
+            <span class="toggle-label">
+                {{ vm.showInactiveOnly
+                ? 'Showing Inactive Staff'
+                : 'Showing Active Staff' }}
+            </span>
+
+            <button type="button" class="toggle-switch" ng-class="{ 'active': vm.showInactiveOnly }"
+                ng-click="vm.toggleInactive()">
+                <span class="toggle-knob"></span>
+            </button>
+
+        </div>
+
+        <div class="export-container">
+
+            <button type="button" ng-click="vm.exportExcel()">
+                Export Excel
+            </button>
+
+            <button type="button" ng-click="vm.exportCSV()">
+                Export CSV
+            </button>
+
+            <button type="button" ng-click="vm.exportPDF()">
+                Export PDF
+            </button>
+
+        </div>
+
+        <div class="import-container">
+
+            <div class="import-label">
+                <strong>Import Staff</strong>
+                <span>Upload an Excel or CSV file</span>
+            </div>
+
+            <input type="file" id="staffFile" accept=".xlsx,.xls,.csv"
+                onchange="angular.element(this).scope().vm.importStaff(this.files[0])">
+
+        </div>
+
+        <div class="table-container">
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Photo</th>
+                        <th>Full Name</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="staff in vm.staffList track by staff.id" ng-if="
+                            (vm.showInactiveOnly && staff.status === 'Inactive') ||
+                            (!vm.showInactiveOnly && staff.status === 'Active')">
+
+                        <td>
+
+                            <img ng-if="staff.profileUrl" ng-src="{{ staff.profileUrl }}" alt="{{ staff.name }}"
+                                class="staff-avatar">
+
+                            <span ng-if="!staff.profileUrl">
+                                No Image
+                            </span>
+
+                        </td>
+
+                        <td>
+                            {{ staff.name }}
+                        </td>
+
+                        <td>
+                            {{ staff.role }}
+                        </td>
+
+                        <td>
+                            <span class="badge active" ng-show="staff.status === 'Active'">
+                                Active
+                            </span>
+
+                            <span class="badge inactive" ng-show="staff.status === 'Inactive'">
+                                Inactive
+                            </span>
+                        </td>
+
+                        <td>
+                            <button type="button" ng-click="vm.editStaff(staff)">
+                                View Details
+                            </button>
+
+                            <button type="button" ng-click="vm.toggleStatus(staff)">
+                                {{ staff.status === 'Active'
+                                ? 'Deactivate'
+                                : 'Activate' }}
+                            </button>
+
+                            <button type="button" ng-click="vm.deleteStaff(staff)">
+                                Delete
+                            </button>
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+
+        <!-- SheetJS - Excel / CSV Export -->
+        <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+        <!-- jsPDF -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+        <!-- jsPDF AutoTable -->
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+        <!-- Firebase -->
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+        <script src="Config/firebase.js"></script>
+        <script src="https://upload-widget.cloudinary.com/latest/global/all.js"> </script>
+
+        <script src="Controller/controller.js"></script>
+
+</body>
+
+</html>
