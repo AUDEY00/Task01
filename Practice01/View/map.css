@@ -1173,3 +1173,214 @@ body {
     }
 
 }
+
+/* =========================================
+   MAP PROVIDER SELECTOR
+   ========================================= */
+
+.map-provider-selector {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    margin-bottom: 15px;
+}
+
+
+.map-provider-selector button {
+    border: 1px solid #d1d5db;
+
+    background-color: #ffffff;
+
+    color: #374151;
+
+    padding: 9px 18px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+.map-provider-selector button:hover {
+    background-color: #f3f4f6;
+
+    border-color: #9ca3af;
+}
+
+
+.map-provider-selector button.active {
+    background-color: #2563eb;
+
+    border-color: #2563eb;
+
+    color: #ffffff;
+
+    box-shadow: 0 3px 8px rgba(37, 99, 235, 0.25);
+}
+
+
+/* =========================================
+   MAP CARD
+   ========================================= */
+
+.map-card {
+    width: 100%;
+
+    background-color: #ffffff;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+.map-card-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+}
+
+
+.map-card-header h2 {
+    margin: 0;
+
+    font-size: 20px;
+
+    color: #1f2937;
+}
+
+
+.map-card-header p {
+    margin: 5px 0 0;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* =========================================
+   MAP SECTION
+   ========================================= */
+
+.map-section {
+    width: 100%;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+}
+
+
+/* =========================================
+   MAP CONTAINERS
+   ========================================= */
+
+.map-view {
+    width: 100%;
+
+    height: 500px;
+
+    min-height: 350px;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+
+/* Mapbox */
+
+#mapboxMap {
+    width: 100%;
+
+    height: 500px;
+}
+
+
+/* Leaflet */
+
+#leafletMap {
+    width: 100%;
+
+    height: 500px;
+}
+
+
+/* =========================================
+   LEAFLET FIX
+   ========================================= */
+
+#leafletMap .leaflet-container {
+    width: 100%;
+
+    height: 100%;
+
+    font-family: inherit;
+}
+
+
+/* =========================================
+   RESPONSIVE MAP
+   ========================================= */
+
+@media (max-width: 900px) {
+
+    .map-view,
+    #mapboxMap,
+    #leafletMap {
+        height: 400px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .map-provider-selector {
+        justify-content: flex-start;
+
+        width: 100%;
+    }
+
+
+    .map-provider-selector button {
+        flex: 1;
+
+        padding: 9px 10px;
+    }
+
+
+    .map-card {
+        padding: 12px;
+    }
+
+
+    .map-view,
+    #mapboxMap,
+    #leafletMap {
+        height: 320px;
+    }
+
+}

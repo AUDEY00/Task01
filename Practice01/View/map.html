@@ -43,15 +43,20 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-
+    >
     <script src="../Config/firebase.js"></script>
-
 
     <!-- Mapbox GL JS -->
 
     <link href="https://api.mapbox.com/mapbox-gl-js/v3.29.0/mapbox-gl.css" rel="stylesheet">
 
     <script src="https://api.mapbox.com/mapbox-gl-js/v3.29.0/mapbox-gl.js"></script>
+    
+    <!-- LeafletJS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
 
 
     <!-- SweetAlert2 -->
@@ -76,7 +81,6 @@
         <!-- ================================= -->
 
         <aside class="sidebar">
-
 
             <!-- Sidebar Header -->
 
@@ -171,6 +175,25 @@
 
             </div>
 
+            <div class="map-provider-selector">
+
+                <button type="button" ng-class="{ 'active': vm.mapProvider === 'mapbox' }"
+                    ng-click="vm.mapProvider = 'mapbox'; vm.switchMapProvider()">
+
+                    Mapbox
+
+                </button>
+
+
+                <button type="button" ng-class="{ 'active': vm.mapProvider === 'leaflet' }"
+                    ng-click="vm.mapProvider = 'leaflet'; vm.switchMapProvider()">
+
+                    Leaflet
+
+                </button>
+
+            </div>
+
 
             <!-- ================================= -->
             <!-- MAP SECTION -->
@@ -179,7 +202,7 @@
             <section class="map-card">
 
 
-                <div class="section-header">
+                <div class="map-card-header">
 
                     <div>
 
@@ -200,7 +223,14 @@
 
                 <div class="map-section">
 
-                    <div id="map"></div>
+                    <!-- Mapbox -->
+                    <div id="mapboxMap" class="map-view" ng-show="vm.mapProvider === 'mapbox'">
+                    </div>
+
+
+                    <!-- Leaflet -->
+                    <div id="leafletMap" class="map-view" ng-show="vm.mapProvider === 'leaflet'">
+                    </div>
 
                 </div>
 
