@@ -1,0 +1,1386 @@
+/* =========================================
+   GLOBAL RESET
+   ========================================= */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    background-color: #f4f6f8;
+    color: #1f2937;
+}
+
+
+/* =========================================
+   APPLICATION LAYOUT
+   ========================================= */
+
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+}
+
+
+/* =========================================
+   LEFT SIDEBAR
+   ========================================= */
+
+.sidebar {
+    width: 240px;
+    min-height: 100vh;
+
+    background-color: #1e293b;
+    color: white;
+
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    z-index: 1000;
+}
+
+
+/* Sidebar Header */
+
+.sidebar-header {
+    padding: 28px 22px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-header h2 {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.sidebar-header p {
+    font-size: 13px;
+    color: #cbd5e1;
+}
+
+
+/* =========================================
+   SIDEBAR NAVIGATION
+   ========================================= */
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+
+    padding: 20px 12px;
+
+    gap: 8px;
+}
+
+.nav-item {
+    width: 100%;
+
+    border: none;
+    background: transparent;
+
+    color: #cbd5e1;
+
+    padding: 13px 15px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    font-size: 15px;
+
+    text-align: left;
+
+    transition: 0.2s ease;
+}
+
+.nav-item:hover {
+    background-color: #334155;
+    color: white;
+}
+
+.nav-item.active {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.nav-icon {
+    width: 24px;
+    text-align: center;
+    font-size: 18px;
+}
+
+/* =========================================
+   SIDEBAR FOOTER
+   ========================================= */
+
+.sidebar-footer {
+    margin-top: auto;
+
+    padding: 15px 12px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+
+/* =========================================
+   LOGOUT BUTTON
+   ========================================= */
+
+.logout-nav-button {
+    width: 100%;
+
+    border: none;
+    border-radius: 8px;
+
+    background-color: #ef4444;
+    color: white;
+
+    padding: 10px 18px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+    font-weight: 500;
+
+    text-align: center;
+
+    transition: all 0.2s ease;
+}
+
+.logout-nav-button:hover {
+    background-color: #dc2626;
+
+    transform: translateY(-1px);
+
+    box-shadow: 0 4px 10px rgba(220, 38, 38, 0.25);
+}
+
+.logout-nav-button:active {
+    transform: translateY(0);
+
+    box-shadow: none;
+}
+
+/* =========================================
+   MAIN CONTENT
+   ========================================= */
+
+.main-content {
+    margin-left: 240px;
+
+    width: calc(100% - 240px);
+
+    min-height: 100vh;
+
+    padding: 30px;
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================
+   PAGE HEADER
+   ========================================= */
+
+.page-header {
+    margin-bottom: 24px;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.page-header h1 {
+    font-size: 28px;
+    margin-bottom: 6px;
+    color: #111827;
+}
+
+.page-header p {
+    color: #6b7280;
+    font-size: 14px;
+}
+
+
+/* =========================================
+   COMMON CARD STYLE
+   ========================================= */
+
+.map-card,
+.location-form-card,
+.location-table-card {
+    background-color: white;
+
+    border-radius: 12px;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+
+    margin-bottom: 24px;
+
+    overflow: hidden;
+}
+
+
+/* =========================================
+   SECTION HEADER
+   ========================================= */
+
+.section-header {
+    padding: 20px 24px;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+.section-header h2 {
+    font-size: 20px;
+
+    color: #111827;
+
+    margin-bottom: 5px;
+}
+
+.section-header p {
+    font-size: 13px;
+
+    color: #6b7280;
+}
+
+
+/* =========================================
+   MAP
+   ========================================= */
+
+.map-section {
+    width: 100%;
+    padding: 20px;
+}
+
+#map {
+    width: 100%;
+
+    height: 480px;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    background-color: #e5e7eb;
+}
+
+
+/* =========================================
+   LOCATION FORM
+   ========================================= */
+
+.location-form {
+    padding: 24px;
+}
+
+.location-form form {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 18px;
+
+    align-items: end;
+}
+
+.form-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.form-group label {
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: #374151;
+}
+
+.form-group input {
+    width: 100%;
+
+    padding: 11px 12px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 7px;
+
+    outline: none;
+
+    font-size: 14px;
+
+    background-color: white;
+
+    transition: 0.2s ease;
+}
+
+.form-group input:focus {
+    border-color: #3b82f6;
+
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+
+/* =========================================
+   ADD LOCATION BUTTON
+   ========================================= */
+
+.location-form button {
+    border: none;
+
+    background-color: #3b82f6;
+
+    color: white;
+
+    padding: 11px 18px;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.location-form button:hover {
+    background-color: #2563eb;
+
+    box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+
+/* =========================================
+   TABLE
+   ========================================= */
+
+.table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+.location-section {
+    width: 100%;
+}
+
+.location-section table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    table-layout: auto;
+
+    min-width: 850px;
+}
+
+.location-section th {
+    background-color: #f8fafc;
+
+    color: #475569;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    text-align: left;
+
+    padding: 14px 16px;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    white-space: nowrap;
+}
+
+.location-section td {
+    padding: 14px 16px;
+
+    border-bottom: 1px solid #f1f5f9;
+
+    font-size: 14px;
+
+    color: #374151;
+
+    vertical-align: middle;
+}
+
+.location-section tbody tr {
+    transition: 0.15s ease;
+
+    cursor: pointer;
+}
+
+.location-section tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+
+/* =========================================
+   ACTION BUTTONS
+   ========================================= */
+
+.action-buttons {
+    white-space: nowrap;
+}
+
+.action-buttons button {
+    border: none;
+
+    padding: 7px 12px;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    margin-right: 5px;
+
+    transition: 0.2s ease;
+}
+
+
+/* Edit */
+
+.action-buttons button:first-child {
+    background-color: #e0f2fe;
+
+    color: #0369a1;
+}
+
+.action-buttons button:first-child:hover {
+    background-color: #bae6fd;
+}
+
+
+/* Delete */
+
+.action-buttons button:last-child {
+    background-color: #fee2e2;
+
+    color: #b91c1c;
+}
+
+.action-buttons button:last-child:hover {
+    background-color: #fecaca;
+}
+
+
+/* =========================================
+   RESPONSIVE DESIGN
+   ========================================= */
+
+@media (max-width: 1000px) {
+
+    .sidebar {
+        width: 210px;
+    }
+
+    .main-content {
+        margin-left: 210px;
+
+        width: calc(100% - 210px);
+
+        padding: 20px;
+    }
+
+    .location-form form {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    #map {
+        height: 420px;
+    }
+}
+
+
+@media (max-width: 750px) {
+
+    .sidebar {
+        width: 70px;
+    }
+
+    .sidebar-header {
+        padding: 20px 10px;
+
+        text-align: center;
+    }
+
+    .sidebar-header h2 {
+        font-size: 16px;
+    }
+
+    .sidebar-header p {
+        display: none;
+    }
+
+    .nav-item {
+        justify-content: center;
+
+        padding: 13px 5px;
+    }
+
+    .nav-item span:last-child {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 70px;
+
+        width: calc(100% - 70px);
+
+        padding: 15px;
+    }
+
+    .location-form form {
+        grid-template-columns: 1fr;
+    }
+
+    #map {
+        height: 380px;
+    }
+
+    .page-header h1 {
+        font-size: 24px;
+    }
+}
+
+
+@media (max-width: 500px) {
+
+    .main-content {
+        padding: 10px;
+    }
+
+    .map-section {
+        padding: 10px;
+    }
+
+    #map {
+        height: 320px;
+    }
+
+    .location-form {
+        padding: 15px;
+    }
+
+    .section-header {
+        padding: 16px;
+    }
+}  
+
+/* ----------------------------------- */
+/* Location Edit Dialog */
+/* ----------------------------------- */
+
+.location-dialog {
+    width: 620px;
+    max-width: 90vw;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    background-color: #ffffff;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.20);
+}
+
+
+/* ----------------------------------- */
+/* Dialog Header */
+/* ----------------------------------- */
+
+.location-dialog-header {
+    background: linear-gradient(
+        135deg,
+        #1e3a8a,
+        #2563eb
+    );
+
+    color: white;
+
+    padding: 8px 18px;
+}
+
+
+.location-dialog-header h2 {
+    margin: 0;
+
+    font-size: 21px;
+
+    font-weight: 600;
+}
+
+
+.location-dialog-header span {
+    font-size: 13px;
+
+    opacity: 0.85;
+}
+
+
+/* ----------------------------------- */
+/* Close Button */
+/* ----------------------------------- */
+
+.close-button {
+    min-width: 40px;
+
+    width: 40px;
+    height: 40px;
+
+    margin: 0;
+
+    border-radius: 50%;
+
+    color: white !important;
+
+    font-size: 28px;
+
+    line-height: 40px;
+
+    transition: 0.2s ease;
+}
+
+
+.close-button:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+
+/* ----------------------------------- */
+/* Dialog Content */
+/* ----------------------------------- */
+
+.location-details-dialog {
+    padding: 25px;
+
+    background-color: #f8fafc;
+}
+
+
+/* ----------------------------------- */
+/* Location ID Card */
+/* ----------------------------------- */
+
+.location-id-card {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 15px 18px;
+
+    margin-bottom: 24px;
+
+    border-radius: 12px;
+
+    background-color: #eff6ff;
+
+    border: 1px solid #dbeafe;
+}
+
+
+.detail-icon {
+    width: 42px;
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background-color: #dbeafe;
+
+    font-size: 20px;
+}
+
+
+.detail-label {
+    display: block;
+
+    margin-bottom: 4px;
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.4px;
+}
+
+
+.location-id-card strong {
+    color: #1e3a8a;
+
+    font-size: 14px;
+}
+
+
+/* ----------------------------------- */
+/* Details Section */
+/* ----------------------------------- */
+
+.details-section {
+    padding: 20px;
+
+    margin-bottom: 18px;
+
+    border-radius: 12px;
+
+    background-color: white;
+
+    border: 1px solid #e2e8f0;
+}
+
+
+.details-section h3 {
+    margin: 0 0 18px;
+
+    color: #1e293b;
+
+    font-size: 16px;
+
+    font-weight: 600;
+}
+
+
+/* ----------------------------------- */
+/* Input Groups */
+/* ----------------------------------- */
+
+.input-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+
+    margin-bottom: 16px;
+}
+
+
+.input-group label {
+    color: #475569;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+.input-group input {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 11px 13px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 8px;
+
+    background-color: #ffffff;
+
+    color: #1e293b;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.2s ease;
+}
+
+
+.input-group input:focus {
+    border-color: #2563eb;
+
+    box-shadow:
+        0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+
+/* ----------------------------------- */
+/* Coordinate Row */
+/* ----------------------------------- */
+
+.coordinate-row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 15px;
+}
+
+
+.coordinate-row .input-group {
+    margin-bottom: 0;
+}
+
+
+/* ----------------------------------- */
+/* Record Information */
+/* ----------------------------------- */
+
+.record-section {
+    margin-bottom: 0;
+}
+
+
+.record-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 15px;
+}
+
+
+.record-item {
+    padding: 13px;
+
+    border-radius: 8px;
+
+    background-color: #f8fafc;
+
+    border: 1px solid #e2e8f0;
+}
+
+
+.record-item strong {
+    display: block;
+
+    color: #334155;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    line-height: 1.4;
+}
+
+
+/* ----------------------------------- */
+/* Dialog Actions */
+/* ----------------------------------- */
+
+.location-dialog-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding: 16px 25px;
+
+    background-color: white;
+
+    border-top: 1px solid #e2e8f0;
+}
+
+
+/* ----------------------------------- */
+/* Cancel Button */
+/* ----------------------------------- */
+
+.cancel-location-button {
+    padding: 10px 18px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 8px;
+
+    background-color: white;
+
+    color: #475569;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.cancel-location-button:hover {
+    background-color: #f1f5f9;
+
+    border-color: #94a3b8;
+}
+
+
+/* ----------------------------------- */
+/* Save Button */
+/* ----------------------------------- */
+
+.save-location-button {
+    padding: 10px 20px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background-color: #2563eb;
+
+    color: white;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+
+.save-location-button:hover {
+    background-color: #1d4ed8;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+
+.save-location-button:active {
+    transform: translateY(0);
+
+    box-shadow: none;
+}
+
+/* ----------------------------------- */
+/* Responsive Location Dialog */
+/* ----------------------------------- */
+
+.location-dialog {
+
+    width: 620px;
+
+    max-width: calc(100vw - 300px);
+
+    max-height: 90vh;
+
+    margin-left: 250px;
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+/* ----------------------------------- */
+/* Dialog Content */
+/* ----------------------------------- */
+
+.location-details-dialog {
+
+    padding: 25px;
+
+    background-color: #f8fafc;
+
+    overflow-y: auto;
+
+    flex: 1;
+}
+
+
+/* ----------------------------------- */
+/* Dialog Header */
+/* ----------------------------------- */
+
+.location-dialog-header {
+
+    flex-shrink: 0;
+
+}
+
+
+/* ----------------------------------- */
+/* Dialog Actions */
+/* ----------------------------------- */
+
+.location-dialog-actions {
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    justify-content: flex-end;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    padding: 16px 25px;
+
+    background-color: white;
+
+    border-top: 1px solid #e2e8f0;
+
+}
+
+
+/* ----------------------------------- */
+/* Tablet / Smaller Desktop */
+/* ----------------------------------- */
+
+@media (max-width: 1000px) {
+
+    .location-dialog {
+
+        width: 600px;
+
+        max-width: calc(100vw - 280px);
+
+        margin-left: 240px;
+
+    }
+
+}
+
+
+/* ----------------------------------- */
+/* Smaller Screens */
+/* ----------------------------------- */
+
+@media (max-width: 768px) {
+
+    .location-dialog {
+
+        width: 90vw;
+
+        max-width: 90vw;
+
+        max-height: 88vh;
+
+        margin-left: 0;
+
+    }
+
+
+    .coordinate-row {
+
+        grid-template-columns: 1fr;
+
+        gap: 0;
+
+    }
+
+
+    .coordinate-row .input-group {
+
+        margin-bottom: 16px;
+
+    }
+
+
+    .record-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 12px;
+
+    }
+
+}
+
+
+/* ----------------------------------- */
+/* Mobile */
+/* ----------------------------------- */
+
+@media (max-width: 480px) {
+
+    .location-dialog {
+
+        width: calc(100vw - 20px);
+
+        max-width: calc(100vw - 20px);
+
+        max-height: 92vh;
+
+        margin: 10px;
+
+        border-radius: 12px;
+
+    }
+
+
+    .location-details-dialog {
+
+        padding: 15px;
+
+    }
+
+
+    .location-dialog-actions {
+
+        flex-direction: column-reverse;
+
+        padding: 12px 15px;
+
+    }
+
+
+    .location-dialog-actions button {
+
+        width: 100%;
+
+    }
+
+}
+
+/* =========================================
+   MAP PROVIDER SELECTOR
+   ========================================= */
+
+.map-provider-selector {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 8px;
+
+    margin-bottom: 15px;
+}
+
+
+.map-provider-selector button {
+    border: 1px solid #d1d5db;
+
+    background-color: #ffffff;
+
+    color: #374151;
+
+    padding: 9px 18px;
+
+    border-radius: 8px;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+
+.map-provider-selector button:hover {
+    background-color: #f3f4f6;
+
+    border-color: #9ca3af;
+}
+
+
+.map-provider-selector button.active {
+    background-color: #2563eb;
+
+    border-color: #2563eb;
+
+    color: #ffffff;
+
+    box-shadow: 0 3px 8px rgba(37, 99, 235, 0.25);
+}
+
+
+/* =========================================
+   MAP CARD
+   ========================================= */
+
+.map-card {
+    width: 100%;
+
+    background-color: #ffffff;
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    margin-bottom: 20px;
+
+    box-sizing: border-box;
+
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+
+.map-card-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 15px;
+}
+
+
+.map-card-header h2 {
+    margin: 0;
+
+    font-size: 20px;
+
+    color: #1f2937;
+}
+
+
+.map-card-header p {
+    margin: 5px 0 0;
+
+    color: #6b7280;
+
+    font-size: 14px;
+}
+
+
+/* =========================================
+   MAP SECTION
+   ========================================= */
+
+.map-section {
+    width: 100%;
+
+    position: relative;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+}
+
+
+/* =========================================
+   MAP CONTAINERS
+   ========================================= */
+
+.map-view {
+    width: 100%;
+
+    height: 500px;
+
+    min-height: 350px;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+
+/* Mapbox */
+
+#mapboxMap {
+    width: 100%;
+
+    height: 500px;
+}
+
+
+/* Leaflet */
+
+#leafletMap {
+    width: 100%;
+
+    height: 500px;
+}
+
+
+/* =========================================
+   LEAFLET FIX
+   ========================================= */
+
+#leafletMap .leaflet-container {
+    width: 100%;
+
+    height: 100%;
+
+    font-family: inherit;
+}
+
+
+/* =========================================
+   RESPONSIVE MAP
+   ========================================= */
+
+@media (max-width: 900px) {
+
+    .map-view,
+    #mapboxMap,
+    #leafletMap {
+        height: 400px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .map-provider-selector {
+        justify-content: flex-start;
+
+        width: 100%;
+    }
+
+
+    .map-provider-selector button {
+        flex: 1;
+
+        padding: 9px 10px;
+    }
+
+
+    .map-card {
+        padding: 12px;
+    }
+
+
+    .map-view,
+    #mapboxMap,
+    #leafletMap {
+        height: 320px;
+    }
+
+}

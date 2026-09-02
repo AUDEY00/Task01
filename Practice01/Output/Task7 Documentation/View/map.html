@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Location Map</title>
+
+    <link rel="stylesheet" href="map.css">
+
+
+    <!-- AngularJS -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+
+    <!-- Angular Animate -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js"></script>
+
+
+    <!-- Angular Aria -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-aria.min.js"></script>
+
+
+    <!-- Angular Material CSS -->
+
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.5/angular-material.min.css">
+
+
+    <!-- Angular Material -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.5/angular-material.min.js"></script>
+
+
+    <!-- Firebase -->
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+    >
+    <script src="../Config/firebase.js"></script>
+
+    <!-- Mapbox GL JS -->
+
+    <link href="https://api.mapbox.com/mapbox-gl-js/v3.29.0/mapbox-gl.css" rel="stylesheet">
+
+    <script src="https://api.mapbox.com/mapbox-gl-js/v3.29.0/mapbox-gl.js"></script>
+    
+    <!-- LeafletJS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+    </script>
+
+
+    <!-- SweetAlert2 -->
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+
+<body ng-controller="MapController as vm">
+
+
+    <!-- ================================= -->
+    <!-- APPLICATION LAYOUT -->
+    <!-- ================================= -->
+
+    <div class="app-layout">
+
+
+        <!-- ================================= -->
+        <!-- LEFT SIDEBAR -->
+        <!-- ================================= -->
+
+        <aside class="sidebar">
+
+            <!-- Sidebar Header -->
+
+            <div class="sidebar-header">
+
+                <h2>
+                    IT Unit
+                </h2>
+
+                <p>
+                    Directory System
+                </p>
+
+            </div>
+
+
+            <!-- Navigation -->
+
+            <nav class="sidebar-nav">
+
+
+                <!-- Dashboard -->
+
+                <button type="button" class="nav-item" ng-click="vm.goToDashboard()">
+
+                    <span class="nav-icon">
+                        🏠
+                    </span>
+
+                    <span>
+                        Dashboard
+                    </span>
+
+                </button>
+
+
+                <!-- Location Map -->
+
+                <button type="button" class="nav-item active">
+
+                    <span class="nav-icon">
+                        🗺️
+                    </span>
+
+                    <span>
+                        Location Map
+                    </span>
+
+                </button>
+
+
+            </nav>
+            <div class="sidebar-footer">
+
+                <button type="button" class="logout-nav-button" ng-click="vm.logout()">
+
+
+                    <span>Logout</span>
+
+                </button>
+
+            </div>
+
+
+        </aside>
+
+
+        <!-- ================================= -->
+        <!-- MAIN CONTENT -->
+        <!-- ================================= -->
+
+        <main class="main-content">
+
+
+            <!-- ================================= -->
+            <!-- PAGE HEADER -->
+            <!-- ================================= -->
+
+            <div class="page-header">
+
+                <div>
+
+                    <h1>
+                        Location Map
+                    </h1>
+
+                    <p>
+                        View and manage registered locations.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="map-provider-selector">
+
+                <button type="button" ng-class="{ 'active': vm.mapProvider === 'mapbox' }"
+                    ng-click="vm.mapProvider = 'mapbox'; vm.switchMapProvider()">
+
+                    Mapbox
+
+                </button>
+
+
+                <button type="button" ng-class="{ 'active': vm.mapProvider === 'leaflet' }"
+                    ng-click="vm.mapProvider = 'leaflet'; vm.switchMapProvider()">
+
+                    Leaflet
+
+                </button>
+
+            </div>
+
+
+            <!-- ================================= -->
+            <!-- MAP SECTION -->
+            <!-- ================================= -->
+
+            <section class="map-card">
+
+
+                <div class="map-card-header">
+
+                    <div>
+
+                        <h2>
+                            Map
+                        </h2>
+
+                        <p>
+                            Click on the map to select a location.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Map -->
+
+                <div class="map-section">
+
+                    <!-- Mapbox -->
+                    <div id="mapboxMap" class="map-view" ng-show="vm.mapProvider === 'mapbox'">
+                    </div>
+
+
+                    <!-- Leaflet -->
+                    <div id="leafletMap" class="map-view" ng-show="vm.mapProvider === 'leaflet'">
+                    </div>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- ================================= -->
+            <!-- ADD LOCATION SECTION -->
+            <!-- ================================= -->
+
+            <section class="location-form-card">
+
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Add Location
+                        </h2>
+
+                        <p>
+                            Enter the location details below.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Add Location Form -->
+
+                <div class="location-form">
+
+                    <form ng-submit="vm.addLocation()">
+
+
+                        <!-- Location Name -->
+
+                        <div class="form-group">
+
+                            <label for="locationName">
+                                Location Name
+                            </label>
+
+                            <input type="text" id="locationName" ng-model="vm.newLocation.name"
+                                placeholder="Location Name">
+
+                        </div>
+
+
+                        <!-- Latitude -->
+
+                        <div class="form-group">
+
+                            <label for="latitude">
+                                Latitude
+                            </label>
+
+                            <input type="number" id="latitude" ng-model="vm.newLocation.latitude" step="any"
+                                placeholder="Latitude">
+
+                        </div>
+
+
+                        <!-- Longitude -->
+
+                        <div class="form-group">
+
+                            <label for="longitude">
+                                Longitude
+                            </label>
+
+                            <input type="number" id="longitude" ng-model="vm.newLocation.longitude" step="any"
+                                placeholder="Longitude">
+
+                        </div>
+
+
+                        <!-- Add Location Button -->
+
+                        <button type="submit">
+                            Add Location
+                        </button>
+
+
+                    </form>
+
+                </div>
+
+
+            </section>
+
+
+            <!-- ================================= -->
+            <!-- LOCATION TABLE SECTION -->
+            <!-- ================================= -->
+
+            <section class="location-table-card">
+
+
+                <div class="section-header">
+
+                    <div>
+
+                        <h2>
+                            Locations
+                        </h2>
+
+                        <p>
+                            Registered locations.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Table Wrapper -->
+
+                <div class="table-wrapper">
+
+
+                    <div class="location-section">
+
+                        <table>
+
+                            <thead>
+
+                                <tr>
+
+                                    <th>
+                                        Name
+                                    </th>
+
+                                    <th>
+                                        Latitude
+                                    </th>
+
+                                    <th>
+                                        Longitude
+                                    </th>
+
+                                    <th>
+                                        Date Created
+                                    </th>
+
+                                    <th>
+                                        Date Modified
+                                    </th>
+
+                                    <th>
+                                        Actions
+                                    </th>
+
+                                </tr>
+
+                            </thead>
+
+
+                            <tbody>
+
+
+                                <tr ng-repeat="location in vm.locations track by location.id"
+                                    ng-click="vm.focusLocation(location)" class="location-row">
+
+
+                                    <!-- Name -->
+
+                                    <td>
+                                        {{ location.name }}
+                                    </td>
+
+
+                                    <!-- Latitude -->
+
+                                    <td>
+                                        {{ location.latitude }}
+                                    </td>
+
+
+                                    <!-- Longitude -->
+
+                                    <td>
+                                        {{ location.longitude }}
+                                    </td>
+
+
+                                    <!-- Date Created -->
+
+                                    <td>
+                                        {{ location.dateCreated.toDate() | date:'medium' }}
+                                    </td>
+
+
+                                    <!-- Date Modified -->
+
+                                    <td>
+                                        {{ location.dateModified.toDate() | date:'medium' }}
+                                    </td>
+
+
+                                    <!-- Actions -->
+
+                                    <td class="action-buttons">
+
+
+                                        <button type="button"
+                                            ng-click="$event.stopPropagation(); vm.editLocation(location)">
+
+                                            Edit
+
+                                        </button>
+
+
+                                        <button type="button"
+                                            ng-click="$event.stopPropagation(); vm.deleteLocation(location)">
+
+                                            Delete
+
+                                        </button>
+
+
+                                    </td>
+
+
+                                </tr>
+
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+    <!-- ================================= -->
+    <!-- MAP CONTROLLER -->
+    <!-- ================================= -->
+
+    <script src="../Controller/map-controller.js"></script>
+
+
+</body>
+
+</html>
