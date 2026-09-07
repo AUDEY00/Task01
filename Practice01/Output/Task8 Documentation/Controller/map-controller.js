@@ -1368,7 +1368,7 @@ app.controller("MapController", function ($scope, $mdDialog) {
     vm.goToDashboard = function () {
 
         window.location.href =
-            "../Main.html";
+            "../Main_8.html";
 
     };
 
