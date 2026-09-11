@@ -259,19 +259,8 @@ button:hover {
 
 @media (max-width: 1100px) {
 
-    .sidebar {
-
-        width: 210px;
-
-        min-width: 210px;
-
-    }
-
-
     .main-content {
-
         padding: 25px;
-
     }
 
 
@@ -293,66 +282,8 @@ button:hover {
 
 @media (max-width: 750px) {
 
-    .app-layout {
-
-        flex-direction: column;
-
-    }
-
-
-    .sidebar {
-
-        position: relative;
-
-        width: 100%;
-
-        min-width: 100%;
-
-        min-height: auto;
-
-        height: auto;
-
-        padding: 15px;
-
-    }
-
-
-    .sidebar-logo {
-
-        padding: 5px 10px 15px;
-
-    }
-
-
-    .sidebar-nav {
-
-        flex-direction: row;
-
-        margin-top: 15px;
-
-    }
-
-
-    .nav-item {
-
-        flex: 1;
-
-        justify-content: center;
-
-    }
-
-
-    .sidebar-footer {
-
-        display: none;
-
-    }
-
-
     .main-content {
-
         padding: 15px;
-
     }
 
 
@@ -1185,82 +1116,57 @@ md-dialog-actions md-button {
     
 }
 
-
 /* ===================================
    Sidebar
    =================================== */
 
 .sidebar {
     width: 240px;
-
     min-width: 240px;
-
     min-height: 100vh;
+    height: 100vh;
 
-    background: rgba(15, 23, 42, 0.94);
+    padding: 0;
 
-    color: white;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    z-index: 1000;
+
+    background: #1e293b;
 
     display: flex;
-
     flex-direction: column;
 
-    padding: 25px 15px;
-
-    position: sticky;
-
-    top: 0;
-
-    height: 100vh;
+    color: white;
 }
 
 
 /* ===================================
-   Sidebar Brand
+   Sidebar Logo
    =================================== */
 
-.sidebar-brand {
-    text-align: center;
-    margin-bottom: 40px;
+.sidebar-logo {
+    padding: 28px 22px;
+    margin: 0;
+
+    text-align: left;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.sidebar-brand h2 {
-    margin: 0;
+.sidebar-logo h2 {
+    margin: 0 0 5px 0;
     font-size: 22px;
 }
 
-.sidebar-brand span {
-    font-size: 12px;
-    letter-spacing: 2px;
-    opacity: 0.7;
-}
-
-/* Logo */
-
-.sidebar-logo {
-
-    padding: 10px 15px 30px;
-
-    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-
-}
-
-
-.sidebar-logo h2 {
-
-    font-size: 24px;
-
-    margin-bottom: 5px;
-
-}
-
-
 .sidebar-logo span {
-
-    font-size: 12px;
-
+    font-size: 13px;
     color: #cbd5e1;
-
+    letter-spacing: normal;
+    opacity: 1;
 }
 
 
@@ -1269,89 +1175,96 @@ md-dialog-actions md-button {
    =================================== */
 
 .sidebar-nav {
-
     display: flex;
-
     flex-direction: column;
 
     gap: 8px;
 
-    margin-top: 25px;
-
+    padding: 20px 12px;
+    margin-top: 0;
 }
 
-
 .nav-item {
-
     display: flex;
-
     align-items: center;
 
-    gap: 12px;
+    width: 100%;
+    min-height: 0;
 
     padding: 13px 15px;
 
-    color: #cbd5e1;
+    border: 1px solid transparent;
+    border-radius: 8px;
 
+    background: transparent;
+
+    color: #cbd5e1;
     text-decoration: none;
 
-    border-radius: 8px;
+    text-align: left;
 
     transition: 0.2s ease;
 
+    box-sizing: border-box;
 }
-
 
 .nav-item:hover {
-
-    background: rgba(255, 255, 255, 0.1);
+    background-color: #334155;
+    border-color: transparent;
 
     color: white;
 
+    transform: none;
 }
-
 
 .nav-item.active {
-
-    background: #3b82f6;
+    background-color: #3b82f6;
+    border-color: transparent;
 
     color: white;
-
 }
 
 
+/* ===================================
+   Navigation Icon
+   =================================== */
+
 .nav-icon {
-
     font-size: 20px;
-
     width: 25px;
 
     text-align: center;
 
+    flex-shrink: 0;
 }
+
 
 /* ===================================
-   SIDEBAR FOOTER
-=================================== */
+   Sidebar Footer
+   =================================== */
 
 .sidebar-footer {
-
     margin-top: auto;
 
+    padding: 15px 12px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 
-.sidebar-logout {
+/* ===================================
+   Logout
+   =================================== */
 
+.sidebar-logout {
     width: 100%;
 
-    padding: 12px;
+    padding: 10px 18px;
 
     border: none;
-
     border-radius: 8px;
 
-    background: #ef4444;
+    background-color: #ef4444;
 
     color: white;
 
@@ -1359,14 +1272,114 @@ md-dialog-actions md-button {
 
     cursor: pointer;
 
+    text-align: center;
 }
-
 
 .sidebar-logout:hover {
-
-    background: #dc2626;
-
+    background-color: #dc2626;
 }
+
+
+/* ===================================
+   Main Content
+   =================================== */
+
+.main-content {
+    flex: none;
+
+    width: calc(100% - 240px);
+
+    min-width: 0;
+    min-height: 100vh;
+
+    margin-left: 240px;
+
+    padding: 30px;
+
+    box-sizing: border-box;
+}
+
+
+/* ===================================
+   Tablet
+   =================================== */
+
+@media (max-width: 1000px) {
+
+    .sidebar {
+        width: 210px;
+        min-width: 210px;
+    }
+
+    .main-content {
+        width: calc(100% - 210px);
+
+        margin-left: 210px;
+
+        padding: 20px;
+    }
+}
+
+
+/* ===================================
+   Mobile
+   =================================== */
+
+@media (max-width: 750px) {
+
+    .sidebar {
+        width: 70px;
+        min-width: 70px;
+
+        padding: 0;
+    }
+
+    .sidebar-logo {
+        padding: 20px 10px;
+
+        text-align: center;
+    }
+
+    .sidebar-logo h2 {
+        font-size: 16px;
+    }
+
+    .sidebar-logo span {
+        display: none;
+    }
+
+    .sidebar-nav {
+        flex-direction: column;
+
+        margin-top: 0;
+
+        padding: 20px 12px;
+    }
+
+    .nav-item {
+        justify-content: center;
+
+        padding: 13px 5px;
+    }
+
+    .nav-item span:last-child {
+        display: none;
+    }
+
+    .main-content {
+        width: calc(100% - 70px);
+
+        margin-left: 70px;
+
+        padding: 15px;
+    }
+
+    .sidebar-footer {
+        padding: 15px 8px;
+    }
+}
+
+
 
 
 
@@ -1383,3 +1396,20 @@ md-dialog-actions md-button {
     padding: 35px;
 
 }
+
+.guided-tour-button {
+    border: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.15);
+    color: inherit;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.guided-tour-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+}
+
