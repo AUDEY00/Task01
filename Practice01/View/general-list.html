@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>General Lists</title>
+
+    <!-- Driver.js -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@latest/dist/driver.css">
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@latest/dist/driver.js.iife.js"></script>
+
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="../style.css">
+
+    <!-- General Lists CSS -->
+    <link rel="stylesheet" href="general-list.css">
+
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
+    <!-- AngularJS Animate -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js"></script>
+
+    <!-- AngularJS Aria -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-aria.min.js"></script>
+
+    <!-- Angular Material CSS -->
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.5/angular-material.min.css">
+
+    <!-- Angular Material -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.2.5/angular-material.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body ng-controller="GeneralListController as vm">
+
+    <!-- ============================================
+     SIDEBAR
+    ============================================= -->
+
+    <aside class="sidebar" id="tour-navigation">
+
+        <!-- Sidebar Logo -->
+
+        <div class="sidebar-logo">
+
+            <h2>IT Unit</h2>
+
+            <span>
+                Management System
+            </span>
+
+        </div>
+
+
+        <!-- Navigation -->
+
+        <nav class="sidebar-nav">
+
+            <!-- Dashboard -->
+
+            <a href="../Main.html" class="nav-item">
+
+                <span class="nav-icon">
+                    🏠
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- Map -->
+
+            <a href="map.html" class="nav-item">
+
+                <span class="nav-icon">
+                    🗺️
+                </span>
+
+                <span>
+                    Map
+                </span>
+
+            </a>
+
+
+            <!-- General Lists -->
+
+            <a href="general-list.html" class="nav-item active">
+
+                <span class="nav-icon">
+                    📋
+                </span>
+
+                <span>
+                    General Lists
+                </span>
+
+            </a>
+
+        </nav>
+
+
+        <!-- Sidebar Footer -->
+
+        <div class="sidebar-footer" id="tour-logout">
+
+            <button type="button" class="logout-nav-button" ng-click="vm.logout()">
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <!-- ============================================
+         PAGE HEADER
+        ============================================= -->
+
+        <header class="page-header">
+
+            <div class="page-title-section">
+
+                <div class="page-title-icon">
+                    📋
+                </div>
+
+                <div>
+                    <h1>General Lists</h1>
+
+                    <p>
+                        Manage dynamic lists and their records.
+                    </p>
+                </div>
+
+                <button type="button" class="secondary-btn" ng-click="vm.startTour()">
+
+                    🧭 Guided Tour
+
+                </button>
+
+            </div>
+ 
+        </header>
+
+
+        <!-- ============================================
+         GENERAL LIST CONTENT
+        ============================================= -->
+
+        <div class="general-list-layout">
+
+
+            <!-- ========================================
+             EXISTING LISTS
+            ========================================= -->
+
+            <section class="content-card lists-card" id="tour-list-panel">
+
+                <div class="card-header">
+
+                    <div>
+                        <h2>Existing Lists</h2>
+
+                        <p>
+                            Select a list to manage its records.
+                        </p>
+                    </div>
+
+                    <button class="primary-btn" id="tour-create-list" ng-click="vm.openCreateListDialog()">
+
+                        <span>＋</span>
+                        Create New List
+
+                    </button>
+
+                </div>
+
+
+                <!-- List Items -->
+
+                <div class="list-items">
+
+                    <button class="list-item" ng-repeat="list in vm.lists" ng-click="vm.selectList(list)"
+                        ng-class="{'selected': vm.selectedList === list}">
+
+                        <div class="list-item-icon">
+                            📋
+                        </div>
+
+                        <div class="list-item-info">
+
+                            <strong>
+                                {{ list.name }}
+                            </strong>
+
+                            <span>
+                                {{ list.columns.length }} column<span ng-if="list.columns.length !== 1">s</span>
+                                ·
+                                {{ list.records.length }} record<span ng-if="list.records.length !== 1">s</span>
+                            </span>
+
+                        </div>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ========================================
+             SELECTED LIST
+            ========================================= -->
+
+            <section class="content-card selected-list-card"  ng-if="vm.selectedList">
+
+
+                <!-- Selected List Header -->
+
+                <div class="card-header selected-list-header">
+
+                    <div class="selected-list-title">
+
+                        <div class="selected-list-icon">
+                            📋
+                        </div>
+
+                        <div>
+
+                            <h2>
+                                {{ vm.selectedList.name }}
+                            </h2>
+
+                            <p>
+                                {{ vm.selectedList.columns.length }}
+                                column<span ng-if="vm.selectedList.columns.length !== 1">s</span>
+
+                                <span class="header-separator">•</span>
+
+                                {{ vm.selectedList.records.length }}
+                                record<span ng-if="vm.selectedList.records.length !== 1">s</span>
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="list-actions">
+
+                        <button class="secondary-btn" id="tour-edit-list" ng-click="vm.openEditListDialog()">
+
+                            ✏️ Edit List
+
+                        </button>
+
+                        <button class="danger-btn" id="tour-delete-list"ng-click="vm.deleteList()">
+
+                            🗑️ Delete List
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ====================================
+                 DYNAMIC TABLE
+            ===================================== -->
+
+                <div class="table-wrapper">
+
+                    <table class="general-list-table" id="tour-list-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <!-- Dynamic Columns -->
+
+                                <th ng-repeat="column in vm.selectedList.columns">
+
+                                    {{ column.name }}
+
+                                </th>
+
+
+                                <!-- Actions -->
+
+                                <th>
+                                    Actions
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody>
+
+                            <tr ng-repeat="record in vm.selectedList.records">
+
+                                <td ng-repeat="column in vm.selectedList.columns">
+                                    {{ record[column.name] }}
+                                </td>
+
+                                <td class="table-actions">
+
+                                    <button type="button" class="action-btn edit-btn"
+                                        ng-click="vm.openEditRecordDialog(record)">
+                                        Edit
+                                    </button>
+
+                                    <button type="button" class="action-btn delete-btn"
+                                        ng-click="vm.deleteRecord(record)">
+                                        Delete
+                                    </button>
+
+                                </td>
+
+                            </tr>
+
+
+                            <!-- Empty State -->
+
+                            <tr ng-if="vm.selectedList.records.length === 0">
+
+                                <td colspan="{{ vm.selectedList.columns.length + 1 }}" class="empty-table">
+
+                                    No records found.
+
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+
+
+                <!-- Add Record -->
+
+                <div class="table-footer">
+
+                    <div class="table-footer-info">
+
+                        <span>
+                            {{ vm.selectedList.records.length }}
+                            record<span ng-if="vm.selectedList.records.length !== 1">s</span>
+                        </span>
+
+                    </div>
+
+                    <button class="primary-btn add-record-btn" id="tour-add-record" ng-click="vm.openAddRecordDialog()">
+
+                        ＋ Add Record
+
+                    </button>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- ========================================
+             NO LIST SELECTED
+            ========================================= -->
+
+            <section class="content-card empty-selection" ng-if="!vm.selectedList">
+
+                <div class="empty-selection-icon">
+                    📋
+                </div>
+
+                <h2>
+                    Select a List
+                </h2>
+
+                <p>
+                    Choose a list from the Existing Lists section
+                    to view and manage its records.
+                </p>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+    <!-- Firebase App -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+
+    <!-- Firebase Authentication -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+
+    <!-- Firebase Firestore -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
+    <!-- Firebase Configuration -->
+    <script src="../Config/firebase.js"></script>
+
+    <!-- Model -->
+    <script src="../Model/general-list.js"></script>
+
+    <!-- Main AngularJS module -->
+    <script src="../Controller/controller.js"></script>
+
+    <!-- General List Controller -->
+    <script src="../Controller/general-list-controller.js"></script>
+</body>
+
+</html>

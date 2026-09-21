@@ -1,0 +1,231 @@
+<md-dialog
+    aria-label="Create New General List"
+    class="general-list-dialog">
+
+    <form
+        ng-submit="vm.createList()">
+
+
+        <!-- ====================================
+             DIALOG HEADER
+        ===================================== -->
+
+        <md-toolbar>
+
+            <div class="md-toolbar-tools">
+
+                <h2>
+                    Create New List
+                </h2>
+
+                <span flex></span>
+
+                <md-button
+                    class="md-icon-button"
+                    type="button"
+                    ng-click="vm.cancel()">
+
+                    ✕
+
+                </md-button>
+
+            </div>
+
+        </md-toolbar>
+
+
+        <!-- ====================================
+             DIALOG CONTENT
+        ===================================== -->
+
+        <md-dialog-content>
+
+            <div class="dialog-content">
+
+
+                <!-- LIST NAME -->
+
+                <md-input-container class="md-block">
+
+                    <label>
+                        List Name
+                    </label>
+
+                    <input
+                        type="text"
+                        ng-model="vm.newList.name"
+                        placeholder="e.g. Department"
+                        required>
+
+                </md-input-container>
+
+
+
+                <!-- ====================================
+                     COLUMNS
+                ===================================== -->
+
+                <div class="columns-section">
+
+                    <div class="columns-header">
+
+                        <div>
+
+                            <h3>
+                                Columns
+                            </h3>
+
+                            <p>
+                                Define the columns for this list.
+                            </p>
+
+                        </div>
+
+                        <md-button
+                            type="button"
+                            class="md-raised"
+                            ng-click="vm.addColumn()">
+
+                            ＋ Add Column
+
+                        </md-button>
+
+                    </div>
+
+
+                    <!-- COLUMN LIST -->
+
+                    <div
+                        class="column-builder"
+                        ng-if="vm.newList.columns.length > 0">
+
+
+                        <div
+                            class="column-row"
+                            ng-repeat="column in vm.newList.columns">
+
+
+                            <!-- COLUMN NAME -->
+
+                            <md-input-container>
+
+                                <label>
+                                    Column Name
+                                </label>
+
+                                <input
+                                    type="text"
+                                    ng-model="column.name"
+                                    placeholder="Column name">
+
+                            </md-input-container>
+
+
+
+                            <!-- COLUMN TYPE -->
+
+                            <md-input-container>
+
+                                <label>
+                                    Type
+                                </label>
+
+                                <md-select
+                                    ng-model="column.type">
+
+                                    <md-option value="text">
+                                        Text
+                                    </md-option>
+
+                                    <md-option value="number">
+                                        Number
+                                    </md-option>
+
+                                    <md-option value="date">
+                                        Date
+                                    </md-option>
+
+                                    <md-option value="boolean">
+                                        Boolean
+                                    </md-option>
+
+                                </md-select>
+
+                            </md-input-container>
+
+
+
+                            <!-- REMOVE -->
+
+                            <md-button
+                                type="button"
+                                class="md-icon-button remove-column"
+                                ng-click="vm.removeColumn($index)">
+
+                                🗑️
+
+                            </md-button>
+
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- NO COLUMNS -->
+
+                    <div
+                        class="no-columns"
+                        ng-if="vm.newList.columns.length === 0">
+
+                        <span>
+                            No columns added yet.
+                        </span>
+
+                        <button
+                            type="button"
+                            ng-click="vm.addColumn()">
+
+                            Add your first column
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </md-dialog-content>
+
+
+        <!-- ====================================
+             ACTIONS
+        ===================================== -->
+
+        <md-dialog-actions
+            layout="row"
+            layout-align="end center">
+
+            <md-button
+                type="button"
+                ng-click="vm.cancel()">
+
+                Cancel
+
+            </md-button>
+
+            <md-button
+                type="submit"
+                class="md-raised md-primary">
+
+                Create List
+
+            </md-button>
+
+        </md-dialog-actions>
+
+
+    </form>
+
+</md-dialog>
