@@ -1,0 +1,206 @@
+<md-dialog
+    aria-label="Edit Location Details"
+    class="location-dialog">
+
+    <!-- ----------------------------------- -->
+    <!-- Dialog Header -->
+    <!-- ----------------------------------- -->
+
+    <md-toolbar class="location-dialog-header">
+
+        <div class="md-toolbar-tools">
+
+            <div>
+
+                <h2>
+                    Edit Location
+                </h2>
+
+                <span>
+                    Update the location information below
+                </span>
+
+            </div>
+
+            <span flex></span>
+
+            <md-button
+                class="close-button"
+                ng-click="closeDialog()"
+                aria-label="Close">
+
+                ×
+
+            </md-button>
+
+        </div>
+
+    </md-toolbar>
+
+
+    <!-- ----------------------------------- -->
+    <!-- Dialog Content -->
+    <!-- ----------------------------------- -->
+
+    <md-dialog-content class="location-details-dialog">
+
+        <!-- Location ID -->
+
+        <div class="location-id-card">
+
+            <div class="detail-icon">
+                📍
+            </div>
+
+            <div>
+
+                <span class="detail-label">
+                    Location ID
+                </span>
+
+                <strong>
+                    {{ location.id }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <!-- Location Information -->
+
+        <div class="details-section">
+
+            <h3>
+                Location Information
+            </h3>
+
+
+            <!-- Location Name -->
+
+            <div class="input-group">
+
+                <label for="editLocationName">
+                    Location Name
+                </label>
+
+                <input
+                    type="text"
+                    id="editLocationName"
+                    ng-model="location.name"
+                    placeholder="Enter location name">
+
+            </div>
+
+
+            <!-- Latitude / Longitude -->
+
+            <div class="coordinate-row">
+
+                <div class="input-group">
+
+                    <label for="editLatitude">
+                        Latitude
+                    </label>
+
+                    <input
+                        type="number"
+                        id="editLatitude"
+                        ng-model="location.latitude"
+                        step="any"
+                        placeholder="Latitude">
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="editLongitude">
+                        Longitude
+                    </label>
+
+                    <input
+                        type="number"
+                        id="editLongitude"
+                        ng-model="location.longitude"
+                        step="any"
+                        placeholder="Longitude">
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Record Information -->
+
+        <div class="details-section record-section">
+
+            <h3>
+                Record Information
+            </h3>
+
+
+            <div class="record-grid">
+
+                <div class="record-item">
+
+                    <span class="detail-label">
+                        Date Created
+                    </span>
+
+                    <strong>
+                        {{ location.dateCreated.toDate() | date:'medium' }}
+                    </strong>
+
+                </div>
+
+
+                <div class="record-item">
+
+                    <span class="detail-label">
+                        Last Modified
+                    </span>
+
+                    <strong>
+                        {{ location.dateModified.toDate() | date:'medium' }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </md-dialog-content>
+
+
+    <!-- ----------------------------------- -->
+    <!-- Dialog Actions -->
+    <!-- ----------------------------------- -->
+
+    <md-dialog-actions class="location-dialog-actions">
+
+        <button
+            type="button"
+            class="cancel-location-button"
+            ng-click="closeDialog()">
+
+            Cancel
+
+        </button>
+
+
+        <button
+            type="button"
+            class="save-location-button"
+            ng-click="saveChanges()">
+
+            Save Changes
+
+        </button>
+
+    </md-dialog-actions>
+
+</md-dialog>

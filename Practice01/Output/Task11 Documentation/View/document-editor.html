@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html lang="en" ng-app="app">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document Editor</title>
+
+
+    <!-- =========================================
+         QUILL CSS
+         ========================================= -->
+
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
+
+
+    <!-- =========================================
+         MAIN SYSTEM CSS
+         ========================================= -->
+
+    <link rel="stylesheet" href="../style.css">
+
+
+    <!-- =========================================
+         DOCUMENT EDITOR CSS
+         ========================================= -->
+
+    <link rel="stylesheet" href="document-editor.css">
+
+</head>
+
+
+<body ng-controller="DocumentEditorController as vm">
+
+
+    <!-- =========================================
+         SIDEBAR
+         ========================================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <h2>
+                IT Unit
+            </h2>
+
+            <span>
+                Management System
+            </span>
+
+        </div>
+
+
+        <!-- Navigation -->
+
+        <nav class="sidebar-nav">
+
+
+            <!-- Dashboard -->
+
+            <a href="../Main.html" class="nav-item">
+
+                <span class="nav-icon">
+                    🏠
+                </span>
+
+                <span>
+                    Dashboard
+                </span>
+
+            </a>
+
+
+            <!-- Location Map -->
+
+            <a href="map.html" class="nav-item">
+
+                <span class="nav-icon">
+                    🗺️
+                </span>
+
+                <span>
+                    Location Map
+                </span>
+
+            </a>
+
+
+            <!-- General Lists -->
+
+            <a href="general-list.html" class="nav-item">
+
+                <span class="nav-icon">
+                    📋
+                </span>
+
+                <span>
+                    General Lists
+                </span>
+
+            </a>
+
+
+            <!-- Document Editor -->
+
+            <a href="document-editor.html" class="nav-item active">
+
+                <span class="nav-icon">
+                    📝
+                </span>
+
+                <span>
+                    Document Editor
+                </span>
+
+            </a>
+
+
+        </nav>
+
+
+        <!-- Sidebar Footer -->
+
+        <div class="sidebar-footer">
+
+            <button type="button" class="logout-nav-button" ng-click="vm.logout()">
+
+                Logout
+
+            </button>
+
+        </div>
+
+    </aside>
+
+
+
+    <!-- =========================================
+         MAIN CONTENT
+         ========================================= -->
+
+    <main class="main-content">
+
+
+        <!-- Page Header -->
+
+        <header class="page-header">
+
+            <div class="page-title-section">
+
+                <div class="page-title-icon">
+                    📝
+                </div>
+
+                <div>
+
+                    <h1>
+                        Document Editor
+                    </h1>
+
+                    <p>
+                        Create and format rich-text documents.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =========================================
+             DOCUMENT EDITOR CARD
+             ========================================= -->
+
+        <section class="editor-card">
+
+            <!-- =========================================
+         EDITOR HEADER
+         ========================================= -->
+
+            <div class="card-header">
+
+                <div>
+
+                    <h2>
+                        Rich Text Editor
+                    </h2>
+
+                    <p>
+                        Use the toolbar to format your document.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- =========================================
+                AUTO-SAVE STATUS
+             ========================================= -->
+
+            <div class="auto-save-status" ng-show="vm.isAutoSaving">
+
+                <span class="auto-save-spinner"></span>
+
+                <span>
+                    Saving draft...
+                </span>
+
+            </div>
+
+
+            <!-- =========================================
+            EDITOR ACTIONS
+            ========================================= -->
+
+            <div class="editor-actions">
+
+                <button type="button" class="editor-button" ng-click="vm.newDocument()" ng-hide="vm.showPreview">
+
+                    New Document
+
+                </button>
+
+                <button type="button" class="editor-button" ng-click="vm.saveDocument()" ng-hide="vm.showPreview">
+
+                    Save Document
+
+                </button>
+
+
+                <button type="button" class="editor-button" ng-click="vm.previewDocument()" ng-hide="vm.showPreview">
+
+                    Preview
+
+                </button>
+
+
+                <button type="button" class="editor-button" ng-click="vm.closePreview()" ng-show="vm.showPreview">
+
+                    Back to Editor
+
+                </button>
+
+            </div>
+
+
+            <!-- =========================================
+            QUILL EDITOR
+            ========================================= -->
+
+            <div id="document-editor" ng-hide="vm.showPreview">
+
+            </div>
+
+
+            <!-- =========================================
+            DOCUMENT PREVIEW
+            ========================================= -->
+
+            <div class="document-preview" ng-show="vm.showPreview" ng-bind-html="vm.previewContent">
+
+            </div>
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ANGULARJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js">
+    </script>
+
+    <!-- ANGULAR ANIMATE -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.min.js">
+    </script>
+
+    <!-- ANGULAR ARIA -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-aria.min.js">
+    </script>
+
+    <!-- ANGULAR MATERIAL -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.12/angular-material.min.js">
+    </script>
+
+    <!-- SWEETALERT2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+    </script>
+
+    <!-- QUILL -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js">
+    </script>
+
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js">
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js">
+    </script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js">
+    </script>
+
+    <script src="../Config/firebase.js">
+    </script>
+
+    <!-- EXISTING CONTROLLER -->
+    <script src="../Controller/controller.js">
+    </script>
+
+    <!-- DOCUMENT EDITOR CONTROLLER -->
+    <script src="../Controller/document-editor-controller.js">
+    </script>
+
+
+</body>
+
+</html>

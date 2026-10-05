@@ -1,0 +1,113 @@
+<md-dialog aria-label="Edit Record">
+
+    <form ng-submit="vm.updateRecord()">
+
+        <md-toolbar>
+
+            <div class="md-toolbar-tools">
+
+                <h2>Edit Record</h2>
+
+                <span flex></span>
+
+                <button
+                    type="button"
+                    class="dialog-close-btn"
+                    ng-click="vm.cancel()">
+
+                    ×
+
+                </button>
+
+            </div>
+
+        </md-toolbar>
+
+
+        <md-dialog-content>
+
+            <div class="dialog-content">
+
+                <div
+                    class="form-group"
+                    ng-repeat="column in vm.selectedList.columns">
+
+                    <label>
+                        {{ column.name }}
+                    </label>
+
+
+                    <!-- TEXT -->
+
+                    <input
+                        ng-if="column.type === 'text'"
+                        type="text"
+                        ng-model="vm.record[column.name]"
+                        placeholder="Enter {{ column.name }}">
+
+
+                    <!-- NUMBER -->
+
+                    <input
+                        ng-if="column.type === 'number'"
+                        type="number"
+                        ng-model="vm.record[column.name]"
+                        placeholder="Enter {{ column.name }}">
+
+
+                    <!-- DATE -->
+
+                    <input
+                        ng-if="column.type === 'date'"
+                        type="date"
+                        ng-model="vm.record[column.name]">
+
+
+                    <!-- BOOLEAN -->
+
+                    <label
+                        ng-if="column.type === 'boolean'"
+                        class="checkbox-field">
+
+                        <input
+                            type="checkbox"
+                            ng-model="vm.record[column.name]">
+
+                        <span>
+                            {{ column.name }}
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </md-dialog-content>
+
+
+        <md-dialog-actions>
+
+            <button
+                type="button"
+                class="secondary-btn"
+                ng-click="vm.cancel()">
+
+                Cancel
+
+            </button>
+
+
+            <button
+                type="submit"
+                class="primary-btn">
+
+                Update Record
+
+            </button>
+
+        </md-dialog-actions>
+
+    </form>
+
+</md-dialog>
