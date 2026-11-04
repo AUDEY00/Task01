@@ -1,0 +1,653 @@
+.map-page {
+    width: 100%;
+}
+
+/* Cancel the global "lift + shadow" hover on every button in this page
+   (also covers the Mapbox / Leaflet control buttons) */
+.map-page button:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.map-page button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* -----------------------------------
+   Page header
+----------------------------------- */
+
+.map-page .map-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    margin-bottom: 16px;
+}
+
+.map-page .map-header h1 {
+    margin: 0 0 4px 0;
+    font-size: 26px;
+    color: #1e293b;
+}
+
+.map-page .map-header p {
+    margin: 0;
+    font-size: 13px;
+    color: #475569;
+}
+
+.map-page .tool-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    height: 36px;
+    padding: 0 13px;
+
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    white-space: nowrap;
+
+    cursor: pointer;
+}
+
+.map-page .tool-btn:hover {
+    background: #ffffff;
+}
+
+/* -----------------------------------
+   Layout: map | side panel
+----------------------------------- */
+
+.map-page .map-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) clamp(260px, 30%, 340px);
+    gap: 16px;
+
+    /* The page fills the screen; the list scrolls inside the panel. */
+    height: clamp(480px, calc(100vh - 190px), 860px);
+}
+
+@supports (height: 100dvh) {
+    .map-page .map-layout {
+        height: clamp(480px, calc(100dvh - 190px), 860px);
+    }
+}
+
+/* -----------------------------------
+   Map
+----------------------------------- */
+
+.map-page .map-pane {
+    min-width: 0;
+    min-height: 0;
+
+    overflow: hidden;
+
+    background: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+/* "isolation" keeps Leaflet's / Mapbox's internal z-index values inside the
+   map, so they can never cover the sidebar or the dialogs. */
+.map-page .map-canvas {
+    position: relative;
+    isolation: isolate;
+
+    width: 100%;
+    height: 100%;
+}
+
+.map-page .map-view {
+    position: relative;
+    z-index: 0;
+
+    width: 100%;
+    height: 100%;
+}
+
+/* Floating controls on top of the map */
+
+.map-page .map-controls {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    z-index: 10;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 8px;
+
+    pointer-events: none;
+}
+
+.map-page .map-controls > * {
+    pointer-events: auto;
+}
+
+.map-page .segmented {
+    display: flex;
+    padding: 3px;
+
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+}
+
+.map-page .segmented button {
+    padding: 6px 14px;
+
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    backdrop-filter: none;
+
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+
+    cursor: pointer;
+}
+
+.map-page .segmented button.selected {
+    background: #3b82f6;
+    color: #ffffff;
+}
+
+.map-page .view-select {
+    height: 36px;
+    padding: 0 10px;
+
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+
+    cursor: pointer;
+}
+
+/* Phones only: shows the picked point and jumps to the form */
+
+.map-page .pick-bar {
+    display: none;
+
+    position: absolute;
+    left: 10px;
+    right: 60px;
+    bottom: 38px;
+    z-index: 10;
+
+    align-items: center;
+    gap: 8px;
+
+    padding: 6px 8px 6px 10px;
+
+    background: rgba(255, 255, 255, 0.96);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.18);
+
+    color: #dc2626;
+}
+
+.map-page .pick-coords {
+    flex: 1;
+    min-width: 0;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-size: 12px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.map-page .pick-add {
+    height: 30px;
+    padding: 0 12px;
+
+    background: #3b82f6;
+    border: 1px solid #3b82f6;
+    border-radius: 8px;
+
+    font-size: 12px;
+    font-weight: 600;
+    color: #ffffff;
+    white-space: nowrap;
+
+    cursor: pointer;
+}
+
+.map-page .pick-clear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 30px;
+    height: 30px;
+    padding: 0;
+
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+
+    color: #64748b;
+    cursor: pointer;
+}
+
+/* -----------------------------------
+   Side panel
+----------------------------------- */
+
+.map-page .map-side {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    min-width: 0;
+    min-height: 0;
+    height: 100%;
+}
+
+.map-page .side-card {
+    padding: 14px;
+
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.map-page .side-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin: 0 0 10px 0;
+
+    font-size: 15px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.map-page .count-badge {
+    padding: 2px 8px;
+
+    background: rgba(100, 116, 139, 0.18);
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: 600;
+    color: #475569;
+}
+
+/* Form fields */
+
+.map-page .new-location {
+    flex: none;
+
+    /* cancel the global  form { display: flex; margin-bottom: 20px }  rule */
+    display: block;
+    margin-bottom: 0;
+}
+
+.map-page .field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    min-width: 0;
+    margin-bottom: 8px;
+}
+
+.map-page .field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.map-page .field input,
+.map-page .search-box input {
+    flex: none;
+
+    width: 100%;
+    height: 36px;
+    padding: 0 10px;
+
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 10px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    font-size: 13px;
+    color: #1e293b;
+
+    outline: none;
+}
+
+.map-page .field input:focus,
+.map-page .search-box input:focus {
+    background: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.map-page .coord-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.map-page .side-hint {
+    margin: 0 0 10px 0;
+
+    font-size: 12px;
+    color: #64748b;
+}
+
+.map-page .primary-btn {
+    width: 100%;
+    height: 36px;
+    padding: 0 14px;
+
+    background: #3b82f6;
+    border: 1px solid #3b82f6;
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+
+    cursor: pointer;
+}
+
+.map-page .primary-btn:hover {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+/* -----------------------------------
+   Location list
+----------------------------------- */
+
+.map-page .location-panel {
+    display: flex;
+    flex-direction: column;
+
+    flex: 1;
+    min-height: 0;
+}
+
+.map-page .panel-header .side-title {
+    margin-bottom: 8px;
+}
+
+.map-page .search-box {
+    position: relative;
+    flex: none;
+    margin-bottom: 8px;
+}
+
+.map-page .search-box svg {
+    position: absolute;
+    top: 50%;
+    left: 11px;
+    transform: translateY(-50%);
+
+    color: #64748b;
+    pointer-events: none;
+}
+
+.map-page .search-box input {
+    padding-left: 32px;
+}
+
+.map-page .result-info {
+    margin: 0 0 8px 0;
+
+    font-size: 12px;
+    color: #64748b;
+}
+
+.map-page .location-list {
+    flex: 1;
+    min-height: 0;
+    margin: 0;
+    padding: 0 2px 0 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    overflow-y: auto;
+    list-style: none;
+}
+
+.map-page .location-item {
+    display: flex;
+    align-items: center;
+    flex: none;
+
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    border-radius: 10px;
+}
+
+.map-page .location-item:hover {
+    background: #ffffff;
+}
+
+.map-page .location-item.selected {
+    background: #eff6ff;
+    border-color: #3b82f6;
+}
+
+.map-page .location-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    flex: 1;
+    min-width: 0;
+    padding: 9px 4px 9px 10px;
+
+    background: transparent;
+    border: none;
+    border-radius: 10px;
+    backdrop-filter: none;
+
+    font-family: inherit;
+    text-align: left;
+    color: #3b82f6;
+
+    cursor: pointer;
+}
+
+.map-page .location-main svg {
+    flex-shrink: 0;
+}
+
+.map-page .location-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.map-page .location-name,
+.map-page .location-coords {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.map-page .location-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.map-page .location-coords {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.map-page .item-actions {
+    display: flex;
+    flex-shrink: 0;
+    padding-right: 4px;
+}
+
+.map-page .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    padding: 0;
+
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    backdrop-filter: none;
+
+    color: #475569;
+    cursor: pointer;
+}
+
+.map-page .icon-btn:hover {
+    background: rgba(148, 163, 184, 0.22);
+    color: #1e293b;
+}
+
+.map-page .icon-btn.danger {
+    color: #dc2626;
+}
+
+.map-page .icon-btn.danger:hover {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.map-page .list-empty {
+    padding: 22px 8px;
+
+    text-align: center;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.map-page .list-more {
+    flex: none;
+}
+
+.map-page .load-more {
+    width: 100%;
+    height: 34px;
+    padding: 0 12px;
+
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px dashed rgba(148, 163, 184, 0.7);
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+
+    cursor: pointer;
+}
+
+.map-page .load-more:hover {
+    background: #ffffff;
+}
+
+/* -----------------------------------
+   Map libraries: keep global button styles off their controls
+----------------------------------- */
+
+.map-page .mapboxgl-popup-close-button {
+    padding: 1px 6px;
+    font-size: 13.3333px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.map-page .mapboxgl-ctrl button {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+/* -----------------------------------
+   Tablets and phones: the panel moves below the map
+----------------------------------- */
+
+@media (max-width: 960px) {
+    .map-page .map-layout {
+        grid-template-columns: minmax(0, 1fr);
+        height: auto;
+    }
+
+    .map-page .map-pane {
+        height: clamp(320px, 60vh, 560px);
+    }
+
+    .map-page .map-side {
+        height: auto;
+    }
+
+    .map-page .location-panel {
+        flex: none;
+    }
+
+    /* The list scrolls inside a fixed-height box, so the page stays short. */
+    .map-page .location-list {
+        flex: none;
+        max-height: 420px;
+    }
+
+    .map-page .pick-bar {
+        display: flex;
+    }
+}
+
+@media (max-width: 520px) {
+    .map-page .map-header h1 {
+        font-size: 22px;
+    }
+
+    .map-page .map-pane {
+        height: clamp(300px, 55vh, 480px);
+    }
+
+    .map-page .segmented button {
+        padding: 6px 10px;
+    }
+
+    .map-page .side-card {
+        padding: 12px;
+    }
+}

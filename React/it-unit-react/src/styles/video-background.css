@@ -1,0 +1,64 @@
+
+/* =========================================
+   VIDEO BACKGROUND
+   ========================================= */
+
+.video-background {
+    position: fixed;
+    inset: 0;
+
+    width: 100%;
+    height: 100vh;
+
+    z-index: 0;
+    overflow: hidden;
+
+    pointer-events: none;
+
+    background-color: #080514;
+}
+
+/* Background video */
+.video-background-video {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+    object-position: center 55%;
+}
+
+/* Dark overlay */
+.video-background-shade {
+    position: absolute;
+    inset: 0;
+
+    background: radial-gradient(
+        ellipse at 50% 35%,
+        rgba(8, 5, 20, 0.05) 0%,
+        rgba(8, 5, 20, 0.30) 100%
+    );
+}
+
+/* =========================================
+   WEBSITE CONTENT
+   ========================================= */
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    background: transparent;
+}
+
+/* Place your website content above the video */
+#root,
+#app,
+.main-content {
+    position: relative;
+    z-index: 1;
+
+    min-height: 100vh;
+}

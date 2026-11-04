@@ -1,0 +1,180 @@
+/* ===================================
+   Edit Staff Details Dialog
+   Loaded by StaffDetailsDialog.jsx, so it works
+   even if global.css is replaced or out of date.
+   z-index: above the sidebar (1000),
+   below SweetAlert2 popups (1060).
+=================================== */
+
+.dialog-backdrop {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(15, 23, 42, 0.45);
+}
+
+.dialog {
+    max-width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+
+    border-radius: 20px;
+
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255, 255, 255, 0.65);
+
+    box-shadow:
+        0 25px 60px rgba(0, 0, 0, 0.18),
+        0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.dialog .staff-details-dialog {
+    min-width: min(420px, calc(100vw - 80px));
+    padding: 30px;
+}
+
+.dialog .staff-details-dialog h2 {
+    margin: 0 0 25px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.dialog .staff-detail {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    margin-bottom: 18px;
+    padding: 14px 16px;
+
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.dialog .staff-detail strong {
+    min-width: 90px;
+    color: #475569;
+}
+
+.dialog .staff-detail span {
+    color: #1e293b;
+}
+
+.dialog .staff-detail input {
+    flex: 1;
+    padding: 10px 12px;
+
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(203, 213, 225, 0.8);
+    border-radius: 9px;
+
+    outline: none;
+    font-size: 14px;
+}
+
+.dialog .staff-detail input:focus {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.dialog .profile-preview {
+    width: 140px;
+    height: 140px;
+
+    margin: 10px auto 15px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    border: 3px solid #ffffff;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.dialog .profile-preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+.dialog .badge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.dialog .badge.active {
+    background: rgba(34, 197, 94, 0.18);
+    color: #166534;
+    border: 1px solid rgba(34, 197, 94, 0.25);
+}
+
+.dialog .badge.inactive {
+    background: rgba(100, 116, 139, 0.18);
+    color: #475569;
+    border: 1px solid rgba(100, 116, 139, 0.25);
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+
+    padding: 15px 25px 20px 25px;
+}
+
+.dialog-btn {
+    border: none;
+    border-radius: 9px;
+    padding: 10px 18px;
+
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.dialog-btn:hover {
+    background: #cbd5e1;
+    box-shadow: none;
+}
+
+.dialog-btn.primary {
+    background: #3b82f6;
+    color: white;
+}
+
+.dialog-btn.primary:hover {
+    background: #2563eb;
+}
+
+.dialog-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}

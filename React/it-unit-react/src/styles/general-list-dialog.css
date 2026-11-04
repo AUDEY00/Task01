@@ -1,0 +1,387 @@
+/* ===================================================================
+   General Lists dialogs (Create List, Edit List, Add Record, Edit Record)
+   Loaded by GeneralListDialog.jsx. These replace Angular Material's
+   md-dialog / md-toolbar / md-input-container / md-button, using Material's
+   default look (indigo toolbar, underlined fields, uppercase buttons).
+
+   Part 1 is hand-written. Part 2 (at the bottom) is generated from the
+   dialog rules of the original general-list.css.
+=================================================================== */
+
+/* ---------- Part 1: dialog shell ---------- */
+
+.gl-dialog {
+    display: flex;
+    flex-direction: column;
+
+    max-width: 92vw;
+    max-height: 90vh;
+
+    border-radius: 18px;
+    overflow: hidden;
+
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(255, 255, 255, 0.65);
+
+    box-shadow:
+    0 25px 60px rgba(0, 0, 0, 0.18),
+    0 10px 25px rgba(0, 0, 0, 0.08);
+
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.gl-dialog.record-dialog {
+    width: 480px;
+}
+
+/* cancels the global  form { display: flex; gap: 10px; margin-bottom: 20px }  rule */
+.gl-dialog .gl-dialog-form {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+
+    min-height: 0;
+    margin: 0;
+    gap: 0;
+}
+
+.gl-dialog .gl-dialog-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    flex: none;
+    min-height: 64px;
+    padding: 0 16px 0 24px;
+
+    background: #3f51b5;
+    color: #ffffff;
+}
+
+.gl-dialog .gl-dialog-header h2 {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-size: 20px;
+    font-weight: 400;
+    color: #ffffff;
+}
+
+.gl-dialog .gl-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    flex: none;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    padding: 0;
+
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    backdrop-filter: none;
+
+    font-size: 18px;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.gl-dialog .gl-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.gl-dialog .gl-dialog-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.gl-dialog .gl-dialog-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+
+    flex: none;
+    padding: 15px 25px 20px 25px;
+}
+
+/* ---------- Buttons (md-button) ---------- */
+
+/* cancels the global "lift + shadow" hover on every button in the dialog */
+.gl-dialog button:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.gl-dialog button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.gl-dialog .md-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-height: 36px;
+    margin: 0;
+    padding: 0 16px;
+
+    background: transparent;
+    border: none;
+    border-radius: 9px;
+    backdrop-filter: none;
+
+    font-size: 14px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.87);
+    white-space: nowrap;
+
+    cursor: pointer;
+}
+
+.gl-dialog .md-btn:hover {
+    background: rgba(158, 158, 158, 0.2);
+}
+
+.gl-dialog .md-btn.raised {
+    background: #ffffff;
+    box-shadow:
+    0 1px 5px rgba(0, 0, 0, 0.2),
+    0 2px 2px rgba(0, 0, 0, 0.14),
+    0 3px 1px -2px rgba(0, 0, 0, 0.12);
+}
+
+.gl-dialog .md-btn.raised:hover {
+    background: #eeeeee;
+    box-shadow:
+    0 1px 5px rgba(0, 0, 0, 0.2),
+    0 2px 2px rgba(0, 0, 0, 0.14),
+    0 3px 1px -2px rgba(0, 0, 0, 0.12);
+}
+
+.gl-dialog .md-btn.raised.primary {
+    background: #3f51b5;
+    color: #ffffff;
+}
+
+.gl-dialog .md-btn.raised.primary:hover {
+    background: #3949ab;
+}
+
+.gl-dialog .md-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    padding: 0;
+
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    backdrop-filter: none;
+
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.gl-dialog .md-icon-btn:hover {
+    background: rgba(158, 158, 158, 0.2);
+}
+
+/* ---------- Fields (md-input-container) ---------- */
+
+.gl-dialog .md-field {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    min-width: 0;
+}
+
+.gl-dialog .md-field label {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.54);
+}
+
+.gl-dialog .md-field:focus-within label {
+    color: #3f51b5;
+}
+
+.gl-dialog .md-field input,
+.gl-dialog .md-field select {
+    flex: none;
+
+    width: 100%;
+    min-height: 0;
+    height: 34px;
+    padding: 2px 2px 4px;
+
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    font-size: 15px;
+    color: rgba(0, 0, 0, 0.87);
+
+    outline: none;
+}
+
+.gl-dialog .md-field input:focus,
+.gl-dialog .md-field select:focus {
+    padding-bottom: 3px;
+
+    background: transparent;
+    border-bottom: 2px solid #3f51b5;
+    box-shadow: none;
+}
+
+/* replaces  md-input-container { margin }  rules of the original css */
+.general-list-dialog .dialog-content > .md-field {
+    margin-bottom: 8px;
+}
+
+.general-list-dialog .column-row .md-field {
+    margin: 0;
+}
+
+/* ---------- Add / Edit Record fields ---------- */
+
+.gl-dialog .record-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+
+    padding: 24px;
+}
+
+.gl-dialog .checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.gl-dialog .checkbox-field input {
+    flex: none;
+
+    width: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+/* ---------- Part 2: rules from the original general-list.css ---------- */
+
+.general-list-dialog {
+    width: 700px;
+    max-width: 90vw;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.general-list-dialog .dialog-content {
+    padding: 25px;
+}
+
+.general-list-dialog .columns-section {
+    margin-top: 15px;
+}
+
+.general-list-dialog .columns-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.general-list-dialog .columns-header h3 {
+    margin: 0;
+}
+
+.general-list-dialog .columns-header p {
+    margin: 4px 0 0;
+    font-size: 13px;
+    opacity: 0.6;
+}
+
+.general-list-dialog .column-builder {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.general-list-dialog .column-row {
+    display: grid;
+    grid-template-columns:
+    minmax(0, 1fr)
+    160px
+    45px;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.general-list-dialog .remove-column {
+    margin: 0;
+}
+
+.general-list-dialog .no-columns {
+    padding: 25px;
+    text-align: center;
+    border-radius: 12px;
+    border: 1px dashed rgba(0, 0, 0, 0.15);
+    opacity: 0.7;
+}
+
+.general-list-dialog .no-columns span {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.general-list-dialog .no-columns button {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .general-list-dialog {
+        width: 95vw;
+        max-width: 95vw;
+    }
+
+    .general-list-dialog .dialog-content {
+        padding: 18px;
+    }
+
+    .general-list-dialog .column-row {
+        grid-template-columns: 1fr;
+    }
+
+}

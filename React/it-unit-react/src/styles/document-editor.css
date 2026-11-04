@@ -1,0 +1,575 @@
+/* ===================================================================
+   Document Editor page (paper-canvas layout)
+   One card: top bar (New, Save, Edit/Preview switch), the formatting
+   toolbar (or the paper controls while previewing), a grey canvas with the
+   page on it, and a status bar.
+   Everything is scoped under .document-editor-page and loaded by
+   DocumentEditorPage.jsx. It deliberately overrides a few global.css rules
+   (button, input, select, h1) and restyles Quill's toolbar.
+=================================================================== */
+
+.document-editor-page {
+    width: 100%;
+}
+
+/* Cancel the global "lift + shadow" hover on every button in this page
+   (this also covers the buttons inside Quill's toolbar) */
+.document-editor-page button:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.document-editor-page button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* The editor stays alive (just hidden) while the preview is open,
+   so the text and the undo history are kept. */
+.document-editor-page .is-hidden {
+    display: none;
+}
+
+/* -----------------------------------
+   Page header
+----------------------------------- */
+
+.document-editor-page .de-page-header {
+    margin-bottom: 16px;
+}
+
+.document-editor-page .de-page-header h1 {
+    margin: 0 0 4px 0;
+    font-size: 26px;
+    color: #1e293b;
+}
+
+.document-editor-page .de-page-header p {
+    margin: 0;
+    font-size: 13px;
+    color: #475569;
+}
+
+/* -----------------------------------
+   Single card
+----------------------------------- */
+
+.document-editor-page .editor-card {
+    width: 100%;
+
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    overflow: hidden;
+}
+
+/* -----------------------------------
+   Top bar
+----------------------------------- */
+
+.document-editor-page .editor-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    padding: 10px 14px;
+
+    border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.document-editor-page .topbar-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.document-editor-page .tool-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    height: 34px;
+    margin: 0;
+    padding: 0 13px;
+
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 10px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    white-space: nowrap;
+
+    cursor: pointer;
+}
+
+.document-editor-page .tool-btn:hover {
+    background: #ffffff;
+}
+
+.document-editor-page .tool-btn.primary {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+.document-editor-page .tool-btn.primary:hover {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+/* Edit | Preview switch */
+
+.document-editor-page .mode-switch {
+    display: inline-flex;
+
+    padding: 3px;
+
+    background: rgba(148, 163, 184, 0.22);
+    border-radius: 10px;
+}
+
+.document-editor-page .mode-switch button {
+    margin: 0;
+    padding: 6px 18px;
+
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+
+    cursor: pointer;
+}
+
+.document-editor-page .mode-switch button.selected,
+.document-editor-page .mode-switch button.selected:hover {
+    background: #ffffff;
+    color: #1e293b;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.14);
+}
+
+/* Row that holds the paper controls while previewing */
+
+.document-editor-page .editor-toolrow {
+    padding: 8px 14px;
+
+    border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+/* -----------------------------------
+   Quill: formatting toolbar
+----------------------------------- */
+
+.document-editor-page #document-editor {
+    display: block;
+
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+}
+
+/* The toolbar menus (headings, colours, alignment) open downwards over the
+   page, so the toolbar has to sit above it. */
+.document-editor-page #document-editor .ql-toolbar.ql-snow {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 2px;
+
+    padding: 6px 12px;
+
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.document-editor-page #document-editor .ql-toolbar.ql-snow::after {
+    display: none;
+}
+
+.document-editor-page #document-editor .ql-toolbar.ql-snow .ql-formats {
+    display: inline-flex;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.document-editor-page #document-editor .ql-toolbar.ql-snow button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    float: none;
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    padding: 5px;
+
+    background: transparent;
+    border: none;
+    border-radius: 7px;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    cursor: pointer;
+}
+
+.document-editor-page #document-editor .ql-toolbar.ql-snow button:hover,
+.document-editor-page #document-editor .ql-toolbar.ql-snow .ql-picker-label:hover,
+.document-editor-page #document-editor .ql-toolbar.ql-snow button.ql-active {
+    background: rgba(148, 163, 184, 0.22);
+}
+
+.document-editor-page #document-editor .ql-toolbar.ql-snow .ql-picker-label {
+    border-radius: 7px;
+}
+
+/* -----------------------------------
+   Quill: the page on the grey canvas
+----------------------------------- */
+
+.document-editor-page #document-editor .ql-container.ql-snow {
+    display: flex;
+    justify-content: center;
+
+    height: auto;
+    padding: 20px;
+
+    background: rgba(148, 163, 184, 0.18);
+    border: none;
+
+    font-family: var(--font-body);
+}
+
+.document-editor-page #document-editor .ql-editor {
+    position: relative;
+
+    width: 100%;
+    max-width: 794px;
+    min-height: 560px;
+    height: auto;
+    padding: 40px 48px;
+    box-sizing: border-box;
+
+    background: #ffffff;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+    overflow-y: visible;
+
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.75;
+    color: #334155;
+}
+
+.document-editor-page #document-editor .ql-editor.ql-blank::before {
+    left: 48px;
+    right: 48px;
+
+    color: #94a3b8;
+    font-style: normal;
+}
+
+/* -----------------------------------
+   Status bar
+----------------------------------- */
+
+.document-editor-page .editor-statusbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    padding: 9px 16px;
+
+    border-top: 1px solid rgba(148, 163, 184, 0.3);
+
+    font-size: 12px;
+    color: #64748b;
+}
+
+.document-editor-page .auto-save-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    white-space: nowrap;
+}
+
+.document-editor-page .auto-save-status.pending {
+    color: #92400e;
+}
+
+.document-editor-page .auto-save-status.saved {
+    color: #166534;
+}
+
+.document-editor-page .auto-save-status.error {
+    color: #b91c1c;
+}
+
+.document-editor-page .auto-save-spinner {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+
+    border: 2px solid rgba(100, 116, 139, 0.25);
+    border-top-color: #475569;
+    border-radius: 50%;
+
+    animation: autoSaveSpin 0.8s linear infinite;
+}
+
+@keyframes autoSaveSpin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* -----------------------------------
+   Paper controls (preview mode)
+----------------------------------- */
+
+.document-editor-page .paper-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.document-editor-page .paper-field {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    font-size: 13px;
+    font-weight: 500;
+    color: #475569;
+}
+
+.document-editor-page .paper-field select,
+.document-editor-page .paper-field input {
+    flex: none;
+
+    width: auto;
+    min-height: 0;
+    height: 34px;
+    padding: 0 10px;
+
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 10px;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    font-family: var(--font-body);
+    font-size: 13px;
+    color: #334155;
+
+    outline: none;
+}
+
+.document-editor-page .paper-field input {
+    width: 76px;
+}
+
+.document-editor-page .paper-field select:focus,
+.document-editor-page .paper-field input:focus {
+    background: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+.document-editor-page .paper-segmented {
+    display: inline-flex;
+
+    padding: 3px;
+
+    background: rgba(148, 163, 184, 0.22);
+    border-radius: 10px;
+}
+
+.document-editor-page .paper-segmented button {
+    margin: 0;
+    padding: 6px 12px;
+
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+
+    cursor: pointer;
+}
+
+.document-editor-page .paper-segmented button.selected,
+.document-editor-page .paper-segmented button.selected:hover {
+    background: #ffffff;
+    color: #1e293b;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.14);
+}
+
+/* -----------------------------------
+   Paper preview (same grey canvas as the editor)
+----------------------------------- */
+
+.document-editor-page .paper-area {
+    position: relative;
+
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+
+    background: rgba(148, 163, 184, 0.18);
+
+    overflow-x: auto;
+}
+
+.document-editor-page .paper-info {
+    margin: 0 0 16px 0;
+
+    text-align: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: #64748b;
+}
+
+/* Hidden copy used to count the pages */
+.document-editor-page .paper-measure {
+    position: absolute;
+    top: 0;
+    left: -100000px;
+
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.document-editor-page .paper-stage {
+    margin: 0 auto;
+}
+
+.document-editor-page .paper-scaler {
+    transform-origin: top left;
+}
+
+.document-editor-page .paper-sheet {
+    position: relative;
+    box-sizing: border-box;
+
+    background: #ffffff;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    box-shadow: 0 6px 22px rgba(15, 23, 42, 0.16);
+}
+
+/* Shows one page of the text; the text container inside is shifted sideways */
+.document-editor-page .paper-window {
+    overflow: hidden;
+}
+
+.document-editor-page .paper-flow.ql-editor {
+    box-sizing: border-box;
+    padding: 0;
+    overflow: visible;
+
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.75;
+    color: #334155;
+}
+
+/* Keep a heading together with the text that follows it */
+.document-editor-page .paper-flow h1,
+.document-editor-page .paper-flow h2,
+.document-editor-page .paper-flow h3 {
+    break-after: avoid;
+}
+
+.document-editor-page .paper-footer {
+    position: absolute;
+    left: 0;
+    right: 0;
+
+    text-align: center;
+    font-family: var(--font-body);
+    font-size: 11px;
+    line-height: 14px;
+    color: #94a3b8;
+
+    pointer-events: none;
+}
+
+/* -----------------------------------
+   Phones and small tablets
+----------------------------------- */
+
+@media (max-width: 600px) {
+    .document-editor-page .de-page-header h1 {
+        font-size: 22px;
+    }
+
+    .document-editor-page .editor-topbar {
+        padding: 8px 10px;
+    }
+
+    .document-editor-page .editor-toolrow {
+        padding: 8px 10px;
+    }
+
+    .document-editor-page .paper-controls {
+        width: 100%;
+    }
+
+    .document-editor-page #document-editor .ql-toolbar.ql-snow {
+        padding: 5px 8px;
+    }
+
+    .document-editor-page #document-editor .ql-container.ql-snow,
+    .document-editor-page .paper-area {
+        padding: 10px;
+    }
+
+    .document-editor-page #document-editor .ql-editor {
+        min-height: 420px;
+        padding: 24px 22px;
+    }
+
+    .document-editor-page #document-editor .ql-editor.ql-blank::before {
+        left: 22px;
+        right: 22px;
+    }
+
+    .document-editor-page .editor-statusbar {
+        padding: 8px 12px;
+    }
+}

@@ -1,0 +1,398 @@
+/* ===================================================================
+   Edit Location dialog
+   Loaded by LocationDetailsDialog.jsx. These are the dialog rules from
+   the original map.css (scoped under .location-dialog because the dialog
+   renders in <body>), plus a few guards against global.css.
+=================================================================== */
+
+.location-dialog button:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.location-dialog .input-group input {
+    flex: none;
+    min-height: 0;
+}
+
+.location-dialog .location-dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 64px;
+}
+
+.location-dialog .location-dialog-header .header-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.location-dialog .close-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    cursor: pointer;
+}
+
+.location-dialog button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.location-dialog {
+    width: 620px;
+    max-width: 90vw;
+    border-radius: 16px;
+    overflow: hidden;
+    background-color: #ffffff;
+    box-shadow:
+    0 20px 50px rgba(0, 0, 0, 0.20);
+}
+
+.location-dialog .location-dialog-header {
+    background: linear-gradient(135deg,
+    #1e3a8a,
+    #2563eb);
+    color: white;
+    padding: 8px 18px;
+}
+
+.location-dialog .location-dialog-header h2 {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 600;
+}
+
+.location-dialog .location-dialog-header span {
+    font-size: 13px;
+    opacity: 0.85;
+}
+
+.location-dialog .close-button {
+    min-width: 40px;
+    width: 40px;
+    height: 40px;
+    margin: 0;
+    border-radius: 50%;
+    color: white !important;
+    font-size: 28px;
+    line-height: 40px;
+    transition: 0.2s ease;
+}
+
+.location-dialog .close-button:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.location-dialog .location-details-dialog {
+    padding: 25px;
+    background-color: #f8fafc;
+}
+
+.location-dialog .location-id-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 15px 18px;
+    margin-bottom: 24px;
+    border-radius: 12px;
+    background-color: #eff6ff;
+    border: 1px solid #dbeafe;
+}
+
+.location-dialog .detail-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background-color: #dbeafe;
+    font-size: 20px;
+}
+
+.location-dialog .detail-label {
+    display: block;
+    margin-bottom: 4px;
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+.location-dialog .location-id-card strong {
+    color: #1e3a8a;
+    font-size: 14px;
+}
+
+.location-dialog .details-section {
+    padding: 20px;
+    margin-bottom: 18px;
+    border-radius: 12px;
+    background-color: white;
+    border: 1px solid #e2e8f0;
+}
+
+.location-dialog .details-section h3 {
+    margin: 0 0 18px;
+    color: #1e293b;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.location-dialog .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    margin-bottom: 16px;
+}
+
+.location-dialog .input-group label {
+    color: #475569;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.location-dialog .input-group input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #1e293b;
+    font-size: 14px;
+    outline: none;
+    transition: 0.2s ease;
+}
+
+.location-dialog .input-group input:focus {
+    border-color: #2563eb;
+    box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.location-dialog .coordinate-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.location-dialog .coordinate-row .input-group {
+    margin-bottom: 0;
+}
+
+.location-dialog .record-section {
+    margin-bottom: 0;
+}
+
+.location-dialog .record-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.location-dialog .record-item {
+    padding: 13px;
+    border-radius: 8px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.location-dialog .record-item strong {
+    display: block;
+    color: #334155;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.location-dialog .location-dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 25px;
+    background-color: white;
+    border-top: 1px solid #e2e8f0;
+}
+
+.location-dialog .cancel-location-button {
+    padding: 10px 18px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background-color: white;
+    color: #475569;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.location-dialog .cancel-location-button:hover {
+    background-color: #f1f5f9;
+    border-color: #94a3b8;
+}
+
+.location-dialog .save-location-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #2563eb;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.location-dialog .save-location-button:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+    box-shadow:
+    0 4px 10px rgba(37, 99, 235, 0.25);
+}
+
+.location-dialog .save-location-button:active {
+    transform: translateY(0);
+    box-shadow: none;
+}
+
+.location-dialog {
+    width: 620px;
+    max-width: calc(100vw - 300px);
+    max-height: 90vh;
+    margin-left: 250px;
+    border-radius: 16px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.location-dialog .location-details-dialog {
+    padding: 25px;
+    background-color: #f8fafc;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.location-dialog .location-dialog-header {
+    flex-shrink: 0;
+}
+
+.location-dialog .location-dialog-actions {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 16px 25px;
+    background-color: white;
+    border-top: 1px solid #e2e8f0;
+}
+
+@media (max-width: 1000px) {
+        .location-dialog {
+        width: 600px;
+        max-width: calc(100vw - 280px);
+        margin-left: 240px;
+    }
+
+}
+
+@media (max-width: 768px) {
+        .location-dialog {
+        width: 90vw;
+        max-width: 90vw;
+        max-height: 88vh;
+        margin-left: 0;
+    }
+
+        .location-dialog .coordinate-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+        .location-dialog .coordinate-row .input-group {
+        margin-bottom: 16px;
+    }
+
+        .location-dialog .record-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+}
+
+@media (max-width: 480px) {
+        .location-dialog {
+        width: calc(100vw - 20px);
+        max-width: calc(100vw - 20px);
+        max-height: 92vh;
+        margin: 10px;
+        border-radius: 12px;
+    }
+
+        .location-dialog .location-details-dialog {
+        padding: 15px;
+    }
+
+        .location-dialog .location-dialog-actions {
+        flex-direction: column-reverse;
+        padding: 12px 15px;
+    }
+
+        .location-dialog .location-dialog-actions button {
+        width: 100%;
+    }
+
+}
+
+.location-dialog {
+    background:
+    rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border:
+    1px solid rgba(255, 255, 255, 0.70);
+    box-shadow:
+    0 25px 60px rgba(15, 23, 42, 0.20);
+}
+
+.location-dialog .location-details-dialog {
+    background:
+    rgba(248, 250, 252, 0.55);
+}
+
+.location-dialog .details-section {
+    background:
+    rgba(255, 255, 255, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border:
+    1px solid rgba(255, 255, 255, 0.65);
+    box-shadow:
+    0 6px 18px rgba(15, 23, 42, 0.04);
+}
+
+.location-dialog .input-group input {
+    background:
+    rgba(255, 255, 255, 0.60);
+    border:
+    1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 10px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.location-dialog .record-item {
+    background:
+    rgba(248, 250, 252, 0.55);
+    border:
+    1px solid rgba(148, 163, 184, 0.15);
+}

@@ -1,0 +1,142 @@
+/* ===================================================================
+   Purple Desert theme
+   Loaded LAST (end of the imports in App.jsx) so it can adjust the
+   other style sheets. Everything that changes because of the video
+   background lives here:
+
+     1. Fonts
+     2. Page background colour (shown while the video loads / if it fails)
+     3. Sidebar
+     4. White text where text sits directly on the background
+     5. More solid cards (light panels read better on a dark video)
+     6. Login page
+     7. Editor text keeps the body font
+
+   Selectors start with "body" on purpose: that makes them win over the
+   page style sheets no matter which one loads first.
+=================================================================== */
+
+:root {
+    /* Inter: clear and neutral, made for screens. Used for all normal text. */
+    --font-body:
+        "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI",
+        Roboto, Arial, sans-serif;
+
+    /* Plus Jakarta Sans: friendly, modern shapes. Used for titles. */
+    --font-heading:
+        "Plus Jakarta Sans Variable", "Plus Jakarta Sans", "Inter Variable",
+        system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+    --card-bg: rgba(248, 246, 255, 0.9);
+    --text-on-dark: #ffffff;
+    --text-on-dark-muted: rgba(255, 255, 255, 0.74);
+}
+
+/* ---------- 1. Fonts ---------- */
+
+html body {
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Buttons and fields do not inherit the page font by themselves */
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+h1,
+h2,
+h3 {
+    font-family: var(--font-heading);
+    letter-spacing: -0.01em;
+}
+
+/* ---------- 2. Page background ---------- */
+
+/* Dark purple, so white titles stay readable before the video appears */
+html,
+html body {
+    background: #080514;
+}
+
+/* ---------- 3. Sidebar ---------- */
+
+body .sidebar {
+    background: rgba(16, 11, 34, 0.84);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+body .nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ---------- 4. White text on the background ---------- */
+
+body .map-page .map-header h1,
+body .general-list-page .gl-page-header h1,
+body .document-editor-page .de-page-header h1 {
+    color: var(--text-on-dark);
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
+}
+
+body .map-page .map-header p,
+body .general-list-page .gl-page-header p,
+body .document-editor-page .de-page-header p {
+    color: var(--text-on-dark-muted);
+    text-shadow: 0 1px 10px rgba(0, 0, 0, 0.45);
+}
+
+body .auth-loading {
+    color: var(--text-on-dark-muted);
+}
+
+/* ---------- 5. Cards ---------- */
+
+/* Nearly solid light panels. The blur is switched off: it cannot be seen
+   through a 90% panel and it makes the video harder to draw. */
+body .staff-page .staff-card,
+body .general-list-page .gl-card,
+body .document-editor-page .editor-card,
+body .map-page .side-card {
+    background: var(--card-bg);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.4);
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+body .map-page .map-pane {
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 18px 50px rgba(0, 0, 0, 0.4);
+}
+
+/* A row highlight that can be seen on a light panel */
+body .staff-page .staff-table tbody tr:hover td,
+body .general-list-page .records-table tbody tr:hover td {
+    background: rgba(99, 102, 241, 0.07);
+}
+
+/* ---------- 6. Login page ---------- */
+
+/* The login page used to paint its own dark background over everything */
+body .login-container {
+    background: transparent;
+}
+
+body .login-card .login-subtitle {
+    color: var(--text-on-dark-muted);
+}
+
+/* ---------- 7. Documents keep the body font ---------- */
+
+/* Headings INSIDE a document are part of the document, not the page */
+.ql-editor h1,
+.ql-editor h2,
+.ql-editor h3 {
+    font-family: inherit;
+    letter-spacing: normal;
+}

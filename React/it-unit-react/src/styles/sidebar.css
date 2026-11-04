@@ -1,0 +1,451 @@
+
+.app-sidebar {
+    --sb-width: 240px;
+    --sb-item-h: 42px;
+    --sb-item-gap: 4px;
+
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+
+    width: var(--sb-width);
+    min-width: var(--sb-width);
+    height: 100vh;
+    padding: 18px 12px;
+
+    /* Nearly solid for now. When the video background reaches the app pages
+       this can become more see-through, e.g. rgba(20, 13, 42, 0.74). */
+    background: rgba(21, 13, 43, 0.50);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+
+    color: #e9e4f5;
+
+    font-family:
+        "Inter Variable", "Inter", system-ui, -apple-system, "Segoe UI",
+        Roboto, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* -----------------------------------
+   Logo
+----------------------------------- */
+
+.app-sidebar .sb-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 0 6px 18px;
+}
+
+.app-sidebar .sb-brand-tile {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    border-radius: 11px;
+    box-shadow: 0 6px 16px rgba(124, 58, 237, 0.45);
+
+    color: #ffffff;
+}
+
+.app-sidebar .sb-brand-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.app-sidebar .sb-brand-title {
+    font-family:
+        "Plus Jakarta Sans Variable", "Plus Jakarta Sans", "Inter Variable",
+        system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: #ffffff;
+}
+
+.app-sidebar .sb-brand-sub {
+    font-size: 11.5px;
+    line-height: 1.3;
+    color: #a79fc0;
+}
+
+.app-sidebar .sb-section {
+    margin: 0 0 8px 8px;
+
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: #8d82ad;
+}
+
+/* -----------------------------------
+   Menu + the glowing highlight
+----------------------------------- */
+
+.app-sidebar .sb-nav {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--sb-item-gap);
+}
+
+/* One highlight for the whole menu. It sits on the item number "--sb-index"
+   (set by Sidebar.jsx) and slides there when the page changes. */
+.app-sidebar .sb-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: var(--sb-item-h);
+
+    background: linear-gradient(
+        90deg,
+        rgba(139, 92, 246, 0.4),
+        rgba(139, 92, 246, 0.1)
+    );
+    border-radius: 11px;
+
+    transform: translateY(
+        calc(var(--sb-index, 0) * (var(--sb-item-h) + var(--sb-item-gap)))
+    );
+    transition:
+        transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        opacity 0.2s ease;
+
+    pointer-events: none;
+}
+
+.app-sidebar .sb-indicator.hidden {
+    opacity: 0;
+}
+
+/* the "light" on the side of the selected item */
+.app-sidebar .sb-indicator-bar {
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 0;
+
+    width: 3px;
+
+    background: #c4b5fd;
+    border-radius: 3px;
+    box-shadow: 0 0 10px #a78bfa;
+}
+
+.app-sidebar .sb-item {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    box-sizing: border-box;
+    height: var(--sb-item-h);
+    padding: 0 14px;
+
+    border-radius: 11px;
+
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    color: #cfc6e8;
+
+    transition:
+        background 0.18s ease,
+        color 0.18s ease;
+}
+
+.app-sidebar .sb-item svg {
+    flex-shrink: 0;
+    color: #a79fc0;
+
+    transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+}
+
+.app-sidebar .sb-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: #ffffff;
+}
+
+.app-sidebar .sb-item:hover svg {
+    transform: translateX(2px) scale(1.1);
+}
+
+.app-sidebar .sb-item.active {
+    color: #ffffff;
+}
+
+.app-sidebar .sb-item.active svg {
+    color: #c4b5fd;
+}
+
+.app-sidebar .sb-item:focus-visible,
+.app-sidebar .sb-logout:focus-visible {
+    outline: 2px solid #a78bfa;
+    outline-offset: 2px;
+}
+
+/* -----------------------------------
+   Signed-in user + Logout
+----------------------------------- */
+
+.app-sidebar .sb-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    margin-top: auto;
+    padding-top: 14px;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.app-sidebar .sb-user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 0 4px;
+}
+
+.app-sidebar .sb-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+
+    background: linear-gradient(135deg, #a78bfa, #7c3aed);
+    border-radius: 50%;
+
+    font-size: 14px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.app-sidebar .sb-user-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.app-sidebar .sb-user-email {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-size: 12.5px;
+    font-weight: 500;
+    color: #e9e4f5;
+}
+
+.app-sidebar .sb-user-sub {
+    font-size: 11px;
+    color: #a79fc0;
+}
+
+/* Logout: full width, soft red (this overrides the global button styles) */
+.app-sidebar .sb-logout {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    box-sizing: border-box;
+    width: 100%;
+    height: 42px;
+    margin: 0;
+    padding: 0;
+
+    background: rgba(248, 113, 113, 0.08);
+    border: 1px solid rgba(248, 113, 113, 0.35);
+    border-radius: 12px;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    color: #fca5a5;
+
+    cursor: pointer;
+
+    transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease;
+}
+
+.app-sidebar .sb-logout:hover {
+    background: rgba(248, 113, 113, 0.18);
+    border-color: rgba(248, 113, 113, 0.6);
+    color: #fecaca;
+    transform: none;
+    box-shadow: none;
+}
+
+/* -----------------------------------
+   Tablets
+----------------------------------- */
+
+@media (max-width: 1000px) {
+    .app-sidebar {
+        --sb-width: 210px;
+
+        padding: 16px 10px;
+    }
+}
+
+/* -----------------------------------
+   Phones: icon-only version
+   Each item is a 44px tile; the name appears as a small label to the
+   right when you hover (or focus) the tile.
+----------------------------------- */
+
+@media (max-width: 750px) {
+    .app-sidebar {
+        --sb-width: 70px;
+        --sb-item-h: 44px;
+        --sb-item-gap: 8px;
+
+        align-items: center;
+        padding: 14px 13px;
+    }
+
+    .app-sidebar .sb-brand {
+        justify-content: center;
+        padding: 0 0 16px;
+    }
+
+    .app-sidebar .sb-brand-text,
+    .app-sidebar .sb-section,
+    .app-sidebar .sb-user {
+        display: none;
+    }
+
+    .app-sidebar .sb-nav {
+        align-items: center;
+    }
+
+    .app-sidebar .sb-indicator {
+        width: 44px;
+
+        background: linear-gradient(
+            135deg,
+            rgba(139, 92, 246, 0.55),
+            rgba(139, 92, 246, 0.18)
+        );
+        border-radius: 12px;
+        box-shadow: 0 6px 16px rgba(124, 58, 237, 0.35);
+    }
+
+    .app-sidebar .sb-indicator-bar {
+        top: 11px;
+        bottom: 11px;
+    }
+
+    .app-sidebar .sb-item {
+        justify-content: center;
+
+        width: 44px;
+        padding: 0;
+
+        background: rgba(255, 255, 255, 0.06);
+        border-radius: 12px;
+    }
+
+    .app-sidebar .sb-item.active,
+    .app-sidebar .sb-item.active:hover {
+        background: transparent;
+    }
+
+    .app-sidebar .sb-item:hover svg {
+        transform: scale(1.1);
+    }
+
+    .app-sidebar .sb-footer {
+        align-items: center;
+    }
+
+    .app-sidebar .sb-logout {
+        width: 44px;
+        height: 44px;
+    }
+
+    /* the names turn into small labels beside the tile */
+    .app-sidebar .sb-label,
+    .app-sidebar .sb-logout-label {
+        position: absolute;
+        top: 50%;
+        left: calc(100% + 14px);
+
+        padding: 6px 10px;
+
+        background: #2a1b4d;
+        border-radius: 8px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+
+        font-size: 12px;
+        font-weight: 500;
+        white-space: nowrap;
+        color: #ffffff;
+
+        opacity: 0;
+        transform: translateY(-50%) translateX(-4px);
+        pointer-events: none;
+
+        transition:
+            opacity 0.15s ease,
+            transform 0.15s ease;
+    }
+
+    .app-sidebar .sb-item:hover .sb-label,
+    .app-sidebar .sb-item:focus-visible .sb-label,
+    .app-sidebar .sb-logout:hover .sb-logout-label,
+    .app-sidebar .sb-logout:focus-visible .sb-logout-label {
+        opacity: 1;
+        transform: translateY(-50%) translateX(0);
+    }
+}
+
+/* People who asked their device for less motion get no sliding or floating */
+@media (prefers-reduced-motion: reduce) {
+    .app-sidebar .sb-indicator,
+    .app-sidebar .sb-item,
+    .app-sidebar .sb-item svg,
+    .app-sidebar .sb-logout,
+    .app-sidebar .sb-label,
+    .app-sidebar .sb-logout-label {
+        transition: none;
+    }
+
+    .app-sidebar .sb-item:hover svg {
+        transform: none;
+    }
+}

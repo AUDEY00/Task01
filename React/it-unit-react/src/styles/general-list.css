@@ -1,0 +1,778 @@
+
+.general-list-page {
+    width: 100%;
+}
+
+/* Cancel the global "lift + shadow" hover on every button in this page */
+.general-list-page button:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+.general-list-page button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* visually hidden, still read by screen readers */
+.general-list-page .gl-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* -----------------------------------
+   Page header
+----------------------------------- */
+
+.general-list-page .gl-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    margin-bottom: 16px;
+}
+
+.general-list-page .gl-page-header h1 {
+    margin: 0 0 4px 0;
+    font-size: 26px;
+    color: #1e293b;
+}
+
+.general-list-page .gl-page-header p {
+    margin: 0;
+    font-size: 13px;
+    color: #475569;
+}
+
+/* -----------------------------------
+   Single card
+----------------------------------- */
+
+.general-list-page .gl-card {
+    width: 100%;
+    padding: 22px 24px;
+
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.general-list-page .gl-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin-bottom: 16px;
+}
+
+.general-list-page .gl-top-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.general-list-page .gl-state {
+    margin: 0;
+    padding: 40px 12px;
+
+    text-align: center;
+    font-size: 14px;
+    color: #64748b;
+}
+
+/* -----------------------------------
+   Buttons
+----------------------------------- */
+
+.general-list-page .gl-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    height: 36px;
+    margin: 0;
+    padding: 0 13px;
+
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 10px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    white-space: nowrap;
+
+    cursor: pointer;
+}
+
+.general-list-page .gl-btn:hover {
+    background: #ffffff;
+}
+
+.general-list-page .gl-btn.primary {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+.general-list-page .gl-btn.primary:hover {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+.general-list-page .gl-icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    padding: 0;
+
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 10px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    color: #334155;
+    cursor: pointer;
+}
+
+.general-list-page .gl-icon-btn:hover {
+    background: #ffffff;
+}
+
+.general-list-page .more-dots {
+    font-size: 20px;
+    line-height: 1;
+}
+
+/* -----------------------------------
+   List switcher (dropdown)
+----------------------------------- */
+
+.general-list-page .list-switcher {
+    position: relative;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.general-list-page .switcher-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    min-width: 250px;
+    max-width: 100%;
+    height: 52px;
+    margin: 0;
+    padding: 0 14px 0 10px;
+
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 12px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    text-align: left;
+    color: #334155;
+    cursor: pointer;
+}
+
+.general-list-page .switcher-btn:hover {
+    background: #ffffff;
+}
+
+.general-list-page .switcher-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+
+    background: #dbeafe;
+    border-radius: 9px;
+    color: #1d4ed8;
+}
+
+.general-list-page .switcher-text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+}
+
+.general-list-page .switcher-name,
+.general-list-page .switcher-meta,
+.general-list-page .option-name,
+.general-list-page .option-meta {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.general-list-page .switcher-name {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: #1e293b;
+}
+
+.general-list-page .switcher-meta {
+    font-size: 12px;
+    line-height: 1.3;
+    color: #64748b;
+}
+
+.general-list-page .switcher-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    z-index: 30;
+
+    width: 320px;
+    max-width: calc(100vw - 40px);
+    padding: 8px;
+
+    background: #ffffff;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+}
+
+.general-list-page .switcher-options {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    max-height: 260px;
+    margin-top: 6px;
+    overflow-y: auto;
+}
+
+.general-list-page .switcher-option {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    margin: 0;
+    padding: 8px 10px;
+
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    backdrop-filter: none;
+
+    text-align: left;
+    cursor: pointer;
+}
+
+.general-list-page .switcher-option:hover {
+    background: #f1f5f9;
+}
+
+.general-list-page .switcher-option.selected {
+    background: #eff6ff;
+}
+
+.general-list-page .option-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.general-list-page .option-meta {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.general-list-page .switcher-empty {
+    margin: 0;
+    padding: 14px 8px;
+
+    text-align: center;
+    font-size: 13px;
+    color: #64748b;
+}
+
+.general-list-page .switcher-footer {
+    margin-top: 6px;
+    padding-top: 6px;
+
+    border-top: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.general-list-page .switcher-new {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    width: 100%;
+    margin: 0;
+    padding: 8px 10px;
+
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    backdrop-filter: none;
+
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    color: #2563eb;
+
+    cursor: pointer;
+}
+
+.general-list-page .switcher-new:hover {
+    background: #eff6ff;
+}
+
+/* -----------------------------------
+   Search box (switcher menu + records toolbar)
+----------------------------------- */
+
+.general-list-page .search-box {
+    position: relative;
+
+    flex: 1;
+    min-width: 150px;
+}
+
+.general-list-page .search-box svg {
+    position: absolute;
+    top: 50%;
+    left: 11px;
+    transform: translateY(-50%);
+
+    color: #64748b;
+    pointer-events: none;
+}
+
+.general-list-page .search-box input {
+    flex: none;
+
+    width: 100%;
+    min-height: 0;
+    height: 36px;
+    padding: 0 12px 0 34px;
+
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 10px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+
+    font-size: 13px;
+    color: #1e293b;
+
+    outline: none;
+}
+
+.general-list-page .search-box input:focus {
+    background: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* -----------------------------------
+   "..." menu (Delete list)
+----------------------------------- */
+
+.general-list-page .actions-menu {
+    position: relative;
+}
+
+.general-list-page .menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 30;
+
+    min-width: 170px;
+    padding: 6px;
+
+    background: #ffffff;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+}
+
+.general-list-page .menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    margin: 0;
+    padding: 9px 10px;
+
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    backdrop-filter: none;
+
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    color: #334155;
+
+    cursor: pointer;
+}
+
+.general-list-page .menu-item:hover {
+    background: #f1f5f9;
+}
+
+.general-list-page .menu-item.danger {
+    color: #dc2626;
+}
+
+.general-list-page .menu-item.danger:hover {
+    background: #fee2e2;
+}
+
+/* -----------------------------------
+   Records toolbar
+----------------------------------- */
+
+.general-list-page .records-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 12px;
+}
+
+/* -----------------------------------
+   Records table (overrides the global table styles)
+----------------------------------- */
+
+.general-list-page .records-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
+
+/* The table's real minimum width is set in the component (it depends on
+   how many columns the list has). */
+.general-list-page .records-table {
+    width: 100%;
+
+    table-layout: auto;
+    border-collapse: collapse;
+
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.general-list-page .records-table thead {
+    background: transparent;
+}
+
+/* "width: auto" beats the global th:nth-child / td:nth-child widths */
+.general-list-page .records-table th {
+    width: auto;
+    padding: 8px 12px;
+
+    background: transparent;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+
+    font-size: 12px;
+    font-weight: 600;
+    text-align: left;
+    text-transform: none;
+    letter-spacing: 0;
+    white-space: nowrap;
+    color: #64748b;
+}
+
+.general-list-page .records-table td {
+    width: auto;
+    padding: 10px 12px;
+
+    background: transparent;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+
+    font-size: 14px;
+    text-align: left;
+    vertical-align: middle;
+    color: #1e293b;
+}
+
+.general-list-page .records-table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.45);
+}
+
+.general-list-page .records-table tbody td:first-child {
+    font-weight: 600;
+}
+
+.general-list-page .records-table .th-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.general-list-page .records-table .align-right {
+    text-align: right;
+}
+
+.general-list-page .records-table .th-inner svg {
+    flex-shrink: 0;
+}
+
+.general-list-page .bool-yes,
+.general-list-page .bool-no {
+    display: inline-flex;
+    align-items: center;
+}
+
+.general-list-page .bool-yes {
+    color: #16a34a;
+}
+
+.general-list-page .bool-no {
+    color: #94a3b8;
+}
+
+/* Action column + icon buttons (beats the global "td:last-child button" rules) */
+.general-list-page .records-table th.col-actions,
+.general-list-page .records-table td.col-actions {
+    width: 84px;
+
+    text-align: right;
+    white-space: nowrap;
+}
+
+.general-list-page .records-table .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+    margin: 0 0 0 2px;
+    padding: 0;
+
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    backdrop-filter: none;
+
+    color: #475569;
+    cursor: pointer;
+}
+
+.general-list-page .records-table .icon-btn:hover {
+    background: rgba(255, 255, 255, 0.85);
+    color: #1e293b;
+}
+
+.general-list-page .records-table .icon-btn.danger {
+    color: #dc2626;
+}
+
+.general-list-page .records-table .icon-btn.danger:hover {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.general-list-page .records-table .records-empty {
+    padding: 36px 12px;
+
+    text-align: center;
+    font-size: 14px;
+    color: #64748b;
+}
+
+/* -----------------------------------
+   Footer: count + paging
+----------------------------------- */
+
+.general-list-page .records-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin-top: 14px;
+
+    font-size: 13px;
+    color: #64748b;
+}
+
+.general-list-page .footer-controls {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.general-list-page .page-indicator {
+    white-space: nowrap;
+}
+
+.general-list-page .page-size {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    font-size: 13px;
+    font-weight: 400;
+    color: #64748b;
+}
+
+.general-list-page .page-size select {
+    height: 32px;
+    padding: 0 8px;
+
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 8px;
+
+    font-size: 13px;
+    color: #334155;
+    cursor: pointer;
+}
+
+.general-list-page .pager-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    padding: 0;
+
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 8px;
+    backdrop-filter: none;
+
+    color: #334155;
+    cursor: pointer;
+}
+
+.general-list-page .pager-btn:hover {
+    background: #ffffff;
+}
+
+/* -----------------------------------
+   No list selected
+----------------------------------- */
+
+.general-list-page .gl-empty-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 56px 16px;
+
+    text-align: center;
+}
+
+.general-list-page .gl-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 64px;
+    height: 64px;
+    margin-bottom: 14px;
+
+    background: #dbeafe;
+    border-radius: 18px;
+    color: #1d4ed8;
+}
+
+.general-list-page .gl-empty-selection h2 {
+    margin: 0 0 6px 0;
+    font-size: 19px;
+    color: #1e293b;
+}
+
+.general-list-page .gl-empty-selection p {
+    max-width: 420px;
+    margin: 0 0 16px 0;
+
+    font-size: 14px;
+    line-height: 1.6;
+    color: #64748b;
+}
+
+/* -----------------------------------
+   Phones and small tablets
+----------------------------------- */
+
+@media (max-width: 700px) {
+    .general-list-page .gl-card {
+        padding: 16px;
+    }
+
+    .general-list-page .gl-page-header h1 {
+        font-size: 22px;
+    }
+
+    .general-list-page .gl-top {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .general-list-page .list-switcher,
+    .general-list-page .switcher-btn {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .general-list-page .switcher-menu {
+        width: 100%;
+    }
+
+    /* New list / Edit list become icon-only (they keep their tooltips) */
+    .general-list-page .gl-btn .btn-label {
+        display: none;
+    }
+
+    .general-list-page .gl-top-actions .gl-btn {
+        width: 36px;
+        padding: 0;
+        justify-content: center;
+    }
+
+    .general-list-page .records-toolbar {
+        flex-wrap: wrap;
+    }
+
+    .general-list-page .records-footer {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

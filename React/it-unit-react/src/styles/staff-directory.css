@@ -1,0 +1,428 @@
+/* ===================================
+   Staff Directory page (Option A layout)
+   Everything is scoped under .staff-page and loaded by
+   StaffDirectoryPage.jsx. It deliberately overrides a few
+   global rules (table, td:last-child button, button:hover).
+=================================== */
+
+.staff-page {
+    width: 100%;
+}
+
+/* -----------------------------------
+   Single card
+----------------------------------- */
+
+.staff-page .staff-card {
+    width: 100%;
+    padding: 22px 24px;
+
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    border-radius: 16px;
+
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.staff-page .staff-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+
+    margin-bottom: 18px;
+}
+
+.staff-page .staff-card-header h1 {
+    margin: 0 0 4px 0;
+    font-size: 26px;
+    color: #1e293b;
+}
+
+.staff-page .staff-subtitle {
+    font-size: 13px;
+    color: #475569;
+}
+
+/* Cancel the global "lift + shadow" hover on every button in this page */
+.staff-page button:hover {
+    transform: none;
+    box-shadow: none;
+}
+
+/* -----------------------------------
+   Toolbar
+----------------------------------- */
+
+.staff-page .staff-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+
+    margin-bottom: 16px;
+}
+
+/* Active / Inactive tabs */
+
+.staff-page .segmented {
+    display: flex;
+    padding: 3px;
+
+    background: rgba(148, 163, 184, 0.22);
+    border-radius: 10px;
+}
+
+.staff-page .segmented button {
+    padding: 6px 14px;
+
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+
+    font-size: 13px;
+    font-weight: 600;
+    color: #475569;
+
+    cursor: pointer;
+}
+
+.staff-page .segmented button.selected {
+    background: #ffffff;
+    color: #1e293b;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.14);
+}
+
+.staff-page .segmented .count {
+    margin-left: 6px;
+    color: #64748b;
+}
+
+/* Search */
+
+.staff-page .search-box {
+    position: relative;
+
+    flex: 1;
+    min-width: 150px;
+}
+
+.staff-page .search-box svg {
+    position: absolute;
+    top: 50%;
+    left: 11px;
+    transform: translateY(-50%);
+
+    color: #64748b;
+    pointer-events: none;
+}
+
+.staff-page .search-box input {
+    width: 100%;
+    height: 36px;
+    padding: 0 12px 0 34px;
+
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 10px;
+    backdrop-filter: none;
+
+    font-size: 13px;
+}
+
+/* Toolbar buttons */
+
+.staff-page .tool-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    height: 36px;
+    padding: 0 13px;
+
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(148, 163, 184, 0.45);
+    border-radius: 10px;
+
+    font-size: 13px;
+    font-weight: 600;
+    color: #334155;
+    white-space: nowrap;
+
+    cursor: pointer;
+}
+
+.staff-page .tool-btn:hover {
+    background: #ffffff;
+}
+
+.staff-page .tool-btn.primary {
+    background: #3b82f6;
+    border-color: #3b82f6;
+    color: #ffffff;
+}
+
+.staff-page .tool-btn.primary:hover {
+    background: #2563eb;
+    border-color: #2563eb;
+}
+
+/* Export dropdown */
+
+.staff-page .export-wrapper {
+    position: relative;
+}
+
+.staff-page .export-menu {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    z-index: 30;
+
+    min-width: 180px;
+    padding: 6px;
+
+    background: #ffffff;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.18);
+}
+
+.staff-page .export-menu button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    width: 100%;
+    padding: 9px 10px;
+
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+
+    font-size: 13px;
+    text-align: left;
+    color: #334155;
+
+    cursor: pointer;
+}
+
+.staff-page .export-menu button:hover {
+    background: #f1f5f9;
+}
+
+/* -----------------------------------
+   Table (overrides the global table styles)
+----------------------------------- */
+
+.staff-page .staff-table-scroll {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.staff-page .staff-table {
+    width: 100%;
+    min-width: 520px;
+
+    table-layout: fixed;
+    border-collapse: collapse;
+
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+}
+
+.staff-page .staff-table thead {
+    background: transparent;
+}
+
+.staff-page .staff-table th {
+    padding: 8px 12px;
+
+    background: transparent;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.35);
+
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: 0;
+    color: #64748b;
+}
+
+.staff-page .staff-table td {
+    padding: 10px 12px;
+
+    background: transparent;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.staff-page .staff-table tbody tr:hover td {
+    background: rgba(255, 255, 255, 0.45);
+}
+
+/* Column widths (beats the global th:nth-child / td:nth-child widths) */
+
+.staff-page .staff-table th:nth-child(1),
+.staff-page .staff-table td:nth-child(1) {
+    width: auto;
+}
+
+.staff-page .staff-table .col-status,
+.staff-page .staff-table td:nth-child(2) {
+    width: 120px;
+}
+
+.staff-page .staff-table .col-actions,
+.staff-page .staff-table td:nth-child(3) {
+    width: 140px;
+}
+
+.staff-page .staff-table th.col-actions {
+    text-align: right;
+}
+
+/* Photo + name + role */
+
+.staff-page .staff-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    min-width: 0;
+}
+
+.staff-page .avatar {
+    flex-shrink: 0;
+
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+.staff-page .avatar-initials {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #dbeafe;
+    color: #1d4ed8;
+
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.staff-page .staff-text {
+    min-width: 0;
+}
+
+.staff-page .staff-name,
+.staff-page .staff-role {
+    margin: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.staff-page .staff-name {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.staff-page .staff-role {
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* Status pill */
+
+.staff-page .status-pill {
+    display: inline-block;
+    padding: 4px 10px;
+
+    border-radius: 20px;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.staff-page .status-pill.active {
+    background: rgba(34, 197, 94, 0.18);
+    color: #166534;
+}
+
+.staff-page .status-pill.inactive {
+    background: rgba(100, 116, 139, 0.18);
+    color: #475569;
+}
+
+/* Icon action buttons (beats the global "td:last-child button" rules) */
+
+.staff-page .staff-table .actions-cell {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.staff-page .staff-table .icon-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 34px;
+    height: 34px;
+    margin: 0 0 0 2px;
+    padding: 0;
+
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+
+    color: #475569;
+    cursor: pointer;
+}
+
+.staff-page .staff-table .icon-btn:hover {
+    background: rgba(255, 255, 255, 0.85);
+    color: #1e293b;
+}
+
+.staff-page .staff-table .icon-btn.danger {
+    color: #dc2626;
+}
+
+.staff-page .staff-table .icon-btn.danger:hover {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+/* Empty state */
+
+.staff-page .staff-table .staff-empty {
+    padding: 28px 12px;
+
+    text-align: center;
+    font-size: 14px;
+    color: #64748b;
+}
+
+/* -----------------------------------
+   Small screens: Import / Export become icon-only
+----------------------------------- */
+
+@media (max-width: 700px) {
+    .staff-page .tool-btn .btn-label {
+        display: none;
+    }
+
+    .staff-page .staff-card {
+        padding: 16px;
+    }
+}
