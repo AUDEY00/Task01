@@ -1,6 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Swal from "sweetalert2";
-import { FilePlus, Save } from "lucide-react";
+import { Compass, FilePlus, Save } from "lucide-react";
+import { driver } from "driver.js";
+import "driver.js/dist/driver.css";
 
 import { useDocumentSaver } from "../hooks/useDocumentSaver";
 import { isEmptyHtml } from "../utils/documentHtml";
@@ -39,6 +41,9 @@ export default function DocumentEditorPage() {
   const { saver, saveState } = useDocumentSaver();
 
   const editorRef = useRef(null);
+  const tourRef = useRef(null);
+  const tourButtonRef = useRef(null);
+  useEffect(() => () => tourRef.current?.destroy(), []);
 
   const [showPreview, setShowPreview] = useState(false);
   const [previewHtml, setPreviewHtml] = useState("");
@@ -213,13 +218,49 @@ export default function DocumentEditorPage() {
     storePaperSettings(next);
   }
 
+  function startEditorTour() {
+    tourRef.current?.destroy();
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const step = (element, title, description) => ({ element, popover: { title, description, side: 'bottom', align: 'start' } });
+    const steps = [
+      { popover: { title: 'Document Editor', description: 'Create, format, save, and preview documents. This tour explains the current view without changing your document.' } },
+      step('#tour-document-new', 'New document', 'Start a fresh document. If you have content, the editor asks for confirmation and attempts to save pending changes before clearing it.'),
+      step('#tour-document-save', 'Save document', 'Save your current document manually. Add some content first; empty documents cannot be saved.'),
+      step('#tour-document-mode', 'Edit and Preview', 'Use Edit to write and format text. Preview shows the paper layout and paper settings. Add content before opening Preview.'),
+      ...(showPreview ? [
+        step('#tour-document-paper', 'Paper settings', 'Choose a paper size, custom dimensions, orientation, and margins. Your paper settings are remembered between visits.'),
+        step('.document-editor-page .paper-area', 'Document preview', 'Review how the content fits across the pages. Return to Edit when you want to change the text.'),
+      ] : [
+        step('#document-editor .ql-toolbar', 'Formatting toolbar', 'Select text to apply bold, italic, underline, headings, lists, text colors, or alignment.'),
+        step('#document-editor .ql-editor', 'Writing area', 'Write your document here. After you stop typing, the editor schedules an automatic save after 10 seconds.'),
+      ]),
+      step('#tour-document-status', 'Document status', 'Check the word and character counts and the current save status here. Review save errors before leaving the page.'),
+      { popover: { title: 'Ready to write', description: showPreview ? 'Return to Edit to continue writing. You can restart this tour at any time.' : 'Open Preview after adding content, then run Guided tour again to explore paper settings.' } },
+    ];
+    tourRef.current = driver({
+      showProgress: true,
+      progressText: '{{current}} of {{total}}',
+      nextBtnText: 'Next', prevBtnText: 'Back', doneBtnText: 'Finish',
+      animate: !reducedMotion, smoothScroll: !reducedMotion,
+      disableActiveInteraction: true,
+      onDestroyed: () => { if (tourButtonRef.current?.isConnected) tourButtonRef.current.focus({ preventScroll: true }); },
+      steps,
+    });
+    tourRef.current.drive();
+  }
+
   return (
     <div className="document-editor-page">
       {/* Page Header */}
       <div className="de-page-header">
+        <div>
         <h1>Document Editor</h1>
 
         <p>Create and format rich-text documents.</p>
+        </div>
+        <button ref={tourButtonRef} type="button" className="tool-btn" onClick={startEditorTour}>
+          <Compass size={16} aria-hidden="true" /> Guided tour
+        </button>
       </div>
 
       <section className="editor-card">
@@ -230,6 +271,7 @@ export default function DocumentEditorPage() {
               type="button"
               className="tool-btn"
               title="Start a new document"
+              id="tour-document-new"
               onClick={handleNewDocument}
             >
               <FilePlus size={16} aria-hidden="true" />
@@ -240,6 +282,7 @@ export default function DocumentEditorPage() {
               type="button"
               className="tool-btn primary"
               title="Save the document"
+              id="tour-document-save"
               onClick={handleSave}
               disabled={manualSaving}
             >
@@ -248,7 +291,7 @@ export default function DocumentEditorPage() {
             </button>
           </div>
 
-          <div className="mode-switch" role="group" aria-label="View">
+          <div className="mode-switch" role="group" aria-label="View" id="tour-document-mode">
             <button
               type="button"
               className={!showPreview ? "selected" : ""}
@@ -271,7 +314,7 @@ export default function DocumentEditorPage() {
 
         {/* Preview: paper controls take the place of the formatting toolbar */}
         {showPreview && (
-          <div className="editor-toolrow">
+          <div className="editor-toolrow" id="tour-document-paper">
             <PaperControls
               settings={paperSettings}
               onChange={handlePaperChange}
@@ -291,7 +334,7 @@ export default function DocumentEditorPage() {
         )}
 
         {/* Status bar */}
-        <div className="editor-statusbar">
+        <div className="editor-statusbar" id="tour-document-status">
           <span className="doc-counts">
             {formatCount(stats.words, "word")} ·{" "}
             {formatCount(stats.characters, "character")}

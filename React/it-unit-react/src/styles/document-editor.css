@@ -36,6 +36,11 @@
 
 .document-editor-page .de-page-header {
     margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
 }
 
 .document-editor-page .de-page-header h1 {

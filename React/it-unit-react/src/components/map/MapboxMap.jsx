@@ -2,6 +2,8 @@ import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import mapboxgl from "mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { buildPopupContent } from "../../utils/mapPopup";
+import { updateShapefileOverlay } from "../../utils/mapboxShapefile";
+import { updateRasterOverlay } from "../../utils/mapboxRaster";
 
 // Token comes from the ".env" file (VITE_MAPBOX_ACCESS_TOKEN).
 mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
@@ -54,7 +56,7 @@ function renderMarkers(map, markersRef, locations) {
 // Ref method:
 //   focusLocation(location) - fly to a location and toggle its popup
 const MapboxMap = forwardRef(function MapboxMap(
-  { locations, mapView, pickedPoint, onPick },
+  { locations, mapView, pickedPoint, onPick, shapefileOverlay = null, rasterOverlay = null },
   ref
 ) {
   const containerRef = useRef(null);
@@ -68,12 +70,16 @@ const MapboxMap = forwardRef(function MapboxMap(
   const locationsRef = useRef(locations);
   const mapViewRef = useRef(mapView);
   const pickedPointRef = useRef(pickedPoint);
+  const overlayRef = useRef(shapefileOverlay);
+  const rasterRef = useRef(rasterOverlay);
 
   useEffect(() => {
     onPickRef.current = onPick;
     locationsRef.current = locations;
     mapViewRef.current = mapView;
     pickedPointRef.current = pickedPoint;
+    overlayRef.current = shapefileOverlay;
+    rasterRef.current = rasterOverlay;
   });
 
   // -----------------------------------
@@ -108,6 +114,8 @@ const MapboxMap = forwardRef(function MapboxMap(
 
       // Apply the selected Mapbox view.
       applyView(map, mapViewRef.current);
+      updateShapefileOverlay(map, overlayRef.current);
+      updateRasterOverlay(map, rasterRef.current);
     });
 
     // Keep the map sized to its container (window resize, layout change).
@@ -123,6 +131,16 @@ const MapboxMap = forwardRef(function MapboxMap(
       mapRef.current = null;
     };
   }, []);
+
+  useEffect(() => {
+    if (mapRef.current && loadedRef.current) {
+      updateShapefileOverlay(mapRef.current, shapefileOverlay);
+    }
+  }, [shapefileOverlay]);
+
+  useEffect(() => {
+    if (mapRef.current && loadedRef.current) updateRasterOverlay(mapRef.current, rasterOverlay);
+  }, [rasterOverlay]);
 
   // -----------------------------------
   // Locations changed -> redraw markers

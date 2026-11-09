@@ -1,0 +1,104 @@
+.map-page .shapefile-upload { margin-bottom:16px; padding:18px; border:1px solid #ddd6ef; border-radius:16px; background:#faf9ff; color:#334155; font-size:13px; box-shadow:0 8px 24px #160b3010; }
+.shapefile-upload .shape-upload-header,.shapefile-upload .shape-upload-title { display:flex; align-items:center; gap:12px; }
+.shapefile-upload .shape-upload-header { flex-wrap:wrap; }
+.shapefile-upload .shape-upload-title { flex:1 1 260px; color:#6d28d9; }
+.shapefile-upload .shape-upload-title h2 { margin:0; color:#231b38; font-size:17px; }
+.shapefile-upload p { margin:6px 0; color:#64748b; line-height:1.5; font-size:12px; }
+.shapefile-upload .shape-upload-button { position:relative; display:inline-flex; align-items:center; gap:8px; padding:10px 15px; border-radius:9px; background:#6d28d9; color:white; font-weight:600; cursor:pointer; overflow:hidden; }
+.shapefile-upload .shape-upload-button input { position:absolute; inset:0; opacity:0; width:100%; cursor:pointer; }
+.shapefile-upload .shape-upload-button:focus-within { outline:3px solid #c4b5fd; outline-offset:3px; }
+.shapefile-upload .is-disabled { opacity:.55; cursor:not-allowed; }
+.shapefile-upload .shape-upload-status { margin-top:12px; padding:10px 12px; border-radius:8px; background:#ede9fe; color:#5b21b6; overflow-wrap:anywhere; }
+.shapefile-upload .shapefile-error { color:#b91c1c; background:#fef2f2; padding:10px; border-radius:8px; }
+.shapefile-upload .shape-explorer { margin-top:12px; }
+.shapefile-upload .shape-explorer summary { cursor:pointer; padding:8px 0; font-weight:650; color:#33234d; }
+.shapefile-upload .shape-explorer summary span { margin-left:12px; color:#64748b; font-size:12px; font-weight:400; }
+.shapefile-upload .shape-explorer-grid { display:grid; grid-template-columns:minmax(230px,300px) minmax(0,1fr); gap:18px; padding-top:12px; }
+.shapefile-upload .shape-colors { padding-right:18px; border-right:1px solid #e2ddee; min-width:0; }
+.shapefile-upload h3 { display:flex; align-items:center; gap:8px; font-size:14px; margin:0 0 8px; color:#33234d; }
+.shapefile-upload .shape-colors > label { display:block; margin:12px 0 6px; font-weight:600; }
+.shapefile-upload select,.shapefile-upload input[type="search"] { width:100%; min-width:0; padding:9px 10px; border:1px solid #d6d1e2; border-radius:8px; background:white; color:#334155; font-size:12px; }
+.shapefile-upload :is(input,select,button,[tabindex]):focus-visible { outline:2px solid #7c3aed; outline-offset:2px; }
+.shapefile-upload .shape-legend-heading { display:flex; align-items:center; justify-content:space-between; gap:8px; margin:12px 0 8px; font-size:12px; }
+.shapefile-upload .shape-legend-heading button { padding:4px 0; background:none; border:0; color:#6d28d9; font-size:11px; cursor:pointer; }
+.shapefile-upload .shape-category-list { max-height:170px; overflow-y:auto; margin-top:6px; }
+.shapefile-upload .shape-category { display:flex; align-items:center; gap:10px; padding:8px 2px; border-bottom:1px solid #eeeaf5; }
+.shapefile-upload input[type="color"] { width:32px; height:32px; padding:2px; border:1px solid #d6d1e2; border-radius:7px; background:white; cursor:pointer; flex-shrink:0; }
+.shapefile-upload .shape-category-text { min-width:0; flex:1; }
+.shapefile-upload .shape-category input[type="checkbox"] { width:16px; height:16px; margin:0; padding:0; accent-color:#6d28d9; flex-shrink:0; cursor:pointer; }
+.shapefile-upload .shape-category-hidden { background:#f1f0f5; }
+.shapefile-upload .shape-visibility-actions { display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.shapefile-upload .shape-visibility-actions button { padding:5px 8px; border:1px solid #d6d1e2; border-radius:6px; background:white; color:#6d28d9; font-size:11px; cursor:pointer; }
+.shapefile-upload .shape-visibility-actions span { color:#64748b; font-size:11px; }
+.shapefile-upload .shape-category strong { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:12px; font-weight:500; }
+.shapefile-upload .shape-category small { display:block; font-size:10px; color:#64748b; margin-top:3px; }
+.shapefile-upload .shape-count { color:#64748b; font-size:11px; }
+.shapefile-upload .shape-data { min-width:0; }
+.shapefile-upload .shape-table-heading { display:flex; justify-content:space-between; align-items:baseline; }
+.shapefile-upload .shape-table-heading > span { color:#64748b; font-size:11px; }
+.shapefile-upload .shape-search { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.shapefile-upload .shape-table-scroll { max-height:265px; overflow:auto; border:1px solid #e2ddee; border-radius:9px; background:white; }
+.shapefile-upload table { width:100%; border-collapse:separate; border-spacing:0; font-size:12px; margin:0; }
+.shapefile-upload th,.shapefile-upload td { padding:10px 12px; text-align:left; border-bottom:1px solid #eeeaf5; white-space:nowrap; max-width:260px; overflow:hidden; text-overflow:ellipsis; color:#334155; }
+.shapefile-upload thead th { position:sticky; top:0; background:#f1eef8; color:#534268; z-index:1; font-weight:600; }
+.shapefile-upload tbody th { font-weight:500; color:#64748b; }
+.shapefile-upload tbody tr:hover { background:#faf8ff; }
+.shapefile-upload .shape-active-field { background:#f1eaff; }
+.shapefile-upload .shape-pagination { display:flex; justify-content:space-between; align-items:center; gap:10px; padding-top:10px; color:#64748b; font-size:11px; }
+.shapefile-upload .shape-pagination > div { display:flex; gap:5px; }
+.shapefile-upload .shape-pagination button { display:grid; place-items:center; width:28px; height:28px; padding:0; border:1px solid #d6d1e2; border-radius:6px; color:#6d28d9; background:white; cursor:pointer; }
+.shapefile-upload .shape-empty { padding:18px; text-align:center; }
+@media (max-width:760px) {
+ .map-page .shapefile-upload { padding:14px; }
+ .shapefile-upload .shape-explorer-grid { grid-template-columns:minmax(0,1fr); }
+ .shapefile-upload .shape-colors { padding:0 0 14px; border-right:0; border-bottom:1px solid #e2ddee; }
+ .shapefile-upload .shape-explorer summary span { display:block; margin:6px 0 0; }
+}
+
+/* Compact launcher and viewport-contained explorer. Native dialog supplies
+   Escape dismissal, focus trapping, and focus restoration to the launcher. */
+.map-page .map-header-actions { display:flex; align-items:center; gap:8px; }
+.map-page .shape-explorer-trigger { position:relative; width:38px; padding:0; justify-content:center; }
+.shape-trigger-dot { position:absolute; top:5px; right:5px; width:6px; height:6px; border-radius:50%; background:#0d9488; }
+.shape-trigger-dot.is-loading { background:#d97706; }
+.shape-trigger-dot.has-error { background:#dc2626; }
+.map-page dialog.shape-dialog { position:fixed; inset:0; margin:auto; padding:0; width:min(760px,calc(100vw - 32px)); max-width:none; height:min(760px,calc(100dvh - 48px)); max-height:calc(100dvh - 48px); overflow:hidden; text-align:left; }
+.map-page dialog.shape-dialog:not([open]) { display:none; }
+.map-page dialog.shape-dialog[open] { display:flex; flex-direction:column; }
+.shape-dialog::backdrop { background:rgba(15,10,30,.4); }
+.shapefile-upload .shape-dialog-heading { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:18px 20px 12px; flex:none; }
+.shapefile-upload .shape-dialog-heading h2 { margin:0; font-size:18px; color:#231b38; }
+.shapefile-upload .shape-dialog-heading p { margin:4px 0 0; }
+.shapefile-upload .shape-tabs { display:flex; gap:6px; padding:0 20px 12px; border-bottom:1px solid #e2ddee; flex:none; }
+.shapefile-upload .shape-tabs button { display:flex; align-items:center; justify-content:center; gap:8px; flex:1; padding:10px; border:0; border-radius:8px; background:#eeeaf5; color:#645573; cursor:pointer; font-size:13px; }
+.shapefile-upload .shape-tabs button[aria-selected="true"] { background:#6d28d9; color:white; }
+.shapefile-upload .shape-dialog-body { padding:16px 20px; overflow:auto; min-height:0; flex:1; overscroll-behavior:contain; }
+.shapefile-upload .shape-explorer-grid { display:block; padding-top:8px; }
+.shapefile-upload .shape-colors { border:0; padding:0; }
+.shapefile-upload [hidden] { display:none !important; }
+.shapefile-upload .shape-category-list { max-height:none; }
+.shapefile-upload .shape-table-scroll { max-height: min(48dvh,420px); }
+@media(max-width:600px) {
+ .map-page dialog.shape-dialog { width:100vw; height:100dvh; max-height:100dvh; border-radius:0; border:0; }
+ .shapefile-upload .shape-dialog-heading,.shapefile-upload .shape-dialog-body { padding:14px; }
+ .shapefile-upload .shape-tabs { padding:0 14px 12px; }
+}
+/* Dialog copy stays readable despite inheriting the page header ancestry. */
+body .map-page .map-header .shape-dialog p { color:#64748b; text-shadow:none; font-size:12px; }
+body .map-page .map-header .shape-dialog p.shapefile-error { color:#b91c1c; }
+
+.shapefile-upload .raster-controls .shape-upload-header { margin:14px 0; }
+.shapefile-upload .raster-options { display:grid; gap:10px; margin:18px 0; }
+.shapefile-upload .raster-options input[type="range"] { width:100%; accent-color:#7c3aed; }
+.shapefile-upload .raster-options input[type="checkbox"] { accent-color:#7c3aed; }
+.shapefile-upload .raster-legend { display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; font-size:12px; }
+.shapefile-upload .raster-legend > div { width:100%; height:14px; border-radius:5px; background:linear-gradient(90deg,#312e81,#14b8a6,#facc15); }
+.shapefile-upload .raster-metadata { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin:16px 0; font-size:12px; }
+.shapefile-upload .raster-metadata dt { color:#64748b; }
+.shapefile-upload .raster-metadata dd { margin:0; overflow-wrap:anywhere; }
+.shapefile-upload .raster-color-settings { margin:16px 0; padding:12px; border:1px solid #d6d1e2; border-radius:9px; min-width:0; }
+.shapefile-upload .raster-color-settings legend { color:#33234d; font-weight:600; padding:0 6px; }
+.shapefile-upload .raster-color-pickers { display:flex; flex-wrap:wrap; gap:18px; }
+.shapefile-upload .raster-color-pickers label { display:flex; align-items:center; gap:8px; }
+.shapefile-upload .raster-color-settings:disabled { opacity:.65; }
+@media(max-width:400px) { .shapefile-upload .shape-tabs button { padding:9px 5px; gap:4px; font-size:11px; } }

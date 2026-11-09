@@ -1,411 +1,356 @@
-# IT Unit Management System (React)
+# IT Unit Management System
 
-A web app for an IT unit. It keeps a **staff directory**, a **map of locations**,
-**custom lists (tables)** and a **rich-text document editor**, all saved in
-Firebase.
+**People, places, GIS data, and documents in one React workspace.**
 
-This project is the React version of an older AngularJS app. Everything the old
-app did is here, and a few bugs from the old app were fixed (see
-[Improvements over the old app](#improvements-over-the-old-app)).
+A practice application for managing a staff directory, saved locations, custom lists, and rich-text documents. Its GIS explorer combines shapefile attributes and GeoTIFF raster previews on a Mapbox map, with editable colors and visibility.
 
----
+**Stack:** React 19 · Vite 8 · Firebase · Mapbox GL JS · Leaflet · Quill
+
+> This README covers `React/it-unit-react`. The older AngularJS application in `Practice01` is a separate project. This is a practice system, not a claim of production readiness or complete desktop-GIS functionality.
+
+[Get started](#quick-start) · [Explore features](#features) · [GIS guide](#gis-explorer) · [Troubleshooting](#troubleshooting)
 
 ## Contents
 
-1. [What is inside](#what-is-inside)
-2. [Pages and functions](#pages-and-functions)
-3. [Tools used](#tools-used)
-4. [Getting started](#getting-started)
-5. [Settings (.env file)](#settings-env-file)
-6. [Where the data is stored](#where-the-data-is-stored)
-7. [Project folders](#project-folders)
-8. [Improvements over the old app](#improvements-over-the-old-app)
-9. [Limits to know about](#limits-to-know-about)
-10. [Troubleshooting](#troubleshooting)
-11. [Credits](#credits)
+- [Features](#features)
+- [Quick start](#quick-start)
+- [Configuration](#configuration)
+- [GIS explorer](#gis-explorer)
+- [Data and persistence](#data-and-persistence)
+- [Architecture](#architecture)
+- [Project structure](#project-structure)
+- [Development and verification](#development-and-verification)
+- [Deployment](#deployment)
+- [Current limitations](#current-limitations)
+- [Troubleshooting](#troubleshooting)
+- [Possible future improvements](#possible-future-improvements)
+- [Assets and acknowledgments](#assets-and-acknowledgments)
 
----
+## Features
 
-## What is inside
+| Module | Route | Capabilities |
+| --- | --- | --- |
+| Login | `/login` | Firebase email/password sign-in, circular purple glass-style form, animated aurora background and pointer highlight |
+| Staff Directory | `/` | Add, edit, activate/deactivate, search and delete staff; profile photos; spreadsheet import; Excel, CSV and PDF export |
+| Location Map | `/map` | Mapbox/Leaflet switching, saved markers, location search, coordinate picking, add/edit/delete locations |
+| GIS Explorer | Within `/map` | Shapefile ZIP upload, attributes, DN groups, category colors and visibility; GeoTIFF upload, raster colors and opacity |
+| General Lists | `/general-lists` | Custom tables with text, number, date and boolean columns; record editing, search and pagination |
+| Document Editor | `/document-editor` | Rich text, manual save, autosave, paper settings, paginated preview, word and character counts |
 
-| Page | Address | What it is for |
-|------|---------|----------------|
-| Login | `/login` | Sign in with email and password |
-| Staff Directory (Dashboard) | `/` | Add, edit and manage staff |
-| Location Map | `/map` | Pin places on a map and keep a list of them |
-| General Lists | `/general-lists` | Make your own tables with your own columns |
-| Document Editor | `/document-editor` | Write and format documents, preview them on paper |
+All workspace routes require sign-in. Staff Directory, Location Map, General Lists, and Document Editor include Driver.js guided tours. Layouts adapt to smaller screens, and the explorer opens from a compact layers icon.
 
-Every page except Login needs you to be signed in. If you are not signed in, the
-app sends you to the login page. A sidebar on the left moves you between the
-pages.
+<details>
+<summary><strong>Staff Directory workflow</strong></summary>
 
----
+Create a staff record with a name, role and optional photo. New records begin as Inactive; activate them when needed. Profile images upload to Cloudinary, while record details and image references are stored in Firestore.
 
-## Pages and functions
+Import Excel or CSV data with **Full Name** and **Role** headers on the same row. Imported records also begin as Inactive. Export tools provide Excel, CSV and PDF output. Use disposable records when practicing imports or deletion.
 
-### Login
+</details>
 
-- Sign in with an **email and password** (Firebase Authentication).
-- Shows a clear message if something is missing or wrong.
-- The form floats over a looping **Purple Desert video** background. People who
-  have "reduce motion" turned on, data-saver on, or a very slow connection see a
-  still picture instead. Phones get a smaller video file.
-- There is no sign-up page. Create the user accounts in the Firebase console
-  (see [Getting started](#getting-started)).
+<details>
+<summary><strong>General Lists workflow</strong></summary>
 
-### Sidebar (on every page after login)
+Create a list, define its columns, then add records using the generated form. Switch between lists, edit their structure, and search or paginate their rows. The selected list is remembered in the browser. Each list stores its columns and records together in one Firestore document.
 
-- Dark purple panel with a **glowing light on the page you are on**. The light
-  slides to the new page when you change page.
-- Shows who is signed in, and a **Logout** button.
-- On phones it shrinks to a column of **icon tiles**. Hover or tap a tile to see
-  its name.
-- With "reduce motion" turned on, nothing slides.
+</details>
 
-### Staff Directory (Dashboard)
+<details>
+<summary><strong>Document Editor workflow</strong></summary>
 
-- **Active / Inactive tabs** with a count on each. New staff start as *Inactive*.
-- **Search** by name or role.
-- **Add staff**: full name, role and an optional profile photo. The photo is
-  uploaded to Cloudinary and its link is saved with the staff member.
-- **View details**: change the name, role or photo. The status can be changed
-  with the activate / deactivate button.
-- **Activate / Deactivate** a staff member (moves them between the two tabs).
-- **Delete** a staff member (asks first).
-- **Import** staff from an Excel or CSV file. The file needs a **Full Name** and a
-  **Role** column on the same row. The app tells you exactly what is wrong if it
-  cannot read the file. Imported staff start as *Inactive*.
-- **Export** all staff to **Excel**, **CSV** or **PDF**.
-- Staff without a photo show their **initials**.
-- **Guided Tour** button that explains the page step by step.
+Format text with headings, lists, colors, alignment, bold, italic and underline. Use Save or allow autosave to run after 10 seconds of inactivity. During continuous editing, the saver schedules a save after at most 60 seconds and retries failed autosaves up to three times. Saves update the same document ID within the current editing session.
 
-### Location Map
+Switch to Preview to inspect pagination. Choose paper size, orientation and margins; custom dimensions are supported. The preview displays up to 100 pages. New starts a fresh editing session and attempts to save pending content first. Check the save status before leaving; network-dependent writes are not a guarantee of recovery after a browser closes.
 
-- Two map engines you can switch between: **Mapbox** and **Leaflet**. Both show
-  the same saved locations. Your choice is remembered.
-- With Mapbox you can jump between **Palawan**, **Philippines** and **World**
-  views. This is remembered too.
-- **Click (or tap) the map** to pick a point. A temporary marker appears and the
-  latitude and longitude are filled in for you. You can also type them.
-- **Add a location**: name, latitude, longitude. The app checks the values
-  (latitude between -90 and 90, longitude between -180 and 180, nothing empty).
-- **Locations list** in the side panel: newest first, with **search** (by name or
-  coordinates) and a **Show more** button (50 at a time), so it stays fast with
-  many locations.
-- **Click a location** in the list and the map flies to it and opens its popup.
-- **Edit** (name and coordinates) and **Delete** (asks first).
-- Markers show a popup with the name and coordinates.
-- On phones the list moves under the map. After picking a point, a small bar on
-  the map takes you to the form.
-- **Guided Tour** button.
+There is currently no saved-document browser or reopen action. Saving to Firestore does not automatically restore that document after reloading.
 
-### General Lists
+</details>
 
-Your own tables. Each list has a **name**, **columns** and **records** (rows).
+## Quick start
 
-- **List switcher** at the top: shows the open list, and opens a menu with a
-  search box listing every list. The list you used last is opened again next time.
-- **New list**: give it a name and add columns. Each column has a name and a type:
-  **Text**, **Number**, **Date** or **Yes/No** (boolean). Column names must be
-  different from each other.
-- **Edit list**: rename the list, rename columns, add columns, delete columns,
-  change types. The records are carried over safely: each column keeps its own
-  data.
-- **Delete list** (in the **...** menu, asks first, removes its records too).
-- **Add record**: the form is built from the columns (text box, number box, date
-  picker, checkbox).
-- **Edit record** and **Delete record** (asks first).
-- **Search records** across all columns, and **paging** (10, 25, 50 or 100 rows
-  per page).
-- Column headers show a small icon for the type. Yes/No values show a check or a
-  dash. Dates read like *Mar 4, 2021*.
-- **Guided Tour** button.
+### 1. Prepare the environment
 
-### Document Editor
+Use **Node.js 24.x** and npm for this project. The installed toolchain was inspected with Node 24; older Node versions may not meet dependency engine requirements. Use a modern browser with WebGL support for Mapbox.
 
-- A rich-text editor (**Quill**) on a white page. Tools: bold, italic, underline,
-  headings 1 to 3, numbered and bullet lists, text colour, and alignment (left,
-  centre, right, justify).
-- **Auto-save**: 10 seconds after you stop typing, the document is saved to
-  Firebase. A status at the bottom shows *Unsaved changes*, *Saving draft...*,
-  *Saved at 3:45 PM* or *Couldn't save draft*. If you type without pausing, it
-  still saves at least once a minute. A failed auto-save is tried again.
-- **One document, one record**: editing again after an auto-save updates the
-  same document. It never creates a copy (see the improvements list).
-- **Save** (manual), **New** (starts a fresh document; your current one stays
-  saved, and your last few seconds of typing are saved first).
-- Leaving the page saves what is still waiting. Closing the browser tab with
-  unsaved changes asks you first.
-- **Word and character count** at the bottom.
-- **Preview** switch (Edit | Preview): shows the document on paper, **split into
-  real pages** ("Page 1 of 3") with lines never cut in half.
-  - Paper: **A3, A4, A5, Letter, Legal, Folio, Tabloid, Executive** or **Custom**
-    (30 to 1500 mm, or inches).
-  - **Portrait** or **Landscape**.
-  - Margins: **Narrow, Normal, Wide**.
-  - Your paper choices are remembered. On a small screen the page shrinks to fit.
-  - The first 100 pages are shown for very long documents.
+From the repository root:
 
----
-
-## Tools used
-
-| Tool | What it does here |
-|------|-------------------|
-| React + Vite | The app and the dev server |
-| react-router-dom | Moves between pages |
-| firebase | Sign-in (Authentication) and the database (Firestore) |
-| Cloudinary | Stores staff profile photos (uploaded from the browser) |
-| mapbox-gl | The Mapbox map |
-| leaflet | The Leaflet map (OpenStreetMap tiles) |
-| quill (2.0.3) | The document editor |
-| sweetalert2 | Pop-up messages and confirmations |
-| driver.js | The Guided Tours |
-| xlsx | Excel / CSV import and export |
-| jspdf + jspdf-autotable | PDF export |
-| lucide-react | Icons |
-| @fontsource-variable/inter, @fontsource-variable/plus-jakarta-sans | Fonts (login page and sidebar) |
-
----
-
-## Getting started
-
-You need **Node.js 20 or newer**.
-
-1. **Install the packages** (inside the project folder):
-
-   ```bash
-   npm install
-   ```
-
-   If a package is ever missing, this installs everything the app uses:
-
-   ```bash
-   npm install firebase react-router-dom sweetalert2 xlsx jspdf jspdf-autotable driver.js lucide-react mapbox-gl@3 leaflet@1.9.4 quill@2.0.3 @fontsource-variable/inter @fontsource-variable/plus-jakarta-sans
-   ```
-
-2. **Create your settings file.** Copy `.env.example` to a new file named `.env`
-   and fill in the values (see [Settings](#settings-env-file)).
-
-3. **Create at least one user** in Firebase: *Firebase console > Authentication >
-   Sign-in method > turn on Email/Password*, then *Users > Add user*.
-
-4. **Make sure the video files are in place**: `public/videos/` must contain
-   `purple-desert-1080.mp4`, `purple-desert-720.mp4` and
-   `purple-desert-poster.jpg`.
-
-5. **Start the app:**
-
-   ```bash
-   npm run dev
-   ```
-
-   Open the address it prints (usually `http://localhost:5173`).
-
-Other commands:
-
-| Command | What it does |
-|---------|--------------|
-| `npm run dev` | Starts the app for development |
-| `npm run build` | Makes the finished app in the `dist` folder |
-| `npm run preview` | Tries the finished app on your computer |
-
-**Publishing:** upload the `dist` folder to any web host. Because the app uses
-page addresses like `/map`, set the host to open `index.html` for every address
-(called a "single-page app" or "rewrite" setting). Otherwise refreshing on `/map`
-shows "not found".
-
----
-
-## Settings (.env file)
-
-The `.env` file holds your keys. **Never share it or upload it to GitHub** (keep
-`.env` in `.gitignore`). After you change it, **stop and start `npm run dev`
-again**.
-
-| Setting | Where to find it |
-|---------|------------------|
-| `VITE_FIREBASE_API_KEY` | Firebase console > Project settings > Your apps |
-| `VITE_FIREBASE_AUTH_DOMAIN` | same place |
-| `VITE_FIREBASE_PROJECT_ID` | same place |
-| `VITE_FIREBASE_STORAGE_BUCKET` | same place |
-| `VITE_FIREBASE_MESSAGING_SENDER_ID` | same place |
-| `VITE_FIREBASE_APP_ID` | same place |
-| `VITE_CLOUDINARY_CLOUD_NAME` | Cloudinary dashboard |
-| `VITE_CLOUDINARY_UPLOAD_PRESET` | Cloudinary > Settings > Upload > Upload presets (must be an **unsigned** preset) |
-| `VITE_MAPBOX_ACCESS_TOKEN` | Mapbox account > Tokens (the public `pk.` token) |
-
-**Protect your data:** the app's pages need a signed-in user, but the real
-protection is the **Firestore rules**. A simple, safe starting point is to allow
-only signed-in users:
-
-```
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if request.auth != null;
-    }
-  }
-}
+```powershell
+cd React/it-unit-react
+npm ci
 ```
 
----
+`npm ci` installs the versions in `package-lock.json`. Use `npm install` when intentionally changing dependencies and commit the resulting lockfile changes.
 
-## Where the data is stored
+### 2. Configure services
 
-Everything is in **Firestore**, in four collections:
+Copy the provided template **only if you do not already have a `.env` file**:
 
-| Collection | One document is... | Main fields |
-|------------|--------------------|-------------|
-| `staff` | one staff member | `id`, `name`, `role`, `status` ("Active" or "Inactive"), `profileUrl`, `cloudinaryPublicId` |
-| `locations` | one place on the map | `id` (like `loc_1700000000000`), `name`, `latitude`, `longitude`, `dateCreated`, `dateModified` |
-| `generalLists` | one list | `name`, `columns` (each has `name` and `type`), `records` (each record is a set of values by column name) |
-| `documents` | one document | `content` (the formatted text as HTML), `dateCreated`, `dateModified` |
-
-The document ids look like `doc_...` and `list_...`. Profile photos are not in
-Firestore: only their link is.
-
-The app also remembers a few choices in the browser (not in Firebase): the map
-engine and view, the last open list, and the paper settings.
-
----
-
-## Project folders
-
+```powershell
+Copy-Item .env.example .env
 ```
+
+Fill in your own values using the [configuration reference](#configuration). In your Firebase project, enable Email/Password authentication, create a test account, and provision Firestore with rules appropriate to your test users. There is no public registration form in the app.
+
+### 3. Run the app
+
+```powershell
+npm run dev
+```
+
+Open the local URL printed by Vite, sign in, and use the sidebar to navigate. Firebase-backed features and online map tiles require network access.
+
+### 4. Try the GIS sample
+
+Open **Location Map → Mapbox → layers icon → Raster → Load Agathis sample**. The bundled amphibians vector layer loads automatically when the map page opens. Hide its DN groups if they obscure the raster beneath it.
+
+## Configuration
+
+The app reads these variables from `.env` at build/dev-server startup. Restart the dev server after changing them; deployed builds must be rebuilt.
+
+| Variable | Purpose |
+| --- | --- |
+| `VITE_FIREBASE_API_KEY` | Firebase web-app configuration |
+| `VITE_FIREBASE_AUTH_DOMAIN` | Authentication domain |
+| `VITE_FIREBASE_PROJECT_ID` | Firestore/Firebase project |
+| `VITE_FIREBASE_STORAGE_BUCKET` | Firebase configuration field; current GIS uploads do not use Firebase Storage |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Firebase web-app configuration |
+| `VITE_FIREBASE_APP_ID` | Firebase web-app identifier |
+| `VITE_MAPBOX_ACCESS_TOKEN` | Public Mapbox access token for the Mapbox view |
+| `VITE_CLOUDINARY_CLOUD_NAME` | Cloudinary account used for profile images |
+| `VITE_CLOUDINARY_UPLOAD_PRESET` | Unsigned upload preset used for profile images |
+
+Firebase configuration is needed for sign-in and saved records. Mapbox settings are needed for Mapbox and GIS visualization; Cloudinary settings are needed when uploading profile photos.
+
+All `VITE_` values are included in client-side code. They are not a place for service-account credentials, private API keys or Cloudinary API secrets. The local `.env` is ignored by Git; the example contains placeholders only.
+
+Route protection controls navigation, while Firestore rules control database access. The current services access shared collections without owner filtering; they do not implement role-based permissions or per-user data isolation. No deployed Firestore rules are supplied or verified by this repository.
+
+## GIS explorer
+
+The layers icon opens a dialog with **Vector**, **Attributes**, and **Raster** tabs. Escape closes the dialog; arrow keys switch between its tabs. On small screens, the dialog uses the available viewport and scrolls internally.
+
+### Vector: shapefile ZIP
+
+1. Select Mapbox and open **GIS explorer → Vector**.
+2. Choose **Upload ZIP** or **Replace ZIP**.
+3. Include matching `.shp`, `.shx`, `.dbf`, and `.prj` files; include `.cpg` when available.
+4. Inspect values in **Attributes** and choose the field used for styling in **Vector**.
+5. Set colors or uncheck categories to show only the features you need.
+
+Supported geometries include points, lines, polygons and their multi-part equivalents. Multiple datasets inside one ZIP combine into one overlay; uploading another ZIP replaces that overlay rather than adding a separate layer. Without `.prj`, coordinates must already be WGS84 longitude/latitude.
+
+The **DN** field defaults to ranges of ten, such as 0–9, 10–19 and 20–29. Individual-value styling is also available. Each category has a color and visibility control. Hiding categories changes the map, not the attribute records. Color and visibility changes preserve the map position.
+
+**Bundled default:** `public/shapefiles/amphibians-priority1.zip`, containing 4,742 polygons. It loads on each map-page visit. Remove overlay hides it for that visit; Load default restores it.
+
+### Raster: GeoTIFF
+
+1. Open **GIS explorer → Raster**.
+2. Upload a `.tif`/`.tiff`, or select **Load Agathis sample**.
+3. Adjust visibility and opacity.
+4. Choose Low, Lower middle, Upper middle and High colors, then **Apply colors**.
+5. Use **Reset colors** to restore the default scale.
+
+| Stop | Default color | Position in preview value range |
+| --- | --- | --- |
+| Low | Blue `#2563eb` | 0% |
+| Lower middle | Green `#16a34a` | 33.33% |
+| Upper middle | Yellow `#facc15` | 66.67% |
+| High | Red `#dc2626` | 100% |
+
+Colors blend smoothly between the four stops. The legend reflects applied colors; picker edits remain pending until Apply. A higher value means higher priority only when that interpretation is valid for the source dataset.
+
+The reader displays the **first numeric band**, makes NoData/nonfinite pixels transparent, and derives the legend from valid preview values. It supports north-up, pixel-area rasters in **EPSG:4326** or **EPSG:3857**. Other coordinate systems, rotations and point-sampled grids require conversion before upload.
+
+**Bundled sample:** `public/rasters/Agathis_sp_GEE.tif`, 529 × 620 pixels, one band, EPSG:4326, NoData `-9999`. It remains available with the app but loads only when requested. One raster can be displayed alongside the vector overlay.
+
+### Preview limits and performance
+
+| Limit | Shapefile | Raster |
+| --- | --- | --- |
+| Input size | 20 MB ZIP | 20 MB TIFF |
+| Source complexity | 50,000 features; 500,000 coordinates | 8 million pixels; 16 bands |
+| Additional raster bound | — | 128 MB estimated decoded sample data |
+| Preview resolution | Original accepted geometry | Up to 1,024 pixels per side |
+| Processing timeout | 30 seconds | 60 seconds for loading; 30 seconds for recoloring |
+
+Parsing runs in workers. Raster recoloring uses cached, projected preview values and a separate worker, so it does not reread the TIFF or recreate the map. The normalized raster cache uses at most 4 MiB; decoding, image generation, GPU textures and other app data require additional memory.
+
+Overlay rendering is currently **Mapbox-only**. Switching to Leaflet retains the current overlay state but hides it until Mapbox is selected again.
+
+## Data and persistence
+
+| Data | Stored where | Behavior |
+| --- | --- | --- |
+| User accounts | Firebase Authentication | Used for email/password sign-in |
+| Staff | Firestore `staff` | Name, role, status, ID and profile-image references |
+| Saved locations | Firestore `locations` | Name, coordinates, ID and creation/modification timestamps |
+| General lists | Firestore `generalLists` | Name, columns and records array in each list document |
+| Document content | Firestore `documents` | HTML content and timestamps; saved through the current editor session |
+| Profile images | Cloudinary | Image URL/public ID referenced by staff records |
+| Map provider/view, selected list, paper settings | Browser local storage | Device/browser preferences |
+| Uploaded GIS files and styling | Page memory | Cleared when leaving/reloading the map page |
+| Bundled GIS samples | `public/` files | Included in the website build |
+
+GIS uploads are decoded locally; the current uploader does not send them to Firestore, Firebase Storage or a Mapbox tileset service. This does not make the base map offline: map styles and tiles still come from their providers.
+
+Files bundled under `public/` are publicly downloadable when deployed, even though the application routes require login. Bundle only data intended for that access model.
+
+## Architecture
+
+```mermaid
+flowchart LR
+    User[Browser user] --> UI[React pages and components]
+    UI --> Auth[Firebase Authentication]
+    UI --> Services[Service layer]
+    Services --> DB[Firestore]
+    Services --> Images[Cloudinary profile images]
+    UI --> Maps[Mapbox or Leaflet]
+    Files[Local GIS files and bundled samples] --> Workers[Parsing workers]
+    Workers --> State[In-memory overlays]
+    State --> Mapbox[Mapbox GIS layers]
+    State --> Colors[Cached raster recoloring worker]
+    Colors --> Mapbox
+```
+
+The frontend talks directly to configured services; there is no custom backend server in this React project. Hooks manage subscriptions and state, service modules handle persistence, and GIS utilities isolate parsing and map updates. Markdown viewers without Mermaid support may display the diagram as code.
+
+## Project structure
+
+```text
 it-unit-react/
-├── index.html
-├── .env.example                  Copy to .env and fill in
+├── .env.example              Configuration placeholders
+├── package.json              Commands and dependency declarations
+├── package-lock.json         Locked dependency versions
 ├── public/
-│   └── videos/                   Login background (video x2 + still picture)
-└── src/
-    ├── main.jsx                  Starts the app
-    ├── App.jsx                   The list of pages (routes)
-    ├── firebase/config.js        Connects to Firebase
-    ├── context/                  Remembers who is signed in
-    ├── hooks/                    Live data and the document saver
-    │   ├── useAuth.js
-    │   ├── useStaff.js
-    │   ├── useLocations.js
-    │   ├── useGeneralLists.js
-    │   └── useDocumentSaver.js
-    ├── pages/                    One file per page
-    │   ├── LoginPage.jsx
-    │   ├── StaffDirectoryPage.jsx
-    │   ├── MapPage.jsx
-    │   ├── GeneralListPage.jsx
-    │   └── DocumentEditorPage.jsx
-    ├── components/               The pieces the pages are made of
-    │   ├── layout/               Sidebar, page frame, login check, video background
-    │   ├── staff/                Staff toolbar, table and dialogs
-    │   ├── map/                  Mapbox, Leaflet, location list, add form, edit dialog
-    │   ├── generalList/          List switcher, records table, list and record dialogs
-    │   └── documentEditor/       Editor, paper preview, paper controls, save status
-    ├── services/                 Talks to Firebase, Cloudinary and Excel/PDF
-    │   ├── staffService.js, locationService.js, generalListService.js, documentService.js
-    │   ├── cloudinaryService.js
-    │   ├── importService.js, exportService.js
-    │   └── documentSaver.js      The auto-save logic (see below)
-    ├── utils/                    Small helper functions (no Firebase, no screen)
-    └── styles/                   One style sheet per page, plus the shared ones
+│   ├── rasters/              Bundled Agathis TIFF
+│   ├── shapefiles/           Bundled amphibians ZIP
+│   └── videos/               Background videos and poster
+├── src/
+│   ├── App.jsx               Routes and authenticated workspace
+│   ├── main.jsx              React and browser-router entry point
+│   ├── components/           Map, editor, staff, list and layout components
+│   ├── context/              Authentication provider
+│   ├── firebase/             Firebase initialization
+│   ├── hooks/                Data subscriptions and document saving
+│   ├── pages/                Login and workspace screens
+│   ├── services/             Firestore, image, import and export operations
+│   ├── styles/               Theme and component styles
+│   └── utils/                GIS readers, workers, styling and other helpers
+└── tests/
+    ├── fixtures/             Synthetic shapefile data
+    ├── *.test.mjs            Node-based GIS tests
+    ├── SHAPEFILE-TESTING.md   Vector acceptance checklist
+    └── RASTER-TESTING.md      Raster acceptance checklist
 ```
 
-**How the pieces fit together:** a **page** shows **components**, gets its live
-data from a **hook**, and the hook asks a **service** to read or write Firebase.
-The rules (checks, search, paging, paper sizes, auto-save) live in **utils** and
-**documentSaver.js**, away from the screen, which makes them easy to test.
+Key implementation references:
 
-**Where do I change...?**
+- [Routes](src/App.jsx) and [Firebase configuration](src/firebase/config.js)
+- [Map page](src/pages/MapPage.jsx) and [GIS explorer](src/components/map/ShapefileUpload.jsx)
+- [Raster controls](src/components/map/RasterUpload.jsx) and [color interpolation](src/utils/rasterColors.js)
+- [Shapefile validation](src/utils/shapefileData.js) and [GeoTIFF processing](src/utils/rasterData.js)
+- [Document saving](src/services/documentSaver.js)
 
-| I want to change | Look in |
-|------------------|---------|
-| A collection name or how data is saved | `src/services/` |
-| A page's layout | `src/pages/` and `src/components/<page name>/` |
-| Colours and spacing of a page | `src/styles/` (one file per page) |
-| The sidebar | `src/components/layout/Sidebar.jsx` and `src/styles/sidebar.css` |
-| The login background | `src/components/layout/VideoBackground.jsx`, `src/styles/login-video.css` and `public/videos/` |
-| The auto-save timing | `src/services/documentSaver.js` (`delay`, `maxWait`, `maxRetries`) |
-| The paper sizes | `src/utils/paper.js` |
-| The map start position and views | `src/components/map/MapboxMap.jsx`, `LeafletMap.jsx` |
+## Development and verification
 
----
+Run these commands from `React/it-unit-react`:
 
-## Improvements over the old app
+| Command | Purpose |
+| --- | --- |
+| `npm run dev` | Start the Vite development server |
+| `npm run lint` | Run ESLint |
+| `node --test tests/*.test.mjs` | Run the GIS automated test suite |
+| `npm run build` | Create the production bundle in `dist/` |
+| `npm run preview` | Serve the built bundle locally for inspection |
 
-While moving to React, these problems in the old app were found and fixed:
+There is no `npm test` script at present; use the Node command above.
 
-- **Document editor made duplicate documents.** The old app only remembered a new
-  document's id after Firebase replied, so on a slow connection the next
-  auto-save (or a click on Save) created another document. Now the id is chosen
-  the moment the first save starts and never changes, every save goes to that
-  same document, and saves run one at a time.
-- **General Lists: deleting a column scrambled the other columns' data.** The old
-  app matched columns by position. Now each column is tracked by its own name, so
-  deleting, renaming and even swapping columns is safe.
-- **General Lists: an unticked Yes/No box could not be saved.** Unticked now means
-  "no".
-- **General Lists: duplicate column names** were allowed when creating a list.
-  Now they are not.
-- **Map: an empty latitude and longitude was saved as 0, 0.** Now the app asks
-  for real coordinates.
-- **Map: location names could inject HTML into the popup.** Popups now show the
-  name as plain text.
-- **Staff import: ids could repeat** during a big import and overwrite records.
-  Ids are now always unique.
-- **Document preview** now uses the editor's own styles, so lists and alignment
-  look the same as in the editor, and it adds paper sizes.
-- Pop-up dialogs, the tours, the sidebar, fonts and the login video are new or
-  rebuilt to match the dark purple look.
+The latest GIS implementation verification passed **19 tests**, lint and a production build. Tests cover actual sample parsing, validation, NoData, palette interpolation, DN grouping/visibility, and mocked map-layer lifecycle. They do not establish full application coverage or verify live Firebase, Cloudinary, authentication, mobile layout or actual Mapbox rendering.
 
----
+Use the [shapefile checklist](tests/SHAPEFILE-TESTING.md) and [raster checklist](tests/RASTER-TESTING.md) for signed-in browser verification. The build currently reports a large-chunk warning; successful compilation does not imply optimized initial loading or production readiness.
 
-## Limits to know about
+## Deployment
 
-- **General Lists keep all of a list's records inside one Firebase document.**
-  Firebase allows about 1 MB per document, which is roughly several thousand short
-  records per list. It is plenty for normal use. A list that grows far beyond that
-  would need its records moved into their own collection.
-- **The map shows every location as a marker.** A few hundred is fine. Many
-  thousands would be slow and would need marker clustering.
-- **Saved documents cannot be reopened yet.** The editor saves them, but there is
-  no "open a saved document" list. A refresh starts a blank document.
-- **Only Firestore is used.** Firebase Storage is not needed (photos are in
-  Cloudinary).
-- **The video background is on the login page only.** The other pages keep their
-  light background.
-- The paper preview's page breaks are made by the browser. They are very close to
-  a printed page but not guaranteed to be identical to a word processor.
+1. Configure the deployment environment values before building.
+2. Run lint, the GIS tests, and `npm run build`.
+3. Publish `dist/` through a static hosting service.
+4. Configure SPA fallback to `index.html` for application routes such as `/map` and `/document-editor`, while continuing to serve static files normally.
+5. Configure the deployment domain in the relevant authentication and token settings, and verify database access with the intended test account.
+6. Check login, saved records, both map providers, GIS samples and deep-link refreshes.
 
----
+The current configuration assumes hosting at the domain root. Hosting under a subpath requires coordinated Vite base-path and router changes. The preview server is for local verification, not a production hosting service.
+
+## Current limitations
+
+- GIS uploads and styling are temporary; there is no backend GIS upload library.
+- The map supports one combined vector overlay and one raster overlay, not an unlimited independently managed layer stack.
+- Raster support excludes RGB composites, band selection, per-pixel inspection, raster attribute tables and arbitrary TIFF georeferencing.
+- General-list records are stored together in an array and replaced on edits; this model needs redesign for large lists or robust concurrent editing.
+- Staff, locations and lists use collection subscriptions; visible pagination does not mean server-side pagination.
+- Document persistence exists, but reopening saved documents is not implemented.
+- Authentication is present; application roles and ownership isolation are not.
+- Service usage and hosting depend on the configured accounts. This README makes no pricing or free-tier guarantees.
 
 ## Troubleshooting
 
-| Problem | Try this |
-|---------|----------|
-| Everything is blank or Firebase errors appear | Check the `VITE_FIREBASE_*` values in `.env`, then restart `npm run dev` |
-| "Missing or insufficient permissions" | You are not signed in, or the Firestore rules do not allow your user |
-| Cannot sign in | Turn on *Email/Password* in Firebase Authentication and create the user there |
-| The Mapbox map is empty | Check `VITE_MAPBOX_ACCESS_TOKEN`, then restart `npm run dev` |
-| Marker pictures are missing on the Leaflet map | Make sure `leaflet` is installed at version 1.9.4 |
-| Staff photo upload fails | Check the Cloudinary cloud name, and that the upload preset is **unsigned** |
-| The login video does not play | Check the three files are in `public/videos/` with the exact names. The still picture shows if "reduce motion" or data-saver is on |
-| Fonts look plain | Run `npm install @fontsource-variable/inter @fontsource-variable/plus-jakarta-sans` and restart |
-| Refreshing on `/map` says "not found" after publishing | Set your host to open `index.html` for every address |
-| Changes to `.env` do nothing | Stop and start `npm run dev` again |
+<details>
+<summary><strong>The app will not start or reports an unsupported Node engine</strong></summary>
 
----
+Check `node --version`, use Node 24.x, and run `npm ci` inside the React app folder. Review the first terminal error rather than reinstalling individual packages at random. Confirm `.env` exists and restart Vite after editing it.
 
-## Credits
+</details>
 
-- Login background: **Purple Desert** from [GetLayers](https://www.getlayers.ai/layer/purple-desert).
-  At the time of writing, their terms allow commercial use with no credit
-  required. Check their terms again before publishing.
-- Maps: Mapbox, and Leaflet with OpenStreetMap (map data by OpenStreetMap
-  contributors).
-- Editor: [Quill](https://quilljs.com).
-- Icons: [Lucide](https://lucide.dev).
-- Fonts: [Inter](https://rsms.me/inter/) and
-  [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans),
-  through Fontsource.
+<details>
+<summary><strong>Sign-in or Firestore operations fail</strong></summary>
+
+Confirm the Firebase configuration belongs to the intended project, the test account exists, and Email/Password sign-in is enabled. For permission errors, inspect the deployed Firestore rules and intended user access. A successful login alone does not grant database permissions.
+
+</details>
+
+<details>
+<summary><strong>Mapbox is blank or a GIS layer is missing</strong></summary>
+
+Check the public Mapbox token, network requests and browser WebGL support. Select Mapbox rather than Leaflet to view GIS overlays. In the explorer, verify category visibility, raster visibility and opacity. The vector layer sits above the raster, so hiding vector categories may reveal it. Sample files must be present under `public/` and reachable in the deployed build.
+
+</details>
+
+<details>
+<summary><strong>A GIS file is rejected or looks misplaced</strong></summary>
+
+Check the preview limits and file contents. Include matching shapefile projection metadata. For rasters, export a north-up, pixel-area GeoTIFF in EPSG:4326 or EPSG:3857. Simplify or reduce large datasets before uploading. Rectangular cells may be the actual source geometry; rendering cannot invent a more detailed boundary than the dataset contains.
+
+</details>
+
+<details>
+<summary><strong>Raster color selections do not update immediately</strong></summary>
+
+Choose all four colors and click Apply colors. The legend shows the palette currently applied to the map, not uncommitted picker changes. Reset colors restores blue → green → yellow → red. Reloading a dataset restores defaults.
+
+</details>
+
+<details>
+<summary><strong>Profile uploads fail or a deployed route returns 404</strong></summary>
+
+For images, check the Cloudinary cloud name and unsigned upload preset. For route refreshes, check the host's SPA fallback. Missing assets require checking their URLs and deployed files, not rewriting asset requests to HTML.
+
+</details>
+
+## Possible future improvements
+
+These are ideas, not implemented features or delivery commitments:
+
+- A persistent GIS dataset library with server-side validation and tiled delivery.
+- Independent multi-layer management and saved styles.
+- Raster band selection, pixel-value inspection and additional projections.
+- A saved-document browser and reopen workflow.
+- Role-based access, data ownership, server-side pagination and concurrency handling.
+- Broader automated browser tests and smaller initial application bundles.
+
+## Assets and acknowledgments
+
+The application uses React, Vite, Firebase, Mapbox GL JS, Leaflet, Quill, Driver.js, shpjs, GeoTIFF.js, SheetJS, jsPDF, SweetAlert2, Lucide and Fontsource packages. See `package.json` and `package-lock.json` for dependencies and versions.
+
+Map attribution belongs to the relevant map providers and OpenStreetMap contributors. Inter and Plus Jakarta Sans are supplied through Fontsource. The existing background asset is identified as Purple Desert from GetLayers; confirm its applicable terms before redistribution. The user-supplied GIS samples should retain their source provenance and redistribution permissions. No licensing claim for those datasets is established by this README.
+
+[Back to top](#it-unit-management-system)

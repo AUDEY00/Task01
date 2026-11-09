@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { AuthProvider } from "./context/AuthProvider";
 import AppLayout from "./components/layout/AppLayout";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
@@ -13,9 +13,10 @@ import VideoBackground from "./components/layout/VideoBackground";
 import "./styles/theme.css";
 
 export default function App() {
+  const { pathname } = useLocation();
   return (
     <>
-      <VideoBackground />
+      {pathname.replace(/\/+$/, '').toLowerCase() !== '/login' && <VideoBackground />}
 
       <AuthProvider>
         <Routes>

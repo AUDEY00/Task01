@@ -651,3 +651,19 @@
         padding: 12px;
     }
 }
+
+/* Only the map route uses a fixed viewport; lengthy controls scroll inside. */
+body .main-content:has(> .map-page) { height:100dvh; min-height:0; padding:16px; overflow:hidden; }
+.map-page { height:100%; min-height:0; display:flex; flex-direction:column; }
+.map-page .map-header { flex:none; margin-bottom:12px; }
+.map-page .map-layout { flex:1; height:auto; min-height:0; grid-template-rows:minmax(0,1fr); }
+.map-page .map-pane { height:100%; min-height:0; }
+.map-page .map-side { min-height:0; overflow:auto; overscroll-behavior:contain; }
+.map-page .new-location { flex-shrink:0; }
+@media(max-width:960px) {
+ .map-page .map-layout { grid-template-rows:minmax(0,3fr) minmax(0,2fr); gap:10px; }
+ .map-page .map-side { height:100%; }
+ .map-page .location-panel { flex:none; }
+ .map-page .map-header h1 { font-size:20px; }
+ .map-page .map-header p { font-size:11px; }
+}

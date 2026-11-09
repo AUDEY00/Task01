@@ -14,6 +14,7 @@ import {
 } from "../utils/locationList";
 
 import MapboxMap from "../components/map/MapboxMap";
+import ShapefileUpload from "../components/map/ShapefileUpload";
 import LeafletMap from "../components/map/LeafletMap";
 import MapControls from "../components/map/MapControls";
 import NewLocationCard from "../components/map/NewLocationCard";
@@ -53,6 +54,8 @@ const EMPTY_FORM = { name: "", latitude: "", longitude: "" };
 
 export default function MapPage() {
   const { locations } = useLocations();
+  const [shapefileOverlay, setShapefileOverlay] = useState(null);
+  const [rasterOverlay, setRasterOverlay] = useState(null);
 
   // Remembered between visits, like the old app.
   const [mapProvider, setMapProvider] = useState(() =>
@@ -374,10 +377,13 @@ export default function MapPage() {
           </p>
         </div>
 
+        <div className="map-header-actions">
+        <ShapefileUpload overlay={shapefileOverlay} onChange={setShapefileOverlay} mapProvider={mapProvider} raster={rasterOverlay} onRasterChange={setRasterOverlay} />
         <button type="button" className="tool-btn" onClick={startMapTour}>
           <Compass size={16} aria-hidden="true" />
           Guided tour
         </button>
+        </div>
       </div>
 
       <div className="map-layout">
@@ -390,6 +396,7 @@ export default function MapPage() {
               mapView={mapView}
               pickedPoint={pickedPoint}
               onPick={handlePick}
+              {...(mapProvider === "mapbox" ? { shapefileOverlay, rasterOverlay } : {})}
             />
 
             <MapControls
