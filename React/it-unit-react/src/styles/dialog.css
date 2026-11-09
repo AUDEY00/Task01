@@ -1,10 +1,3 @@
-/* ===================================
-   Edit Staff Details Dialog
-   Loaded by StaffDetailsDialog.jsx, so it works
-   even if global.css is replaced or out of date.
-   z-index: above the sidebar (1000),
-   below SweetAlert2 popups (1060).
-=================================== */
 
 .dialog-backdrop {
     position: fixed;

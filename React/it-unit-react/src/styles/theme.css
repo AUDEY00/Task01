@@ -1,20 +1,3 @@
-/* ===================================================================
-   Purple Desert theme
-   Loaded LAST (end of the imports in App.jsx) so it can adjust the
-   other style sheets. Everything that changes because of the video
-   background lives here:
-
-     1. Fonts
-     2. Page background colour (shown while the video loads / if it fails)
-     3. Sidebar
-     4. White text where text sits directly on the background
-     5. More solid cards (light panels read better on a dark video)
-     6. Login page
-     7. Editor text keeps the body font
-
-   Selectors start with "body" on purpose: that makes them win over the
-   page style sheets no matter which one loads first.
-=================================================================== */
 
 :root {
     /* Inter: clear and neutral, made for screens. Used for all normal text. */

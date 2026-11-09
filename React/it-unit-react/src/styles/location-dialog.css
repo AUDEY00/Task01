@@ -1,9 +1,3 @@
-/* ===================================================================
-   Edit Location dialog
-   Loaded by LocationDetailsDialog.jsx. These are the dialog rules from
-   the original map.css (scoped under .location-dialog because the dialog
-   renders in <body>), plus a few guards against global.css.
-=================================================================== */
 
 .location-dialog button:hover {
     transform: none;

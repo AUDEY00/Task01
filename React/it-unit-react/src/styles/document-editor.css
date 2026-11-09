@@ -1,12 +1,3 @@
-/* ===================================================================
-   Document Editor page (paper-canvas layout)
-   One card: top bar (New, Save, Edit/Preview switch), the formatting
-   toolbar (or the paper controls while previewing), a grey canvas with the
-   page on it, and a status bar.
-   Everything is scoped under .document-editor-page and loaded by
-   DocumentEditorPage.jsx. It deliberately overrides a few global.css rules
-   (button, input, select, h1) and restyles Quill's toolbar.
-=================================================================== */
 
 .document-editor-page {
     width: 100%;

@@ -89,7 +89,22 @@ body .map-page .map-header .shape-dialog p.shapefile-error { color:#b91c1c; }
 
 .shapefile-upload .raster-controls .shape-upload-header { margin:14px 0; }
 .shapefile-upload .raster-options { display:grid; gap:10px; margin:18px 0; }
-.shapefile-upload .raster-options input[type="range"] { width:100%; accent-color:#7c3aed; }
+/* Keep global text-input padding and glass styling off the native slider. */
+.shapefile-upload .raster-options input[type="range"] {
+ width:100%;
+ min-width:0;
+ height:24px;
+ margin:0;
+ padding:0;
+ border:0;
+ border-radius:0;
+ background:transparent;
+ backdrop-filter:none;
+ box-shadow:none;
+ accent-color:#7c3aed;
+ cursor:pointer;
+}
+.shapefile-upload .raster-options input[type="range"]:disabled { cursor:not-allowed; }
 .shapefile-upload .raster-options input[type="checkbox"] { accent-color:#7c3aed; }
 .shapefile-upload .raster-legend { display:flex; justify-content:space-between; flex-wrap:wrap; gap:6px; font-size:12px; }
 .shapefile-upload .raster-legend > div { width:100%; height:14px; border-radius:5px; background:linear-gradient(90deg,#312e81,#14b8a6,#facc15); }

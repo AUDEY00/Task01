@@ -1,14 +1,3 @@
-/* ===================================================================
-   General Lists dialogs (Create List, Edit List, Add Record, Edit Record)
-   Loaded by GeneralListDialog.jsx. These replace Angular Material's
-   md-dialog / md-toolbar / md-input-container / md-button, using Material's
-   default look (indigo toolbar, underlined fields, uppercase buttons).
-
-   Part 1 is hand-written. Part 2 (at the bottom) is generated from the
-   dialog rules of the original general-list.css.
-=================================================================== */
-
-/* ---------- Part 1: dialog shell ---------- */
 
 .gl-dialog {
     display: flex;
